@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Tworzenie</title>
+        <script src="CreateOperations_alt.js" defer></script>
+    </head>
+    <body>
+        <h1>Tworzenie obiektu do bazy danych:</h1>
+        <p><a href="index_alt.html">Spowrotem</a></p>
+        <p>Typ projektu</p>
+        <ul>
+            <li>
+                <form id="form_type" name="form_type">
+                    <label for="pole2">Nazwa typu</label>
+                    <input type="text" size="40" name="pole2" id="pole2">
+                    <button type="button" name="b2" id="b2">Wyślij</button>
+                </form>
+            </li>
+        </ul>
+        <p name="form_type_kom" id="form_type_kom"></p>
+        <br/>
+        <p>Użytkownik</p>
+        <ul>
+            <form id="form_user" name="form_user">
+            <li>
+                    <label for="pole3_1">Imie</label>
+                    <input type="text" size="20" name="pole3_1" id="pole3_1"><br/>
+            </li>
+            <li>
+                    <label for="pole3_2">Nazwisko</label>
+                    <input type="text" size="20" name="pole3_2" id="pole3_2"><br/>
+            </li>
+            <li>
+                    <label for="pole3_3">Adres email</label>
+                    <input type="text" size="30" name="pole3_3" id="pole3_3"><br/>
+            </li>
+            <li>
+                    <label for="pole3_4">Login</label>
+                    <input type="text" size="30" name="pole3_4" id="pole3_4"><br/>
+            </li>
+            <li>
+                    <label for="pole3_5">Hasło</label>
+                    <input type="text" size="20" name="pole3_5" id="pole3_5"><br/>
+                    <!--DODAJ UKRYWANIE-->
+            </li>
+            <li>
+                    <label for="pole3_6">Rola</label>
+                    <select name="pole3_6" id="pole3_6">
+                    <option value="0">Wybierz rolę</option>
+                    <option value="1">Zwykły użytkownik</option>
+                    <option value="2">Administrator systemu</option></select>
+            </li>
+            <button type="button" name="b3" id="b3">Wyślij</button>
+            </form>
+        </ul>
+        <p name="form_user_kom" id="form_user_kom"></p>
+        <br/>
+        <p>Zespół</p>
+        <ul>
+            <form id="form_team" name="form_team">
+            <li>
+                    <label for="pole4_1">Nazwa</label>
+                    <input type="text" size="20" name="pole4_1" id="pole4_1">
+            </li>
+            <li>
+                    <label for="pole4_2">Lider</label>
+                    <!--<input type="text" size="30" name="pole4_2" id="pole4_2">-->
+                    <select name="pole4_2" id="pole4_2">
+                    </select>
+            </li>
+            <button type="button" name="b4" id="b4">Wyślij</button>
+            </form>
+        </ul>
+        <p name="form_team_kom" id="form_team_kom"></p>
+        <br/>
+        <p>Projekt</p>
+        <ul>
+            <form id="form_project" name="form_project">
+            <li>
+                    <label for="pole5_1">Nazwa projektu</label>
+                    <input type="text" size="30" name="pole5_1" id="pole5_1">
+            </li>
+            <li>
+                    <label for="pole5_2">Typ projektu</label>
+                    <select name="pole5_2" id="pole5_2">
+                    </select> 
+            </li>
+            <li>
+                    <label for="pole5_3">Czas startu</label>
+                    <input type="date" size="20" name="pole5_3" id="pole5_3">
+            </li>
+            <li>
+                    <label for="pole5_4">Administrator</label>
+                    <input type="text" size="10" name="pole5_4" id="pole5_4">
+            </li>
+            <button type="button" name="b5" id="b5">Wyślij</button>
+            </form>
+        </ul>
+        <p name="form_project_kom" id="form_project_kom"></p>
+        <br/>
+        <p>Zadanie</p>
+        <ul>
+            <form id="form_zadanie" name="form_zadanie">
+            <li>
+                    <label for="pole6_1">Nazwa zadania</label>
+                    <input type="text" size="30" name="pole6_1" id="pole6_1">
+            </li>
+            <li>
+                    <label for="pole6_2">Nadrzędny projekt</label>
+                    <select name="pole6_2" id="pole6_2"></select>
+            </li>
+            <li>
+                    <label for="pole6_3">Czas startu</label>
+                    <input type="date" size="20" name="pole6_3" id="pole6_3">
+            </li>
+            <li>
+                    <label for="pole6_4">Czas zakończenia</label>
+                    <input type="date" size="20" name="pole6_4" id="pole6_4">
+            </li>
+            <li>
+                    <label for="pole6_5">Priorytet</label>
+                    <input type="number" size="10" name="pole6_5" id="pole6_5">
+            </li>
+            <button type="button" name="b6" id="b6">Wyślij</button>
+            </form>
+        </ul>
+        <p name="form_zadanie_kom" id="form_zadanie_kom"></p>
+    </body>
+</html>
