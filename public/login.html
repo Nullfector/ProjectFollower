@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Logowanie</title>
+</head>
+<body>
+  <h1>Logowanie</h1>
+
+  <form id="loginForm">
+    <label>
+      Login:
+      <input name="login" autocomplete="username" required>
+    </label>
+    <br>
+    <label>
+      Hasło:
+      <input name="haslo" type="password" autocomplete="current-password" required>
+    </label>
+    <br>
+    <button type="submit">Zaloguj</button>
+  </form>
+
+  <p id="msg" style="color:red;"></p>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('[login] JS loaded ✅');
+
+      const form = document.getElementById('loginForm');
+      const msg = document.getElementById('msg');
+
+      if (!form) {
+        console.log('[login] Nie znaleziono #loginForm ❌');
+        return;
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        console.log('[login] submit');
+
+        msg.textContent = '';
+
+        const fd = new FormData(form);
+
+        let res;
+        try {
+          res = await fetch('api/login.php', {   // UWAGA: relatywnie do /public/login.html
+            method: 'POST',
+            body: fd,
+            credentials: 'include'
+          });
+        } catch (err) {
+          console.log('[login] fetch error:', err);
+          msg.textContent = 'Błąd połączenia z serwerem.';
+          return;
+        }
+
+        const text = await res.text();
+        console.log('[login] status:', res.status);
+        console.log('[login] raw response:', text);
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (err) {
+          msg.textContent = 'Serwer nie zwrócił JSON. Sprawdź console (raw response).';
+          return;
+        }
+
+        if (data.ok) {
+          console.log('[login] OK, redirect ->', data.redirect);
+          window.location.href = data.redirect || 'me.php';
+        } else {
+          msg.textContent = data.error || 'Nieprawidłowe logowanie.';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

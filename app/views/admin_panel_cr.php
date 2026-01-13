@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Tworzenie</title>
-        <script src="CreateOperations_alt.js" defer></script>
-    </head>
-    <body>
+
         <h1>Tworzenie obiektu do bazy danych:</h1>
-        <p><a href="index_alt.html">Spowrotem</a></p>
+        <p><a href="admin_panel.php">Spowrotem</a></p>
         <p>Typ projektu</p>
         <ul>
             <li>
@@ -92,7 +85,9 @@
             </li>
             <li>
                     <label for="pole5_4">Administrator</label>
-                    <input type="text" size="10" name="pole5_4" id="pole5_4">
+                    <!--<input type="text" size="10" name="pole5_4" id="pole5_4">-->
+                    <select name="pole5_4" id="pole5_4">
+                    </select> 
             </li>
             <button type="button" name="b5" id="b5">Wyślij</button>
             </form>
@@ -126,5 +121,5 @@
             </form>
         </ul>
         <p name="form_zadanie_kom" id="form_zadanie_kom"></p>
-    </body>
-</html>
+
+<script src="/../app/views/assets/CreateOperations_alt.js"></script>

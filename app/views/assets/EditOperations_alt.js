@@ -184,15 +184,15 @@ async function setup()
     try{
         
         var wynik;
-        wynik = await setupSimplify_get('user',user,"Wybierz Użytkownika do edycji","start_crate.php");
+        wynik = await setupSimplify_get('user',user,"Wybierz Użytkownika do edycji","/../app/db_kontrolers/start_crate.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",user,false);
 
-        wynik = await setupSimplify_get('zesp',zesp,"Wybierz Zespół do edycji","start_crate.php");
+        wynik = await setupSimplify_get('zesp',zesp,"Wybierz Zespół do edycji","/../app/db_kontrolers/start_crate.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_ze","nazwa",zesp,false);
 
         proj1.innerHTML = `<option value="0">Wybierz projekt</option>`;
         zad.innerHTML = `<option value="0">Wybierz projekt</option>`;
-        wynik = await setupSimplify_get('projekt',proj,"Wybierz Projekt do edycji","start_crate.php");
+        wynik = await setupSimplify_get('projekt',proj,"Wybierz Projekt do edycji","/../app/db_kontrolers/start_crate.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_p","nazwa_projektu",proj,true);
 
         const opt = document.createElement('option');
@@ -233,15 +233,15 @@ async function get_requiredZesp_NOaso()
         
         var wynik, str;
         str = `lider&id=${id}`;
-        wynik = await setupSimplify_get(str,lid,"Nie zmieniaj lidera","start_edit.php");
+        wynik = await setupSimplify_get(str,lid,"Nie zmieniaj lidera","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",lid,false);
 
         str = `aso_u_ze_create&id=${id}`;
-        wynik = await setupSimplify_get(str,new_u,"Nic nie dodawaj","start_edit.php");
+        wynik = await setupSimplify_get(str,new_u,"Nic nie dodawaj","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",new_u,false);
 
         str = `aso_u_ze_del&id=${id}`;
-        wynik = await setupSimplify_get(str,del_u,"Nic nie usuwaj","start_edit.php");
+        wynik = await setupSimplify_get(str,del_u,"Nic nie usuwaj","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",del_u,false);
 
     } catch (e) {
@@ -266,10 +266,10 @@ async function get_requiredZesp_ASO()
     try{
     
         var wynik;
-        wynik = await setupSimplify_get(`aso_za_ze_create&id=${id}`,new_aso,"Wybierz nowe zadanie","start_edit.php"); //&idq=${idq}
+        wynik = await setupSimplify_get(`aso_za_ze_create&id=${id}`,new_aso,"Wybierz nowe zadanie","/../app/db_kontrolers/start_edit.php"); //&idq=${idq}
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",new_aso,false);
 
-        wynik = await setupSimplify_get(`aso_za_ze_del&id=${id}&idq=${idq}`,aso_del,"Wybierz zadanie do usunięcia","start_edit.php");
+        wynik = await setupSimplify_get(`aso_za_ze_del&id=${id}&idq=${idq}`,aso_del,"Wybierz zadanie do usunięcia","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",aso_del,false);
 
 
@@ -293,13 +293,13 @@ async function get_requiredProj()
     try{
     
         var wynik;
-        wynik = await setupSimplify_get(`admin&id=${encodeURIComponent(id)}`,admin,"Nie zmieniaj admina","start_edit.php");
+        wynik = await setupSimplify_get(`admin&id=${encodeURIComponent(id)}`,admin,"Nie zmieniaj admina","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",admin,false);
 
-        wynik = await setupSimplify_get(`typ&id=${encodeURIComponent(id)}`,typ,"Nie zmieniaj typu","start_edit.php");
+        wynik = await setupSimplify_get(`typ&id=${encodeURIComponent(id)}`,typ,"Nie zmieniaj typu","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_t","nazwa_typu",typ,false);
 
-        wynik = await setupSimplify_get(`zadanie&id=${encodeURIComponent(id)}`,zad,"Nie usuwaj zadania","start_edit.php");
+        wynik = await setupSimplify_get(`zadanie&id=${encodeURIComponent(id)}`,zad,"Nie usuwaj zadania","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",zad,false);
 
 
@@ -359,7 +359,7 @@ ev4.addEventListener('change', async (e) => {
         const id = ev4.value;
         
        var wynik;
-        wynik = await setupSimplify_get(`zadanie&id=${encodeURIComponent(id)}`,document.getElementById("pole11_8"),"Wybierz zadanie","start_edit.php");
+        wynik = await setupSimplify_get(`zadanie&id=${encodeURIComponent(id)}`,document.getElementById("pole11_8"),"Wybierz zadanie","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",document.getElementById("pole11_8"),false);
         
 
@@ -385,10 +385,10 @@ ev5.addEventListener('change', async (e) => {
         const idq = document.getElementById("pole11_0").value;
         
         var wynik;
-        wynik = await setupSimplify_get(`zadanie_new&id=${encodeURIComponent(id)}&idq=${encodeURIComponent(idq)}`,document.getElementById("pole11_6"),"Nic nie dodawaj","start_edit.php");
+        wynik = await setupSimplify_get(`zadanie_new&id=${encodeURIComponent(id)}&idq=${encodeURIComponent(idq)}`,document.getElementById("pole11_6"),"Nic nie dodawaj","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",document.getElementById("pole11_6"),false);
 
-        wynik = await setupSimplify_get(`zadanie_del&id=${encodeURIComponent(id)}`,document.getElementById("pole11_7"),"Nic nie usuwaj","start_edit.php");
+        wynik = await setupSimplify_get(`zadanie_del&id=${encodeURIComponent(id)}`,document.getElementById("pole11_7"),"Nic nie usuwaj","/../app/db_kontrolers/start_edit.php");
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",document.getElementById("pole11_7"),false);
         
 
@@ -421,7 +421,7 @@ but1.addEventListener('click', async () => {
     //console.log(new_login);
 
     try {
-        const data = await sendOver('PUT',formData,'editphp.php',true);
+        const data = await sendOver('PUT',formData,'/../app/db_kontrolers/editphp.php',true);
         resultAction(data,kom1,form1,true);
 
         if(new_login!==""){
@@ -446,7 +446,7 @@ but2.addEventListener('click', async () => {
     const new_name = document.getElementById("pole9_1").value.trim();
 
     try {
-        const data = await sendOver('PUT',formData,'editphp.php',true);
+        const data = await sendOver('PUT',formData,'/../app/db_kontrolers/editphp.php',true);
         resultAction(data,kom2,form2,true);
 
         if(new_name!==""){
@@ -518,7 +518,7 @@ but3.addEventListener('click', async () => {
     
     if(document.getElementById("pole9_3").value!=="0"){
         try {
-            const data = await sendOver('POST',formData,'editphp.php',false);
+            const data = await sendOver('POST',formData,'/../app/db_kontrolers/editphp.php',false);
             resultAction(data,kom2,form7,false);
 
                 const opt = document.createElement('option');
@@ -536,7 +536,7 @@ but3.addEventListener('click', async () => {
     }
     if(document.getElementById("pole9_4").value!=="0"){
         try {
-            const data = await sendOver('DELETE',formData,'editphp.php',true);
+            const data = await sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',true);
             resultAction(data,kom2,form7,false);
 
                 const opt = document.createElement('option');
@@ -572,7 +572,7 @@ but4.addEventListener('click', async () => {
 
     if(document.getElementById("pole9_5").value!=="0"){
         try {
-            const data = sendOver('POST',formData,'editphp.php',false);
+            const data = sendOver('POST',formData,'/../app/db_kontrolers/editphp.php',false);
             resultAction(data,kom2,form8,false);
 
                 const opt = document.createElement('option');
@@ -591,7 +591,7 @@ but4.addEventListener('click', async () => {
     }
     if(document.getElementById("pole9_6").value!=="0"){
         try {
-            const data = sendOver('DELETE',formData,'editphp.php',true);
+            const data = sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',true);
             resultAction(data,kom2,form8,false);
 
                 const opt = document.createElement('option');
@@ -622,7 +622,7 @@ but5.addEventListener('click', async () => {
     const new_nazwa = document.getElementById("pole10_1").value.trim();
 
     try {
-            const data = await sendOver('PUT',formData,'editphp.php',true);
+            const data = await sendOver('PUT',formData,'/../app/db_kontrolers/editphp.php',true);
             //console.log(data);
             resultAction(data,kom3,form3,true);
 
@@ -657,7 +657,7 @@ but6.addEventListener('click', async () => {
     });
 
     try {
-            const data = await sendOver('DELETE',formData,'editphp.php',false);
+            const data = await sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',false);
             //console.log(data);
             resultAction(data,kom3,form3,false); //to form3 jest tylko po to by było i żeby funkcja nie spadła z rowerka
 
@@ -685,7 +685,7 @@ but7.addEventListener('click', async () => {
     const new_name = document.getElementById("pole11_1").value.trim();
 
     try {
-            const data = await sendOver('PUT',formData,'editphp.php',true);
+            const data = await sendOver('PUT',formData,'/../app/db_kontrolers/editphp.php',true);
             //console.log(data);
             resultAction(data,kom4,form4,true);
 
@@ -721,7 +721,7 @@ but8.addEventListener('click', async () => {
 
     if(document.getElementById("pole11_6").value!=="0"){
         try {
-            const data = await sendOver('POST',formData,'editphp.php',false);
+            const data = await sendOver('POST',formData,'/../app/db_kontrolers/editphp.php',false);
             resultAction(data,kom4,form9,false);
 
             const opt = document.createElement('option');
@@ -739,7 +739,7 @@ but8.addEventListener('click', async () => {
     if(document.getElementById("pole11_7").value!=="0"){
         //console.log("co kuraw");
         try {
-            const data = await sendOver('DELETE',formData,'editphp.php',true);
+            const data = await sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',true);
             resultAction(data,kom4,form9,false);
 
             const opt = document.createElement('option');

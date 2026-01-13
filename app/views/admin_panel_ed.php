@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Edycja</title>
-        <script src="EditOperations_alt.js" defer></script>
-    </head>
-    <body>
-        <h1>Edytowanie obiektu w bazie danych:</h1>
-        <p><a href="index_alt.html">Spowrotem</a></p>
+    <h1>Edytowanie obiektu w bazie danych:</h1>
+        <p><a href="admin_panel.php">Spowrotem</a></p>
         <p>Użytkownik</p>
         <ul>
             <form name="form_edit_user" id="form_edit_user">
@@ -207,5 +199,5 @@
             </form>
         </ul>
         <p name="form_edit_task_kom" id="form_edit_task_kom"></p>
-    </body>
-</html>
+
+        <script src="/../app/views/assets/EditOperations_alt.js"></script>

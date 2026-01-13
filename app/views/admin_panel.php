@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Testing bazy danych</title>
-        <script src="DeleteOperations_alt.js" defer></script>
-    </head>
-    <body>
+<h1>Panel sterujący</h1>
+<p><a href="admin.php">Spowrotem</a></p>
         <h1>Wywołania do bazy danych:</h1>
-        <p><a href="create_alt.html">Create</a></p>
+        <p><a href="admin_panel_cr.php">Strona tworzenia</a></p>
         <ul>
-            <li>Rola</li>
             <li>Typ projektu</li>
             <li>Użytkownik</li>
             <li>Zespół</li>
@@ -17,7 +10,7 @@
             <li>Zadanie</li>
         </ul>
         <br/><br/>
-        <p>Delete</p>
+        <p>Usuwanie</p>
         <ul>
             <form name="form_del_type" id="form_del_type">
             <li>
@@ -66,12 +59,13 @@
             <!--USUWANIE ZADŃ BĘDZIE W EDYCJI PROJEKTU-->
         </ul>
         <br/><br/>
-        <p><a href="edit_alt.html">Edit</a></p>
+        <p><a href="admin_panel_ed.php">Strona edycji</a></p>
         <ul>
             <li>Użytkownik</li>
             <li>Zespół</li>
             <li>Projekt</li>
             <li>Zadanie</li>
         </ul>
-    </body>
-</html>
+
+<div id="panel-root"></div>
+<script src="/../app/views/assets/DeleteOperations_alt.js"></script>

@@ -18,11 +18,12 @@ async function communication(form, action, dosetup, kom){
   const formData = new FormData(form);
   formData.append('action', action);
 
-  const res = await fetch('createphp.php', {
+  const res = await fetch('/../app/db_kontrolers/createphp.php', {
         method: 'POST',
         body: formData
     });
     const data = await res.json();
+    console.log(data);
       
     if (data.ok) {
         kom.textContent = 'Zapisano.';
@@ -107,33 +108,6 @@ but3.addEventListener('click', async () => {
       kom3.textContent = 'Błąd połączenia z serwerem.';
       kom3.style.color = 'red';
     }
-  /*const formData = new FormData(form3);
-  formData.append('action', 'add_user');
-  try {
-    const res = await fetch('createphp.php', {
-      method: 'POST',
-      body: formData
-    });
-
-    //const text = await res.text();
-//console.log(text);
-    const data = await res.json();
-
-    if (data.ok) {
-      kom3.textContent = 'Zapisano.';
-      kom3.style.color = 'green';
-      setTimeout(() => {kom3.textContent = "";}, 3000);
-      form3.reset();
-    } else {
-      kom3.textContent = data.error;
-      kom3.style.color = 'red';
-    }
-
-  } catch (err) {
-    console.log(err);
-    kom3.textContent = 'Błąd połączenia z serwerem.';
-    kom3.style.color = 'red';
-  }*/
 });
 
 const form4 = document.getElementById("form_team");
@@ -172,33 +146,6 @@ but4.addEventListener('click', async () => {
       kom4.textContent = 'Błąd połączenia z serwerem.';
       kom4.style.color = 'red';
     }
-  /*const formData = new FormData(form4);
-  formData.append('action', 'add_zesp');
-  try {
-    const res = await fetch('createphp.php', {
-      method: 'POST',
-      body: formData
-    });
-
-    //const text = await res.text();
-//console.log(text);
-    const data = await res.json();
-
-    if (data.ok) {
-      kom4.textContent = 'Zapisano.';
-      kom4.style.color = 'green';
-      setTimeout(() => {kom4.textContent = "";}, 3000);
-      form4.reset();
-    } else {
-      kom4.textContent = data.error;
-      kom4.style.color = 'red';
-    }
-
-  } catch (err) {
-    console.log(err);
-    kom4.textContent = 'Błąd połączenia z serwerem.';
-    kom4.style.color = 'red';
-  }*/
 });
 
 
@@ -219,7 +166,7 @@ function ProjectCheck() {
         count++;
         res += "data";
     }
-    if(form5.pole5_4.value <= 0 && form5.pole5_4.value !=""){ //id administratora
+    if(form5.pole5_4.value < 0 && form5.pole5_4.value !=""){ //id administratora - raczej potrzebne nie jest
         if(count >= 1) res+=", ";
         count++;
         res += "administrator";
@@ -248,35 +195,6 @@ but5.addEventListener('click', async () => {
       kom5.textContent = 'Błąd połączenia z serwerem.';
       kom5.style.color = 'red';
     }
-  /*const formData = new FormData(form5);
-  formData.append('action', 'add_proj');
-  try {
-    const res = await fetch('createphp.php', {
-      method: 'POST',
-      body: formData
-    });
-
-    //const text = await res.text();
-//console.log(text);
-    const data = await res.json();
-
-    if (data.ok) {
-      kom5.textContent = 'Zapisano.';
-      kom5.style.color = 'green';
-      setTimeout(() => {kom5.textContent = "";}, 3000);
-      form5.reset();
-
-      setup();
-    } else {
-      kom5.textContent = data.error;
-      kom5.style.color = 'red';
-    }
-
-  } catch (err) {
-    console.log(err);
-    kom5.textContent = 'Błąd połączenia z serwerem.';
-    kom5.style.color = 'red';
-  }*/
 }); 
 
 
@@ -336,33 +254,6 @@ but6.addEventListener('click', async () => {
       kom6.textContent = 'Błąd połączenia z serwerem.';
       kom6.style.color = 'red';
     }
-  /*const formData = new FormData(form6);
-  formData.append('action', 'add_zad');
-  try {
-    const res = await fetch('createphp.php', {
-      method: 'POST',
-      body: formData
-    });
-
-    //const text = await res.text();
-//console.log(text);
-    const data = await res.json();
-
-    if (data.ok) {
-      kom6.textContent = 'Zapisano.';
-      kom6.style.color = 'green';
-      setTimeout(() => {kom6.textContent = "";}, 3000);
-      form6.reset();
-    } else {
-      kom6.textContent = data.error;
-      kom6.style.color = 'red';
-    }
-
-  } catch (err) {
-    console.log(err);
-    kom6.textContent = 'Błąd połączenia z serwerem.';
-    kom6.style.color = 'red';
-  }*/
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -374,15 +265,17 @@ async function setup()
     const typ = document.getElementById("pole5_2");
     const proj = document.getElementById("pole6_2");
     const lid = document.getElementById("pole4_2");
+    const adm = document.getElementById("pole5_4");
 
     typ.innerHTML="<option value='0'>Ładowanie...<option/>";
     proj.innerHTML="<option value='0'>Ładowanie...<option/>";
     lid.innerHTML="<option value='0'>Ładowanie...<option/>";
+    adm.innerHTML="<option value='0'>Ładowanie...<option/>";
 
     try{
-        const res_proj = await fetch('start_crate.php?action=projekt',{method: 'GET'});
-        const typ_proj = await fetch('start_crate.php?action=typ',{method: 'GET'});
-        const lid_u = await fetch('start_crate.php?action=user',{method: 'GET'});
+        const res_proj = await fetch('/../app/db_kontrolers/start_crate.php?action=projekt',{method: 'GET'});
+        const typ_proj = await fetch('/../app/db_kontrolers/start_crate.php?action=typ',{method: 'GET'});
+        const lid_u = await fetch('/../app/db_kontrolers/start_crate.php?action=user',{method: 'GET'});
 
         const data2 = JSON.parse(await typ_proj.text());
 
@@ -421,11 +314,14 @@ async function setup()
         }
 
         lid.innerHTML = `<option value="0">Wybierz lidera</option>`;
+        adm.innerHTML = `<option value="0">Brak administratora</option>`;
         for (const v of data3.ret_val) {
             const opt = document.createElement('option');
             opt.value = v.id_u;
             opt.textContent = v.login;
             lid.appendChild(opt);
+            adm.appendChild(opt.cloneNode(true));
+
         }
 
         }catch (e) {
@@ -433,6 +329,8 @@ async function setup()
             console.log(e);
             proj.innerHTML = `<option value="0">Błąd połączenia</option>`;
             typ.innerHTML = `<option value="0">Błąd połączenia</option>`;
+            lid.innerHTML=`<option value="0">Błąd połączenia</option>`;
+            adm.innerHTML=`<option value="0">Błąd połączenia</option>`;
         }
 }
 

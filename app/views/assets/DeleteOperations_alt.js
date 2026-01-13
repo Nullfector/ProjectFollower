@@ -16,7 +16,7 @@ async function DelType() {
         };
     try {
 
-        const res = await fetch("deletephp.php", {
+        const res = await fetch("/../app/db_kontrolers/deletephp.php", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -66,7 +66,7 @@ const id = form7_3.pole7_3.value;
         
     try {
 
-        const res = await fetch("deletephp.php", {
+        const res = await fetch("/../app/db_kontrolers/deletephp.php", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -120,7 +120,7 @@ const id = form7_4.pole7_4.value;
         };
     try {
 
-        const res = await fetch("deletephp.php", {
+        const res = await fetch("/../app/db_kontrolers/deletephp.php", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -174,7 +174,7 @@ async function DelProject() {
         };
     try {
 
-        const res = await fetch("deletephp.php", {
+        const res = await fetch("/../app/db_kontrolers/deletephp.php", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -227,10 +227,10 @@ async function setup()
     zesp.innerHTML="<option value='0'>Ładowanie...<option/>";
 
     try{
-        const res_proj = await fetch('start_crate.php?action=projekt',{method: 'GET'});
-        const typ_proj = await fetch('start_crate.php?action=typ',{method: 'GET'});
-        const res_user = await fetch('start_crate.php?action=user',{method: 'GET'});
-        const res_zesp = await fetch('start_crate.php?action=zesp',{method: 'GET'});
+        const res_proj = await fetch('/../app/db_kontrolers/start_crate.php?action=projekt',{method: 'GET'});
+        const typ_proj = await fetch('/../app/db_kontrolers/start_crate.php?action=typ',{method: 'GET'});
+        const res_user = await fetch('/../app/db_kontrolers/start_crate.php?action=user',{method: 'GET'});
+        const res_zesp = await fetch('/../app/db_kontrolers/start_crate.php?action=zesp',{method: 'GET'});
 
         const data2 = JSON.parse(await typ_proj.text());
         const data3 = JSON.parse(await res_user.text());
