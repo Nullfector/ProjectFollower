@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../db.php';
 require_once __DIR__ . '/../../auth.php';
 //require_role('admin'); // jeśli tylko admin ma mieć dostęp
 
-require_once __DIR__ . '/../../app/models/fillDataStart.php';
+require_once __DIR__ . '/../../app/models/fillDataEdit.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -45,7 +45,7 @@ try {
             $result = $model->fun_s_zdel((int)$_GET['id']);
             break;
         default:
-            echo jsno_encode(['ok'=>false,'error'=>"Niepoprawny parametr 'action'."]);
+            echo json_encode(['ok'=>false,'error'=>"Niepoprawny parametr 'action'."]);
             exit;
     }
 

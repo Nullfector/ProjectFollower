@@ -121,11 +121,11 @@ function TaskEditCheck(){
         return false;
     }
 
-    if(form4.pole11_2.value != "" && (form4.pole11_2.value < 1 || form4.pole11_2.value >5)){
+    /*if(form4.pole11_2.value != "" && (form4.pole11_2.value < 1 || form4.pole11_2.value >5)){
         if(count >= 1) res+=", ";
         count++;
         res += "priorytet(jak go wstawiasz to musi być między 1 a 5)";
-    }
+    }*/
     if(form4.pole11_2.value === "" && form4.pole11_1.value === "" && form4.pole11_4.value === "" && form4.pole11_5.value === "" && form4.pole11_9.value === "0"){
         kom4.textContent = "No i po co?";
         return false;
@@ -139,6 +139,7 @@ async function setupSimplify_get(action, field, tekst, php){
     const res = await fetch(`${php}?action=${action}`,{method: 'GET'});
     //console.log(`${php}?action=${action}`);
     const data = JSON.parse(await res.text());
+    //console.log(data);
     if (!data.ok) {
             field.innerHTML = `<option value="0">${data.error}</option>`;
             return {ok:false};
@@ -629,7 +630,7 @@ but5.addEventListener('click', async () => {
             if(new_nazwa!==""){
                 document.getElementById("pole10_0").options[opt].textContent = new_nazwa;
             }
-            if(document.getElementById("pole10_6").selectedIndex.value==="1" || document.getElementById("pole10_5").selectedIndex.value ==="1"){
+            if(/*document.getElementById("pole10_6").selectedIndex.value==="1" ||*/ document.getElementById("pole10_5").selectedIndex.value ==="1"){
                 document.getElementById("pole10_0").remove(document.getElementById("pole10_0").options[opt]);
             }
             document.getElementById("pole10_0").value = "0";
@@ -686,7 +687,7 @@ but7.addEventListener('click', async () => {
 
     try {
             const data = await sendOver('PUT',formData,'/../app/db_kontrolers/editphp.php',true);
-            //console.log(data);
+            console.log(data);
             resultAction(data,kom4,form4,true);
 
             if(new_name!==""){

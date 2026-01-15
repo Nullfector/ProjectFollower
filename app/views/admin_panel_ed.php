@@ -120,13 +120,13 @@
                     <label for="pole10_3">Nowy typ</label>
                     <select name="pole10_3" id="pole10_3"></select>
                 </li>
-                <li>
+                <!--<li>
                     <label for="pole10_6">Zakończyć?</label>
                     <select name="pole10_6" id="pole10_6">
                         <option value="0">Nie</option>
                         <option value="1">Tak</option>
                     </select>
-                </li>
+                </li>-->
                 <li>
                     <label for="pole10_5">Zarchiwizować?</label>
                     <select name="pole10_5" id="pole10_5">
@@ -165,7 +165,16 @@
                 </li>
                 <li>
                     <label for="pole11_2">Nowy priorytet</label>
-                    <input type="number" size="20" name="pole11_2" id="pole11_2"><br/>
+                    <!--<input type="number" size="20" name="pole11_2" id="pole11_2">-->
+                    <select name="pole11_2" id="pole11_2">
+                        <option value="0">Nie zmieniaj</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">Usuń</option>
+                    </select><br/>
                 </li>
                 <li>
                     <label for="pole11_4">Nowy czas startu</label>
@@ -175,13 +184,13 @@
                     <label for="pole11_5">Nowy czas końca</label>
                     <input type="date" size="20" name="pole11_5" id="pole11_5"><br/>
                 </li>
-                <li>
+                <!--<li>
                     <label for="pole11_9">Zakończyć?</label>
                     <select name="pole11_9" id="pole11_9">
                         <option value="0">Nie</option>
                         <option value="1">Tak</option>
                     </select>
-                </li>
+                </li>-->
                 <button type="button" name="b20" id="b20">Edytuj!</button>
                 <br/>
                 </form>

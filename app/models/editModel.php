@@ -37,6 +37,7 @@
                 case 'P1015':
                     $msg = "Nie usuniesz zakończonego zadania (to nie powinno się nawet pokazać)!";
                     break;
+                    //dorobić więcej caseów na wszelki (chyba niepotrzebne, ale lepiej mieć)
                 default:
                     $msg = "Coś poszło nie tak :c";
             }
@@ -176,7 +177,7 @@
             return ['ok'=>true, 'message'=> $q];
         }
 
-        public function fun_p(int $id, string $nazwa, int $admin, int $typ, int $end, int $arch): array
+        public function fun_p(int $id, string $nazwa, int $admin, int $typ/*, int $end*/, int $arch): array
         {
             $arr = [];
             $q = "UPDATE Projekt SET ";
@@ -202,11 +203,11 @@
                 $q .= "typ_projektu=:typ, ";
                 $arr[':typ'] = $typ;
             }
-            if($end !="0")
+            /*if($end !="0")
             {
                 $q .= "zakończony=:end, ";
                 $arr[':end'] = $end;
-            }
+            }*/
             if($arch !="0")
             {
                 $q .= "archiwalne=:arch, ";
@@ -230,7 +231,7 @@
             return ['ok'=>true, 'message'=> 'Pomyślnie usunięto zadanie'];
         }
 
-        public function fun_za(int $id, int $prio, string $nazwa, string $czas_s, string $czas_e, int $end): array
+        public function fun_za(int $id, int $prio, string $nazwa, string $czas_s, string $czas_e/*, int $end*/): array
         {
             /*$id = $data['pole11_8'];
             $prio = $data['pole11_2'];
@@ -245,17 +246,19 @@
             $stmt->execute($array);
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $this->pdo->prepare("SELECT edycja_zadania(:id, :z, :p, :c, :cz, :e);");
+            $stmt = $this->pdo->prepare("SELECT edycja_zadania(:id, :z, :p, :c, :cz, false);");
 
             if($nazwa!=""){
                 $array[':z'] = $nazwa;
             } else {
                 $array[':z'] = $data[0]['nazwa_zadania'];
             }
-            if($prio!=""){
-                $array[':p'] = (int)$prio;
-            } else {
+            if($prio==0){
+                $array[':p'] = $data[0]['priorytet'];
+            }else if($prio==6){
                 $array[':p'] = null;
+            } else {
+                $array[':p'] = (int)$prio;
             }
             if($czas_s!=""){
                 $array[':c'] = $czas_s;
@@ -267,11 +270,11 @@
             } else {
                 $array[':cz'] = $data[0]['czas_zakończenia'];
             }
-            if($end=="1"){
+            /*if($end=="1"){
                 $array[':e'] = 'true';
             } else {
                 $array[':e'] = 'false';
-            }
+            }*/
 
             $stmt->execute($array);
             //$cur = $stmt->fetchAll(PDO::FETCH_ASSOC);

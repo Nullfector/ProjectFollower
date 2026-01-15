@@ -60,13 +60,13 @@ try
             $result = $model->fun_za_ze((int)$data['pole9_0'], (int)$data['pole9_5'], (int)$data['pole9_6'], $method);
             break;
         case 'edit_proj':
-            $result = $model->fun_p((int)$data['pole10_0'],$data['pole10_1'],(int)$data['pole10_2'], (int)$data['pole10_3'], (int)$data['pole10_6'], (int)$data['pole10_5']);
+            $result = $model->fun_p((int)$data['pole10_0'],$data['pole10_1'],(int)$data['pole10_2'], (int)$data['pole10_3']/*, (int)$data['pole10_6']*/, (int)$data['pole10_5']);
             break;
         case 'del_za':
             $result = $model->fun_d_za((int)$data['pole10_4']);
             break;
         case 'edit_zad':
-            $result = $model->fun_za((int)$data['pole11_8'], (int)$data['pole11_2'], $data['pole11_1'], $data['pole11_4'], $data['pole11_5'], (int)$data['pole11_9']);
+            $result = $model->fun_za((int)$data['pole11_8'], (int)$data['pole11_2'], $data['pole11_1'], $data['pole11_4'], $data['pole11_5']/*, (int)$data['pole11_9']*/);
             break;
         case 'aso_self':
             $result = $model->fun_self((int)$data['pole11_8'], (int)$data['pole11_6'], (int)$data['pole11_7'], $method);
