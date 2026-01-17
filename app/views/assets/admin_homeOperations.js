@@ -3,6 +3,9 @@ const res = document.getElementById("response");
 const b = document.getElementById("but1");
 const b2 = document.getElementById("but2");
 
+const b3 = document.getElementById("but3");
+const b4 = document.getElementById("but4");
+
 const sel1 = document.getElementById("sel1"); //zadanie
 const sel2 = document.getElementById("sel2"); //projekt
 
@@ -81,19 +84,29 @@ sel3.addEventListener('change', async (e) =>{
     }
 });
 
-//---------------------------do zrobienia 4 event listenery (oraz 4 odpowiadające funkcje w php)---------------------------------
 b.addEventListener('click', async () =>{
     if(sel2.value == "0"){
         document.getElementById('response').textContent="No nie";
         return;
     }
 
-    try{
-        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'POST', body: {'id': sel2.value, 'val': document.getElementById("sel3").value, 'action': 'projekt_edit'}});
-    
-    
-    }catch(e){
+    try{ // 0-aktywuj, 1-zamknij
+        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: {'id': sel2.value, 'val': 0, 'action': 'edit_proj'}});
+        const data = await resp.json();
 
+        if(!data.ok){
+            res.textContent = `Nie można zaaktywować projektu!`;
+            res.style.color = 'red';
+        } else {
+            res.textContent = `Pomyślnie aktywowano projekt!`;
+            res.style.color = 'green';
+            setTimeout(() => {res.textContent = "";}, 3000);
+        }
+    
+    }catch(err){
+        console.log(err);
+        res.textContent = 'Wystąpił błąd po stronie serwera!';
+        res.style.color = 'red';
     }
     
 });
@@ -103,10 +116,85 @@ b2.addEventListener('click', async () =>{
         document.getElementById('response').textContent="No błagam";
         return;
     }
+
+    try{
+        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: {'id': sel1.value, 'val': 0, 'action': 'edit_zad'}});
+        const data = await resp.json();
+
+        if(!data.ok){
+            res.textContent = `Nie można zaaktywować zadania!`;
+            res.style.color = 'red';
+        } else {
+            res.textContent = `Pomyślnie aktywowano zadanie!`;
+            res.style.color = 'green';
+            setTimeout(() => {res.textContent = "";}, 3000);
+        }
+
+
+    }catch(err){
+        console.log(err);
+        res.textContent = 'Wystąpił błąd po stronie serwera!';
+        res.style.color = 'red';
+    }
     
     
 });
-//---------------------------------------------------------------
+
+b3.addEventListener('click', async () =>{
+    if(sel3.value == "0"){
+        document.getElementById('response').textContent="No nie";
+        return;
+    }
+
+    try{
+        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: {'id': sel3.value, 'val': 1, 'action': 'projekt_edit'}});
+        const data = await resp.json();
+
+        if(!data.ok){
+            res.textContent = `Nie można zakończyć projektu!`;
+            res.style.color = 'red';
+        } else {
+            res.textContent = `Pomyślnie zakończono projekt!`;
+            res.style.color = 'green';
+            setTimeout(() => {res.textContent = "";}, 3000);
+        }
+    
+    }catch(err){
+        console.log(err);
+        res.textContent = 'Wystąpił błąd po stronie serwera!';
+        res.style.color = 'red';
+    }
+    
+    
+});
+
+b4.addEventListener('click', async () =>{
+    if(sel4.value == "0"){
+        document.getElementById('response').textContent="No błagam";
+        return;
+    }
+    
+    try{
+        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: {'id': sel4.value, 'val': 1, 'action': 'edit_zad'}});
+        const data = await resp.json();
+
+        if(!data.ok){
+            res.textContent = `Nie można zakończyć zadania!`;
+            res.style.color = 'red';
+        } else {
+            res.textContent = `Pomyślnie zakończono zadanie!`;
+            res.style.color = 'green';
+            setTimeout(() => {res.textContent = "";}, 3000);
+        }
+
+
+    }catch(err){
+        console.log(err);
+        res.textContent = 'Wystąpił błąd po stronie serwera!';
+        res.style.color = 'red';
+    }
+    
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   setup();

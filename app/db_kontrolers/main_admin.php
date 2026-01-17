@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../db.php';
 require_once __DIR__ . '/../../auth.php';
-//require_role('admin'); // jeśli tylko admin ma mieć dostęp
+//require_role(2); // jeśli tylko admin ma mieć dostęp
 
 require_once __DIR__ . '/../../app/models/adminRepsModel.php';
 header('Content-Type: application/json; charset=utf-8');
@@ -27,7 +27,7 @@ $action = $data['action'];
 
 try
 {
-    $model = new adminrepsModel($pdo);
+    $model = new adminRepsModel($pdo);
     //$pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,]);
     /*$handlers = ['edit_user' => 'fun_u',
                 'edit_zesp' => 'fun_ze',
@@ -55,13 +55,13 @@ try
             $result = $model->get_proj2();
             break;
         case 'edit_proj':
-            //$result = $model->fun_u_ze((int)$data['pole9_0'], (int)$data['pole9_3'], (int)$data['pole9_4'], $method);
-            //break;
+            $result = $model->edit_state_proj((int)$data['id'], (int)$data['val']);
+            break;
         case 'edit_zad':
-            //$result = $model->fun_za_ze((int)$data['pole9_0'], (int)$data['pole9_5'], (int)$data['pole9_6'], $method);
-            //break;
+            $result = $model->edit_sate_zad((int)$data['id'], (int)$data['val']);
+            break;
         default:
-            echo jsno_encode(['ok'=>false,'error'=>"Niepoprawny parametr 'action'."]);
+            echo json_encode(['ok'=>false,'error'=>"Niepoprawny parametr 'action'."]);
             exit;
     }
 

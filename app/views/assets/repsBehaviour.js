@@ -1,9 +1,14 @@
-const d1 = document.getElementById("div1");
-const d2 = document.getElementById("div2");
-const d3 = document.getElementById("div3");
+const d = document.getElementById("divall");
 
-function rep_percent(){
-
+async function rep_percent(){
+    try{
+        const res = await fetch('/../app/db_kontrolers/admin_reports.php?action=percent', {method: 'GET'});
+        const html = await res.text();
+        d.innerHTML = html;
+    } catch(e){
+        console.log(e);
+        d.innerHTML = 'Coś po stronie backendu się wywaliło';
+    }
 }
 
 function rep_user_activ(){

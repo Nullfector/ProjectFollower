@@ -1,10 +1,10 @@
 <h1>Strona główna</h1>
 
 <a href="admin_panel.php"><button>Do panelu</button></a>
-<a href="admin_views.php"><button>Do widoków</button></a>
+<!--<a href="admin_views.php"><button>Do widoków</button></a>-->
 <a href="admin_reports.php"><button>Do raportów</button></a><br/><br/>
 
-<p>Podstawowe zarządzanie zadaniami i projektami:</p><br/>
+<h2>Podstawowe zarządzanie zadaniami i projektami:</h2><br/>
 <label for="sel2">Aktywuj projekt</label>
 <select id="sel2"></select><br/>
 <button id="but1">Wyślij</button><br/><br/>
