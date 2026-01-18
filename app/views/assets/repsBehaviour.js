@@ -11,10 +11,24 @@ async function rep_percent(){
     }
 }
 
-function rep_user_activ(){
-
+async function rep_user_activ(){
+    try{
+        const res = await fetch('/../app/db_kontrolers/admin_reports.php?action=activity', {method: 'GET'});
+        const html = await res.text();
+        d.innerHTML = html;
+    } catch(e){
+        console.log(e);
+        d.innerHTML = 'Coś po stronie backendu się wywaliło';
+    }
 }
 
-function rep_team_activ(){
-
+async function rep_team_activ(){
+try{
+        const res = await fetch('/../app/db_kontrolers/admin_reports.php?action=workload', {method: 'GET'});
+        const html = await res.text();
+        d.innerHTML = html;
+    } catch(e){
+        console.log(e);
+        d.innerHTML = 'Coś po stronie backendu się wywaliło';
+    }
 }

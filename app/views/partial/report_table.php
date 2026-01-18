@@ -1,7 +1,7 @@
 <table class="report-table">
   <thead>
     <tr>
-      <?php foreach ($headers as $key => $label): ?>
+      <?php foreach ($headers as $_ => $label): ?>
         <th><?= htmlspecialchars($label) ?></th>
       <?php endforeach; ?>
     </tr>

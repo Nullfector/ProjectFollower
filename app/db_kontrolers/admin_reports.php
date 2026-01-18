@@ -19,17 +19,41 @@ try{
             if($result['ok']==false){
                 echo 'Zapytanie do bazy danych się nie powiodło!';
             }
-            $headers = ['nadrzędny_projekt' => 'Id projektu',
-                        'id_za' => 'Id zadania',
-                        'nazwa_zadania' => 'Nazwa zadania'];
+            
+            $headers = ['nazwa_projektu' => 'Nazwa projektu',
+                        'late_tasks' => 'Ilość spóźninych zadań',
+                        'prcnt_end' => 'Procent zakończenia projektu',
+                        'czas_zakończenia' => 'Planowy deadline projektu'];
             
             include __DIR__ . '/../views/partial/report_table.php';
             break;
         case 'activity':
-            //$result = ;
+            $result = $model->user();
+            $rows = $result['ret_val'];
+            if($result['ok']==false){
+                echo 'Zapytanie do bazy danych się nie powiodło!';
+            }
+            $headers = ['login' => 'Login',
+                        'liczba_ukończonych_zadań' => 'Ile zadań ukończył',
+                        'prcnt_zadań' => 'Procent wszystkich zadań',
+                        'liczba_ukończonych_projektów' => 'W ilu ukończonych projektach brał udział',
+                        'prcnt_projektów' => 'Procent wszystkich projektów'];
+
+            include __DIR__ . '/../views/partial/report_table.php';
             break;
         case 'workload':
-            //$result = ;
+            $result = $model->team();
+            $rows = $result['ret_val'];
+            if($result['ok']==false){
+                echo 'Zapytanie do bazy danych się nie powiodło!';
+            }
+            $headers = ['id_zesp' => 'Id zespołu',
+                        'nazwa_zespołu' => 'Nazwa zespólu',
+                        'all_tasks' => 'Ilość zadań które zespół wykonał',
+                        'all_projs' => 'Ilość projektów w kórych zespół uczestniczył',
+                        'average' => 'Średni procent skończenia aktywnych projektów'];
+
+            include __DIR__ . '/../views/partial/report_table.php';
             break;
         default:
             echo 'Niepoprawne zapytanie: parametr action';

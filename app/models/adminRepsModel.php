@@ -6,21 +6,25 @@ class adminRepsModel{
     public function __construct($other_pdo){
         $this->pdo = $other_pdo;
     }
-//--------------------te 3 trzeba napisać-----------------------------
-    public function percent(){ //narazie zrobie proste na testy - potem się zrobi ładniej
-        $stmt = $this->pdo->query('SELECT nadrzędny_projekt, id_za, nazwa_zadania FROM Zadanie;');
+
+    public function percent(){ 
+        $stmt = $this->pdo->query('SELECT * FROM raport_spóźnień;');
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return ['ok'=>true,'ret_val'=>$data];
     }
 
     public function user(){
-        $stmt = $this->pdo->query('SELECT ');
+        $stmt = $this->pdo->query('SELECT * FROM raport_aktywności;');
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['ok'=>true,'ret_val'=>$data];
     }
 
     public function team(){
-        $stmt = $this->pdo->query('SELECT ');
+        $stmt = $this->pdo->query('SELECT * FROM raport_nakładu_pacy;');
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['ok'=>true,'ret_val'=>$data];
     }
-//---------------------przeanalizować te 2 poniżej czy wszystko z nimi ok----------------------------
+
     public function edit_state_proj(int $id, int $state)
     {
         $date = date('Y-m-d');
@@ -38,10 +42,10 @@ class adminRepsModel{
     {
         $date = date('Y-m-d');
         if($state==0){
-            $stmt = $this->pdo->prepare('UPDATE Zadanie SET rozpoczęty = true, fakt_czas_startu = :d WHERE id_p=:id;');
+            $stmt = $this->pdo->prepare('UPDATE Zadanie SET rozpoczęty = true, fakt_czas_startu = :d WHERE id_za=:id;');
             $stmt->execute([':id'=>$id, ':d'=>$date]);
         } else {
-            $stmt = $this->pdo->prepare('UPDATE Zadanie SET zakończony = true, fakt_czas_zak = :d WHERE id_p=:id;');
+            $stmt = $this->pdo->prepare('UPDATE Zadanie SET zakończony = true, fakt_czas_zak = :d WHERE id_za=:id;');
             $stmt->execute([':id'=>$id, ':d'=>$date]);
         }
         return ['ok'=> true, 'message'=> 'Poprawnie nadpisano'];

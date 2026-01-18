@@ -33,7 +33,7 @@ try
             $result = $model->fun_p($_POST['pole5_1'], (int)$_POST['pole5_2'], $_POST['pole5_3'], (int)$_POST['pole5_4']);
             break;
         case 'add_zad':
-            $result = $model->fun_za($_POST['pole6_1'], (int)$_POST['pole6_2'], (int)$_POST['pole6_5'], $_POST['pole3_3'], $_POST['pole3_4']);
+            $result = $model->fun_za($_POST['pole6_1'], (int)$_POST['pole6_2'], $_POST['pole6_5'], $_POST['pole6_3'], $_POST['pole6_4']);
             break;
         default:
             echo jsno_encode(['ok'=>false,'error'=>"Niepoprawny parametr 'action'."]);

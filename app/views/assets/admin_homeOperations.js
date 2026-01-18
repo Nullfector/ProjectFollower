@@ -91,7 +91,7 @@ b.addEventListener('click', async () =>{
     }
 
     try{ // 0-aktywuj, 1-zamknij
-        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: {'id': sel2.value, 'val': 0, 'action': 'edit_proj'}});
+        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: JSON.stringify({'id': sel2.value, 'val': 0, 'action': 'edit_proj'})});
         const data = await resp.json();
 
         if(!data.ok){
@@ -118,7 +118,7 @@ b2.addEventListener('click', async () =>{
     }
 
     try{
-        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: {'id': sel1.value, 'val': 0, 'action': 'edit_zad'}});
+        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: JSON.stringify({'id': sel1.value, 'val': 0, 'action': 'edit_zad'})});
         const data = await resp.json();
 
         if(!data.ok){
@@ -175,7 +175,7 @@ b4.addEventListener('click', async () =>{
     }
     
     try{
-        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: {'id': sel4.value, 'val': 1, 'action': 'edit_zad'}});
+        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: JSON.stringify({'id': sel4.value, 'val': 1, 'action': 'edit_zad'})});
         const data = await resp.json();
 
         if(!data.ok){

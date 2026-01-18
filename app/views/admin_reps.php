@@ -3,7 +3,7 @@
 
 <div id="divall"></div></br></br>
 
-<p>Raport: procent ukończenia projektów (trwających)</p>
+<p>Raport: spóźnienia w trwających projektach</p>
 <button id="but1" onclick="rep_percent();">Wykonaj!</button>
 <br/><br/>
 

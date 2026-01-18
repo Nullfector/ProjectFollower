@@ -1,3 +1,7 @@
+<?php
+  $map = [1 => 'Użytkownik', 2 => 'Administrator'];
+?>
+
 <!doctype html>
 <html lang="pl">
 <head>
@@ -6,8 +10,8 @@
 </head>
 <body>
   <nav>
-    Zalogowany: <?= htmlspecialchars($_SESSION['login'] ?? '') ?>
-    | rola: <?= htmlspecialchars($_SESSION['role'] ?? '') ?>
+    Zalogowany: <?= htmlspecialchars($_SESSION['login'] ?? 'Nieznany użytkownik (jak)') ?>
+    | rola: <?= htmlspecialchars($map[$_SESSION['role']] ?? 'Nieznana rola (jak)') ?>
     | <a href="logout.php">Wyloguj</a>
   </nav>
 

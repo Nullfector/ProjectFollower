@@ -110,7 +110,7 @@ class createModel {
         return ['ok'=>true, 'message'=> 'Dodano rekord.'];
     }
 
-    public function fun_za(string $nazwa, int $projekt, int $priorytet, string $czas_start, string $czas_end): array
+    public function fun_za(string $nazwa, int $projekt, string $priorytet, string $czas_start, string $czas_end): array
     {
         /*$nazwa = $post['pole6_1'];
         $projekt = $post['pole6_2'];

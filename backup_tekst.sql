@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict xIV65CE3gfbHyuSWjNnzaMgNLZ4Ire1HPKCL9qN4SgmuGhM1CSI39UdwW0x6PnO
+\restrict AsyBzOBYWkAIBeUTHzAe6rvIklcSQINiKzMns2NPPFNvAeZflsETgmW0NH6bwuk
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -98,7 +98,7 @@ CREATE FUNCTION public.edycja_projektu() RETURNS trigger
             RAISE EXCEPTION 'Czas startowy projektu nie może zostać zedytowany!' USING ERRCODE='P1013';
         end if;
 
-        IF NOT EXISTS(SELECT 1 FROM Zadanie WHERE nadrzędny_projekt = OLD.id_p AND zakończony = false)
+        IF EXISTS(SELECT 1 FROM Zadanie WHERE nadrzędny_projekt = OLD.id_p AND zakończony = false)
             AND NEW.zakończony = true THEN
             --RAISE NOTICE 'Projket % nie może zostać zakończony gdyż nie zostały wykonane wszystkie zadania!', OLD.nazwa_projektu;
             --RETURN NULL;
@@ -728,7 +728,10 @@ CREATE TABLE public.projekt (
     czas_startu date DEFAULT CURRENT_DATE NOT NULL,
     "id_zadania_końcowego" integer,
     "zakończony" boolean DEFAULT false,
-    archiwalne boolean DEFAULT false
+    archiwalne boolean DEFAULT false,
+    fakt_czas_startu date,
+    fakt_czas_zak date,
+    "rozpoczęty" boolean DEFAULT false
 );
 
 
@@ -755,6 +758,197 @@ ALTER SEQUENCE public.projekt_id_p_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.projekt_id_p_seq OWNED BY public.projekt.id_p;
 
+
+--
+-- Name: użytkownik; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."użytkownik" (
+    id_u integer NOT NULL,
+    imie character varying(50) NOT NULL,
+    nazwisko character varying(50) NOT NULL,
+    adres_mail character varying(255) NOT NULL,
+    login character varying(50) NOT NULL,
+    haslo character varying(50) NOT NULL,
+    rola integer
+);
+
+
+ALTER TABLE public."użytkownik" OWNER TO postgres;
+
+--
+-- Name: zadanie; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.zadanie (
+    id_za integer NOT NULL,
+    nazwa_zadania character varying(40) NOT NULL,
+    "nadrzędny_projekt" integer,
+    priorytet integer,
+    czas_staru date NOT NULL,
+    "czas_zakończenia" date NOT NULL,
+    "zakończony" boolean DEFAULT false,
+    fakt_czas_startu date,
+    fakt_czas_zak date,
+    "rozpoczęty" boolean DEFAULT false,
+    CONSTRAINT con_za1 CHECK ((((priorytet > 0) AND (priorytet < 6)) OR (priorytet IS NULL))),
+    CONSTRAINT con_za2 CHECK ((czas_staru < "czas_zakończenia"))
+);
+
+
+ALTER TABLE public.zadanie OWNER TO postgres;
+
+--
+-- Name: raport_aktywności; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public."raport_aktywności" AS
+ WITH user_tasks AS (
+         SELECT u.login,
+            z.nazwa_zadania AS zadanie,
+            p.nazwa_projektu AS projekt,
+            z."zakończony" AS zad_ended,
+            z."rozpoczęty" AS zad_started,
+            u.id_u AS id_user,
+            z.id_za AS id_zad,
+            p.id_p AS id_proj,
+            p."zakończony" AS proj_ended,
+            p."rozpoczęty" AS proj_started
+           FROM ((((public."użytkownik" u
+             LEFT JOIN public.asocjacja_u_ze aso1 ON ((aso1.id_u = u.id_u)))
+             LEFT JOIN public.asocjacja_za_ze aso2 ON ((aso2.id_zespolu = aso1.id_ze)))
+             LEFT JOIN public.zadanie z ON ((z.id_za = aso2.id_zadania)))
+             LEFT JOIN public.projekt p ON ((p.id_p = z."nadrzędny_projekt")))
+          WHERE (p."rozpoczęty" = true)
+        ), sum_tasks AS (
+         SELECT user_tasks.id_user,
+            user_tasks.login,
+            count(DISTINCT user_tasks.id_zad) FILTER (WHERE (user_tasks.id_zad IS NOT NULL)) AS all_tasks,
+            count(DISTINCT user_tasks.id_zad) FILTER (WHERE ((user_tasks.id_zad IS NOT NULL) AND (user_tasks.zad_ended = true))) AS finished_tasks
+           FROM user_tasks
+          GROUP BY user_tasks.login, user_tasks.id_user
+        ), sum_proj AS (
+         SELECT user_tasks.id_user,
+            user_tasks.login,
+            count(DISTINCT user_tasks.id_proj) FILTER (WHERE (user_tasks.id_proj IS NOT NULL)) AS all_projects,
+            count(DISTINCT user_tasks.id_proj) FILTER (WHERE ((user_tasks.id_proj IS NOT NULL) AND (user_tasks.proj_ended = true))) AS finished_projects
+           FROM user_tasks
+          GROUP BY user_tasks.login, user_tasks.id_user
+        )
+ SELECT st.login,
+    st.finished_tasks AS "liczba_ukończonych_zadań",
+    round(((100.0 * (st.finished_tasks)::numeric) / (NULLIF(st.all_tasks, 0))::numeric), 2) AS "prcnt_zadań",
+    sp.finished_projects AS "liczba_ukończonych_projektów",
+    round(((100.0 * (sp.finished_projects)::numeric) / (NULLIF(sp.all_projects, 0))::numeric), 2) AS "prcnt_projektów"
+   FROM (sum_tasks st
+     LEFT JOIN sum_proj sp USING (id_user, login))
+  ORDER BY st.login;
+
+
+ALTER VIEW public."raport_aktywności" OWNER TO postgres;
+
+--
+-- Name: zespół; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."zespół" (
+    id_ze integer NOT NULL,
+    nazwa character varying(100) NOT NULL,
+    lider integer,
+    archiwalne boolean DEFAULT false
+);
+
+
+ALTER TABLE public."zespół" OWNER TO postgres;
+
+--
+-- Name: raport_nakładu_pracy; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public."raport_nakładu_pracy" AS
+ WITH data AS (
+         SELECT ze.id_ze AS id_zesp,
+            ze.nazwa AS "nazwa_zespołu",
+            z.id_za AS id_zad,
+            z."nadrzędny_projekt" AS id_proj,
+            z."zakończony" AS is_finished
+           FROM ((public."zespół" ze
+             LEFT JOIN public.asocjacja_za_ze aso ON ((aso.id_zespolu = ze.id_ze)))
+             LEFT JOIN public.zadanie z ON ((z.id_za = aso.id_zadania)))
+          WHERE (( SELECT p."rozpoczęty"
+                   FROM public.projekt p
+                  WHERE (p.id_p = z."nadrzędny_projekt")) = true)
+        ), project_fin AS (
+         SELECT data.id_zesp,
+            data."nazwa_zespołu",
+            data.id_proj,
+            count(DISTINCT data.id_zad) FILTER (WHERE (data.id_zad IS NOT NULL)) AS all_tasks_for_team_in_proj,
+            count(DISTINCT data.id_zad) FILTER (WHERE ((data.id_zad IS NOT NULL) AND (data.is_finished = true))) AS finished_tasks_for_team_in_proj
+           FROM data
+          GROUP BY data.id_zesp, data."nazwa_zespołu", data.id_proj
+        ), percent_proj AS (
+         SELECT project_fin.id_zesp,
+            project_fin."nazwa_zespołu",
+            project_fin.all_tasks_for_team_in_proj,
+            project_fin.id_proj,
+            round(((100.0 * (project_fin.finished_tasks_for_team_in_proj)::numeric) / (NULLIF(project_fin.all_tasks_for_team_in_proj, 0))::numeric), 2) AS prcnt
+           FROM project_fin
+        )
+ SELECT id_zesp,
+    "nazwa_zespołu",
+    sum(all_tasks_for_team_in_proj) FILTER (WHERE (id_proj IS NOT NULL)) AS all_tasks,
+    count(DISTINCT id_proj) FILTER (WHERE (id_proj IS NOT NULL)) AS all_projs,
+    avg(prcnt) FILTER (WHERE (id_proj IS NOT NULL)) AS average
+   FROM percent_proj
+  GROUP BY id_zesp, "nazwa_zespołu";
+
+
+ALTER VIEW public."raport_nakładu_pracy" OWNER TO postgres;
+
+--
+-- Name: raport_spóźnień; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public."raport_spóźnień" AS
+ WITH corelation AS (
+         SELECT p_1.nazwa_projektu,
+            p_1.id_p,
+            zad.id_za,
+            zad.nazwa_zadania,
+            zad."zakończony",
+            zad."rozpoczęty",
+            p_1."id_zadania_końcowego",
+            zad.czas_staru,
+            zad."czas_zakończenia",
+            zad.fakt_czas_startu,
+            zad.fakt_czas_zak
+           FROM (public.projekt p_1
+             JOIN public.zadanie zad ON ((p_1.id_p = zad."nadrzędny_projekt")))
+          WHERE ((p_1."zakończony" = false) AND (p_1.archiwalne = false) AND (p_1."rozpoczęty" = true))
+        ), sums AS (
+         SELECT corelation.id_p,
+            corelation.nazwa_projektu,
+            corelation."id_zadania_końcowego",
+            count(DISTINCT corelation.id_za) FILTER (WHERE (corelation.id_za IS NOT NULL)) AS all_tasks,
+            count(DISTINCT corelation.id_za) FILTER (WHERE ((corelation.id_za IS NOT NULL) AND (((corelation.fakt_czas_zak IS NOT NULL) AND (corelation.fakt_czas_zak > corelation."czas_zakończenia") AND (corelation."zakończony" = true)) OR ((corelation.fakt_czas_startu IS NOT NULL) AND (corelation.fakt_czas_startu > corelation.czas_staru) AND (corelation."rozpoczęty" = true))))) AS late_tasks,
+            count(DISTINCT corelation.id_za) FILTER (WHERE ((corelation.id_za IS NOT NULL) AND (corelation."zakończony" = true))) AS compleated
+           FROM corelation
+          GROUP BY corelation.id_p, corelation.nazwa_projektu, corelation."id_zadania_końcowego"
+        ), percent AS (
+         SELECT sums.id_p,
+            round(((100.0 * (sums.compleated)::numeric) / (NULLIF(sums.all_tasks, 0))::numeric), 2) AS prcnt_end
+           FROM sums
+        )
+ SELECT s.nazwa_projektu,
+    s.late_tasks,
+    p.prcnt_end,
+    z."czas_zakończenia"
+   FROM ((sums s
+     JOIN percent p USING (id_p))
+     JOIN public.zadanie z ON ((z.id_za = s."id_zadania_końcowego")));
+
+
+ALTER VIEW public."raport_spóźnień" OWNER TO postgres;
 
 --
 -- Name: role; Type: TABLE; Schema: public; Owner: postgres
@@ -825,23 +1019,6 @@ ALTER SEQUENCE public.typ_projektu_id_t_seq OWNED BY public.typ_projektu.id_t;
 
 
 --
--- Name: użytkownik; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public."użytkownik" (
-    id_u integer NOT NULL,
-    imie character varying(50) NOT NULL,
-    nazwisko character varying(50) NOT NULL,
-    adres_mail character varying(255) NOT NULL,
-    login character varying(50) NOT NULL,
-    haslo character varying(50) NOT NULL,
-    rola integer
-);
-
-
-ALTER TABLE public."użytkownik" OWNER TO postgres;
-
---
 -- Name: użytkownik_id_u_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -864,25 +1041,6 @@ ALTER SEQUENCE public."użytkownik_id_u_seq" OWNED BY public."użytkownik".id_u;
 
 
 --
--- Name: zadanie; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.zadanie (
-    id_za integer NOT NULL,
-    nazwa_zadania character varying(40) NOT NULL,
-    "nadrzędny_projekt" integer,
-    priorytet integer,
-    czas_staru date NOT NULL,
-    "czas_zakończenia" date NOT NULL,
-    "zakończony" boolean DEFAULT false,
-    CONSTRAINT con_za1 CHECK (((priorytet > 0) AND (priorytet < 6))),
-    CONSTRAINT con_za2 CHECK ((czas_staru < "czas_zakończenia"))
-);
-
-
-ALTER TABLE public.zadanie OWNER TO postgres;
-
---
 -- Name: zadanie_id_za_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -903,20 +1061,6 @@ ALTER SEQUENCE public.zadanie_id_za_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.zadanie_id_za_seq OWNED BY public.zadanie.id_za;
 
-
---
--- Name: zespół; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public."zespół" (
-    id_ze integer NOT NULL,
-    nazwa character varying(100) NOT NULL,
-    lider integer,
-    archiwalne boolean DEFAULT false
-);
-
-
-ALTER TABLE public."zespół" OWNER TO postgres;
 
 --
 -- Name: zespół_id_ze_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1026,7 +1170,6 @@ COPY public.asocjacja_u_ze (id_asoc_u_ze, id_u, id_ze) FROM stdin;
 --
 
 COPY public.asocjacja_za_self (id_aso_za, "id_zad_podległe", "id_zad_blokujące") FROM stdin;
-68	18	25
 78	32	46
 79	46	35
 80	46	36
@@ -1040,17 +1183,11 @@ COPY public.asocjacja_za_self (id_aso_za, "id_zad_podległe", "id_zad_blokujące
 88	40	42
 90	38	40
 91	46	39
-55	15	17
-56	16	17
-57	17	18
-58	17	19
-59	19	20
-61	18	24
-62	21	23
-63	20	24
-65	24	25
-66	20	23
-67	23	25
+93	47	50
+94	49	50
+95	50	52
+96	51	52
+97	47	51
 \.
 
 
@@ -1059,10 +1196,23 @@ COPY public.asocjacja_za_self (id_aso_za, "id_zad_podległe", "id_zad_blokujące
 --
 
 COPY public.asocjacja_za_ze (id_aso_za_ze, id_zespolu, id_zadania) FROM stdin;
-13	7	15
-14	7	16
 17	11	43
 18	11	37
+19	11	32
+20	12	46
+21	12	34
+22	13	35
+23	13	36
+24	13	39
+25	11	38
+26	12	40
+27	12	41
+28	13	42
+29	11	47
+30	13	49
+31	11	50
+32	11	51
+33	13	52
 \.
 
 
@@ -1070,11 +1220,9 @@ COPY public.asocjacja_za_ze (id_aso_za_ze, id_zespolu, id_zadania) FROM stdin;
 -- Data for Name: projekt; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.projekt (id_p, nazwa_projektu, typ_projektu, admin, czas_startu, "id_zadania_końcowego", "zakończony", archiwalne) FROM stdin;
-2	projektTestowy	1	\N	2026-01-31	\N	f	t
-6	projekcik2	1	\N	2026-03-11	29	f	f
-7	ProjNow	25	4	2026-04-01	43	f	f
-12	kolejny	1	\N	2026-04-12	\N	f	f
+COPY public.projekt (id_p, nazwa_projektu, typ_projektu, admin, czas_startu, "id_zadania_końcowego", "zakończony", archiwalne, fakt_czas_startu, fakt_czas_zak, "rozpoczęty") FROM stdin;
+7	projNow	25	4	2026-04-01	43	f	f	2026-04-01	\N	t
+13	Zycie	25	3	2026-03-02	52	t	f	2026-03-02	2026-03-15	t
 \.
 
 
@@ -1093,8 +1241,6 @@ COPY public.role (id_r, opis) FROM stdin;
 --
 
 COPY public.typ_projektu (id_t, nazwa_typu) FROM stdin;
-1	Test poprawności
-23	nowy_typ
 25	profesjonalny test
 \.
 
@@ -1123,32 +1269,24 @@ COPY public."użytkownik" (id_u, imie, nazwisko, adres_mail, login, haslo, rola)
 -- Data for Name: zadanie; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.zadanie (id_za, nazwa_zadania, "nadrzędny_projekt", priorytet, czas_staru, "czas_zakończenia", "zakończony") FROM stdin;
-15	1	2	\N	2026-02-07	2026-02-09	t
-29	1	6	\N	2026-03-12	2026-03-14	f
-30	12	6	\N	2026-03-11	2026-03-14	f
-31	zadanie1	6	2	2026-03-12	2026-03-14	f
-32	Zadanie 1	7	1	2026-04-01	2026-04-03	f
-34	Zadanie 3	7	1	2026-04-05	2026-04-09	f
-35	Zadanie 4	7	\N	2026-04-11	2026-04-13	f
-36	Zadanie 5	7	\N	2026-04-12	2026-04-16	f
-37	Zadanie 6	7	\N	2026-04-16	2026-04-22	f
-38	Zadanie 7	7	\N	2026-04-17	2026-04-21	f
-39	Zadanie 8	7	\N	2026-04-16	2026-04-18	f
-40	Zadanie 9	7	\N	2026-04-23	2026-04-25	f
-41	Zadanie 10	7	4	2026-04-26	2026-04-28	f
-42	Zadanie 11	7	3	2026-04-26	2026-04-28	f
-43	Zadanie 12	7	1	2026-04-29	2026-05-03	f
-46	Zadanie 2	7	\N	2026-04-04	2026-04-07	f
-16	2	2	\N	2026-02-07	2026-02-10	f
-21	7	2	\N	2026-02-14	2026-02-20	f
-25	12	2	\N	2026-03-06	2026-03-09	f
-24	10	2	\N	2026-02-26	2026-02-28	f
-20	6	2	\N	2026-02-23	2026-02-25	f
-18	4	2	\N	2026-02-17	2026-02-21	f
-23	9	2	\N	2026-02-26	2026-02-27	f
-19	5	2	\N	2026-02-17	2026-02-22	f
-17	3	2	\N	2026-02-11	2026-02-16	f
+COPY public.zadanie (id_za, nazwa_zadania, "nadrzędny_projekt", priorytet, czas_staru, "czas_zakończenia", "zakończony", fakt_czas_startu, fakt_czas_zak, "rozpoczęty") FROM stdin;
+34	Zadanie 3	7	1	2026-04-05	2026-04-09	t	2026-04-05	2026-04-10	t
+35	Zadanie 4	7	\N	2026-04-11	2026-04-13	t	2026-04-11	2026-04-13	t
+36	Zadanie 5	7	\N	2026-04-12	2026-04-16	t	2026-04-12	2026-04-14	t
+37	Zadanie 6	7	\N	2026-04-16	2026-04-22	t	2026-04-15	2026-04-25	t
+38	Zadanie 7	7	\N	2026-04-17	2026-04-21	t	2026-04-15	2026-04-21	t
+39	Zadanie 8	7	\N	2026-04-16	2026-04-18	t	2026-04-08	2026-04-10	t
+40	Zadanie 9	7	\N	2026-04-23	2026-04-25	t	2026-04-26	2026-04-28	t
+43	Zadanie 12	7	1	2026-04-29	2026-05-03	f	\N	\N	f
+41	Zadanie 10	7	4	2026-04-26	2026-04-28	f	2026-04-29	\N	t
+42	Zadanie 11	7	3	2026-04-26	2026-04-28	f	2026-04-29	\N	t
+47	Zadanie 1	13	1	2026-03-03	2026-03-05	t	2026-03-03	2026-03-05	t
+49	Zadanie 2	13	1	2026-03-04	2026-03-07	t	2026-03-04	2026-03-07	t
+50	Zadanie 3	13	\N	2026-03-08	2026-03-11	t	2026-03-08	2026-03-11	t
+51	Zadanie 4	13	3	2026-03-07	2026-03-10	t	2026-03-07	2026-03-10	t
+52	Zadanie 5	13	\N	2026-03-12	2026-03-15	t	2026-03-12	2026-03-15	t
+46	Zadanie 2	7	\N	2026-04-04	2026-04-07	t	2026-04-03	2026-04-06	t
+32	Zadanie 1	7	1	2026-04-01	2026-04-03	t	2026-04-01	2026-04-02	t
 \.
 
 
@@ -1177,21 +1315,21 @@ SELECT pg_catalog.setval('public.asocjacja_u_ze_id_asoc_u_ze_seq', 28, true);
 -- Name: asocjacja_za_self_id_aso_za_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.asocjacja_za_self_id_aso_za_seq', 91, true);
+SELECT pg_catalog.setval('public.asocjacja_za_self_id_aso_za_seq', 97, true);
 
 
 --
 -- Name: asocjacja_za_ze_id_aso_za_ze_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.asocjacja_za_ze_id_aso_za_ze_seq', 18, true);
+SELECT pg_catalog.setval('public.asocjacja_za_ze_id_aso_za_ze_seq', 33, true);
 
 
 --
 -- Name: projekt_id_p_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.projekt_id_p_seq', 12, true);
+SELECT pg_catalog.setval('public.projekt_id_p_seq', 14, true);
 
 
 --
@@ -1219,7 +1357,7 @@ SELECT pg_catalog.setval('public."użytkownik_id_u_seq"', 17, true);
 -- Name: zadanie_id_za_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.zadanie_id_za_seq', 46, true);
+SELECT pg_catalog.setval('public.zadanie_id_za_seq', 52, true);
 
 
 --
@@ -1541,5 +1679,5 @@ ALTER TABLE ONLY public."zespół"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict xIV65CE3gfbHyuSWjNnzaMgNLZ4Ire1HPKCL9qN4SgmuGhM1CSI39UdwW0x6PnO
+\unrestrict AsyBzOBYWkAIBeUTHzAe6rvIklcSQINiKzMns2NPPFNvAeZflsETgmW0NH6bwuk
 

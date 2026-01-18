@@ -58,7 +58,7 @@ try
             $result = $model->edit_state_proj((int)$data['id'], (int)$data['val']);
             break;
         case 'edit_zad':
-            $result = $model->edit_sate_zad((int)$data['id'], (int)$data['val']);
+            $result = $model->edit_state_zad((int)$data['id'], (int)$data['val']);
             break;
         default:
             echo json_encode(['ok'=>false,'error'=>"Niepoprawny parametr 'action'."]);
@@ -68,9 +68,9 @@ try
     echo json_encode($result);
 
 } catch (PDOException $e) {
-    $mapped = $model->mapError($e);
+    //$mapped = $model->mapError($e);
     //http_response_code($mapped['http']);
-    echo json_encode($mapped['payload']);
+    echo json_encode(/*$mapped['payload']*/$e);
 }
 
 
