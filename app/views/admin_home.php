@@ -23,4 +23,10 @@
 
 <p id="response"></p>
 
+<p>Podgląd zadań</p>
+<label for="sel5">Wybierz projekt</label>
+<select id="sel5"></select><br/>
+
+<div id='divall'></div>
+
 <script src="/../app/views/assets/admin_homeOperations.js"></script>

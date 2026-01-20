@@ -1,5 +1,6 @@
 const from = document.getElementById("f1");
 const res = document.getElementById("response");
+const div = document.getElementById("divall");
 const b = document.getElementById("but1");
 const b2 = document.getElementById("but2");
 
@@ -11,6 +12,26 @@ const sel2 = document.getElementById("sel2"); //projekt
 
 const sel3 = document.getElementById("sel3"); //projekt
 const sel4 = document.getElementById("sel4"); //zadanie
+
+const sel5 = document.getElementById("sel5"); //projekt
+
+async function get_tasks_info(){
+    const id = sel5.value;//id projektu
+    try{
+        const res1 = await fetch(`/../app/db_kontrolers/main_admin.php?id=${encodeURIComponent(id)}&action=tasks`,{method: 'GET'});
+        const html = await res1.text();
+
+        const res2 = await fetch(`/../app/db_kontrolers/main_admin.php?id=${encodeURIComponent(id)}&action=tasks_conn`,{method: 'GET'});
+        const html2 = await res2.text();
+
+        div.innerHTML = html +'\n'+html2; //to jest ???????
+        
+    } catch (e) {
+            //tu trzeba się pobawić
+            console.log(e);
+            div.innerHTML = `Coś jest nie tak po stronie serwera`;
+        }
+}
 
 async function get_required(){
     const id = sel2.value;//id projektu
@@ -81,6 +102,14 @@ sel3.addEventListener('change', async (e) =>{
         sel4.innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
     } else {
         get_required2();
+    }
+});
+
+sel5.addEventListener('change', async (e) =>{
+    if(e.target.value == "0"){
+        div.innerHTML='Nic jeszcze nie wybrano';
+    } else {
+        get_tasks_info();
     }
 });
 
@@ -208,18 +237,24 @@ async function setup(){
     try{
         const res2 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_1",{method: 'GET'});
         const res3 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_2",{method: 'GET'});
+        const res4 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_fin",{method: 'GET'});
 
         const data2 = JSON.parse(await res2.text());
         const data3 = JSON.parse(await res3.text());
+        const data4 = JSON.parse(await res4.text());
 
         if (!data2.ok) {
             sel2.innerHTML = `<option value="0">${data2.error}</option>`;
         }
         if (!data3.ok) {
             sel3.innerHTML = `<option value="0">${data3.error}</option>`;
+        }
+        if (!data4.ok) {
+            sel5.innerHTML = `<option value="0">${data4.error}</option>`;
         } else {
             sel2.innerHTML = `<option value="0">Wybierz projekt</option>`;
             sel3.innerHTML = `<option value="0">Wybierz projekt</option>`;
+            sel5.innerHTML = `<option value="0">Wybierz projekt</option>`;
         }
 
         for (const v of data2.ret_val) {
@@ -234,6 +269,13 @@ async function setup(){
             opt.value = v.id_p;
             opt.textContent = v.nazwa_projektu;
             sel3.appendChild(opt);
+        }
+
+        for (const v of data4.ret_val) {
+            const opt = document.createElement('option');
+            opt.value = v.id_p;
+            opt.textContent = v.nazwa_projektu;
+            sel5.appendChild(opt);
         }
 
         sel1.innerHTML="<option value='0'>Chwilowo niedostępne</option>";

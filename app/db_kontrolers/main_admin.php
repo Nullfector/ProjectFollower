@@ -60,12 +60,41 @@ try
         case 'edit_zad':
             $result = $model->edit_state_zad((int)$data['id'], (int)$data['val']);
             break;
+        case 'projekt_fin':
+            $result = $model->get_project();
+            break;
+        case 'tasks':
+            $result = $model->write_tasks((int)$data['id']);
+            $rows = $result['ret_val'];
+            if($result['ok']==false){
+                echo 'Zapytanie do bazy danych się nie powiodło!';
+            }
+            
+            $headers = ['nazwa_zadania' => 'Nazwa zadania',
+                        'czas_staru' => 'Planowy czas startu',
+                        'czas_zakończenia' => 'Planowy czas zakończenia',
+                        'fakt_czas_startu' => 'Faktyczny czas rozpoczęcia',
+                    'fakt_czas_zak' => 'Faktyczny czas zakończenia'];
+            
+            include __DIR__ . '/../views/partial/report_table.php';
+            break;
+        case 'tasks_conn':
+            $result = $model->get_task_connections((int)$data['id']);
+            $rows = $result['ret_val'];
+            if($result['ok']==false){
+                echo 'Zapytanie do bazy danych się nie powiodło!';
+            }
+            
+            $headers = ['nazwa_p' => 'Nazwa zadania podległego',
+                        'nazwa_b' => 'Nazwa zadania blokującego'];
+            
+            include __DIR__ . '/../views/partial/report_table.php';
+            break;
         default:
             echo json_encode(['ok'=>false,'error'=>"Niepoprawny parametr 'action'."]);
             exit;
     }
-
-    echo json_encode($result);
+    if(!($action == 'tasks_conn' || $action == 'tasks')) echo json_encode($result);
 
 } catch (PDOException $e) {
     //$mapped = $model->mapError($e);
