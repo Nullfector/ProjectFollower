@@ -23,10 +23,10 @@ try {
         case 'aso_u_ze_del':
             $result = $model->fun_s_asod((int)$_GET['id']);
             break;
-        case 'aso_u_ze_create':
+        case 'aso_za_ze_create':
             $result = $model->fun_s_asocz((int)$_GET['id']);
             break;
-        case 'aso_u_ze_del':
+        case 'aso_za_ze_del':
             $result = $model->fun_s_asodz((int)$_GET['id'], (int)$_GET['idq']);
             break;
         case 'admin':

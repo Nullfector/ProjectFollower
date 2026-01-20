@@ -17,3 +17,13 @@ function require_role(int $role): void {
     exit;
   }
 }
+
+function require_user_perms(): void{
+    require_login();
+    if (empty($_SESSION['lid']) && $_SESSION['role'] === 1) {
+    http_response_code(403);
+    header('Content-Type: text/plain; charset=utf-8');
+    echo "Brak uprawnień.";
+    exit;
+  }
+  }

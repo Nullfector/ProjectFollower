@@ -9,13 +9,13 @@
 <select id="sel2"></select><br/>
 <button id="but1">Wyślij</button><br/><br/>
 
-<label for="sel1">Aktywuj zadanie</label>
-<select id="sel1"></select>Najpierw wybierz Projekt powyżej aby móc wybrać Zadanie<br/>
-<button id="but2">Wyślij</button><br/><br/>
-
 <label for="sel3"> Zakończ projekt</label>
 <select id="sel3"></select><br/>
 <button id="but3">Wyślij</button><br/><br/>
+
+<label for="sel1">Aktywuj zadanie</label>
+<select id="sel1"></select>Najpierw wybierz Projekt powyżej aby móc wybrać Zadanie<br/>
+<button id="but2">Wyślij</button><br/><br/>
 
 <label for="sel4">Zakończ zadanie</label>
 <select id="sel4"></select>Najpierw wybierz Projekt powyżej aby móc wybrać Zadanie<br/>

@@ -34,7 +34,7 @@ async function get_tasks_info(){
 }
 
 async function get_required(){
-    const id = sel2.value;//id projektu
+    const id = sel3.value;//id projektu
 
     try{
         const res1 = await fetch(`/../app/db_kontrolers/main_admin.php?action=zadanie_1&id=${encodeURIComponent(id)}`,{method: 'GET'});
@@ -89,18 +89,20 @@ async function get_required2(){
         }
 }
 
-sel2.addEventListener('change', async (e) =>{
+/*sel2.addEventListener('change', async (e) =>{
     if(e.target.value == "0"){
         sel1.innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
     } else {
         get_required();
     }
-});
+});*/
 
 sel3.addEventListener('change', async (e) =>{
     if(e.target.value == "0"){
         sel4.innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
+        sel1.innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
     } else {
+        get_required();
         get_required2();
     }
 });
@@ -176,11 +178,11 @@ b3.addEventListener('click', async () =>{
     }
 
     try{
-        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: {'id': sel3.value, 'val': 1, 'action': 'projekt_edit'}});
+        const resp = await fetch(`/../app/db_kontrolers/main_admin.php`,{method: 'PUT', body: JSON.stringify({'id': sel3.value, 'val': 1, 'action': 'projekt_edit'})});
         const data = await resp.json();
 
         if(!data.ok){
-            res.textContent = `Nie można zakończyć projektu!`;
+            res.textContent = `Nie można zakończyć projektu - istnieją jeszcze nie zakończone zadania!`;
             res.style.color = 'red';
         } else {
             res.textContent = `Pomyślnie zakończono projekt!`;

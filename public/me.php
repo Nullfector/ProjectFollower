@@ -16,8 +16,6 @@ if($model->setupUser((int)$_SESSION['uid']) != []){
   $_SESSION['lid'] = false;
 }
 
-//tu jeszcze dla admina trzeba dorobić
-
 $view = $isLeader ? 'user_extra.php' : 'user_home.php';
 
 require_once __DIR__ . '/../app/views/layout.php';
