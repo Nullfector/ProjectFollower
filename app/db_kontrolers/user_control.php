@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../db.php';
 require_once __DIR__ . '/../../auth.php';
-require_role(1);
+require_login();
 
 require_once __DIR__ . '/../../app/models/userModel.php';
 header('Content-Type: application/json; charset=utf-8');
@@ -35,6 +35,9 @@ try
             break;
         case 'zads':
             $result = $model->getProjs((int)$_SESSION['uid']);
+            break;
+        case 'pass':
+            $result = $model->editPass($data['nowe']);
             break;
         case 'table':
             $result = $model->getZadTable((int)$_SESSION['uid']);

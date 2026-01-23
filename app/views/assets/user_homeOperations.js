@@ -4,6 +4,10 @@ const usel3 = document.getElementById("usel3");
 
 const udiv1 = document.getElementById("udiv1");
 const udiv3 = document.getElementById("udiv3");
+//-------------
+const utxt = document.getElementById("utxt");
+const ub = document.getElementById("ub");
+const uresp = document.getElementById("uresp");
 
 
 usel1.addEventListener('change', async (e)=>{
@@ -26,14 +30,42 @@ usel3.addEventListener('change', async (e)=>{
     }
 });
 
+ub.addEventListener('click', async ()=>{
+    if(utxt.value.trim()===""){
+        uresp.style.color='red';
+        uresp.textContent = "Nic nie napisano.";
+    } else {
+        //console.log( utxt.value.trim());
+        const res = await fetch(`/../app/db_kontrolers/user_control.php`, {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({'nowe': utxt.value.trim(), 'action':'pass'})
+        });
+        const data = await res.json();
+        //console.log(data);
+
+        if (data.ok) {
+            uresp.textContent = data.message;
+            uresp.style.color = 'green';
+            setTimeout(() => {uresp.textContent = "";}, 3000);
+            utxt.value="";
+        } else {
+            uresp.textContent = data.error;
+            uresp.style.color = 'red';
+        }
+    }
+});
+
 
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  setup();
+    const root = document.getElementById("user_home");
+    if (!root) return;
+    setupUser();
 });
 
-async function setup(){
+async function setupUser(){
 
     usel1.innerHTML="<option value='0'>Ładowanie...</option>";
     usel3.innerHTML="<option value='0'>Ładowanie...</option>";

@@ -25,19 +25,19 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      console.log('[login] JS loaded');
+      //console.log('[login] JS loaded');
 
       const form = document.getElementById('loginForm');
       const msg = document.getElementById('msg');
 
       if (!form) {
-        console.log('[login] Nie znaleziono #loginForm');
+        //console.log('[login] Nie znaleziono #loginForm');
         return;
       }
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        console.log('[login] submit');
+        //console.log('[login] submit');
 
         msg.textContent = '';
 
@@ -51,14 +51,14 @@
             credentials: 'include'
           });
         } catch (err) {
-          console.log('[login] fetch error:', err);
+          //console.log('[login] fetch error:', err);
           msg.textContent = 'Błąd połączenia z serwerem.';
           return;
         }
 
         const text = await res.text();
-        console.log('[login] status:', res.status);
-        console.log('[login] raw response:', text);
+        //console.log('[login] status:', res.status);
+        //console.log('[login] raw response:', text);
 
         let data;
         try {
@@ -69,7 +69,7 @@
         }
 
         if (data.ok) {
-          console.log('[login] OK, redirect ->', data.redirect);
+          //console.log('[login] OK, redirect ->', data.redirect);
           window.location.href = data.redirect || 'me.php';
         } else {
           msg.textContent = data.error || 'Nieprawidłowe logowanie.';

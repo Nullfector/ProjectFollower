@@ -1,4 +1,6 @@
-<h1>Strona główna</h1>
+<!--<h1>Strona główna</h1>-->
+<section id="admin_home">
+<h2>Część admina</h2>
 
 <a href="admin_panel.php"><button>Do panelu</button></a>
 <!--<a href="admin_views.php"><button>Do widoków</button></a>-->
@@ -36,5 +38,6 @@
 <select id="sel7"></select><br/>
 
 <div id='divall'></div>
+</section>
 
 <script src="/../app/views/assets/admin_homeOperations.js"></script>

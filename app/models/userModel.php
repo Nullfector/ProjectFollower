@@ -14,6 +14,13 @@ class userModel{
         return $teams;
     }
 
+    public function editPass(string $nowe): array{
+        $stmt = $this->pdo->prepare('UPDATE Użytkownik SET haslo=:pas WHERE id_u=:id;');
+        $stmt->execute([':id' => $_SESSION['uid'], ':pas' => $nowe]);
+        $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['ok'=> true, 'message' => 'Operacja zakończona pomyślnie!'];
+    }
+
     public function getTeams(int $id): array{
         $stmt = $this->pdo->prepare('SELECT z.id_ze, z.nazwa FROM Asocjacja_U_Ze aso JOIN Zespół z USING(id_ze) WHERE 
         aso.id_u = :id AND z.archiwalne=false ORDER BY nazwa;');

@@ -276,10 +276,12 @@ b4.addEventListener('click', async () =>{
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  setup();
+    const root = document.getElementById("admin_home");
+    if (!root) return;
+    setupAdmin();
 });
 
-async function setup(){
+async function setupAdmin(){
 
     sel1.innerHTML="<option value='0'>Ładowanie...</option>";
     sel2.innerHTML="<option value='0'>Ładowanie...</option>";

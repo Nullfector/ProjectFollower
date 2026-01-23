@@ -1,4 +1,4 @@
-<section>
+<section id="user_home">
 <h1>Strona główna</h1>
 
 <p>Moje zespoły</p>
@@ -14,6 +14,12 @@
 <p>Sprawdź twoje zadania z nieskończonych projektów</p>
 <label for="usel3">Wybierz projekt</label>
 <select id="usel3"></select><br/>
+
+<p>Zmień swoje hasło:</p>
+<label for="utxt">Nowe hasło</label>
+<input type="text" size="20" id="utxt">
+<button type="button" id="ub">Edytuj!</button>
+<p id="uresp"></p><br/>
 
 <div id='udiv3'></div>
 </secton>
