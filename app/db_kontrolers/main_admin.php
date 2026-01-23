@@ -63,6 +63,9 @@ try
         case 'projekt_fin':
             $result = $model->get_project();
             break;
+        case 'zespoly':
+            $result = $model->get_zesps();
+            break;
         case 'tasks':
             $result = $model->write_tasks((int)$data['id']);
             $rows = $result['ret_val'];
@@ -90,11 +93,66 @@ try
             
             include __DIR__ . '/../views/partial/report_table.php';
             break;
+            //-----------------------------------------------------------------
+        case 'team':
+            $result = $model->get_team((int)$data['id']);
+            $rows = $result['ret_val'];
+            if($result['ok']==false){
+                echo 'Zapytanie do bazy danych się nie powiodło!';
+            }
+            
+            $headers = ['nazwa' => 'Nazwa zespołu',
+                        'archiwalne' => 'Czy zespół jest archiwalny',
+                        'login' => 'Login lidera zespołu',
+                    'pelne_imie' => 'Pełne imie lidera',
+                    'adres_mail' => 'Adres e-mail lidera'];
+            
+            include __DIR__ . '/../views/partial/report_table.php';
+            break;
+        case 'team_conn':
+            $result = $model->get_team_connections_u((int)$data['id']);
+            $rows = $result['ret_val'];
+            if($result['ok']==false){
+                echo 'Zapytanie do bazy danych się nie powiodło!';
+            }
+            
+            $headers = ['login' => 'Login członka',
+                        'pelne_imie' => 'Imie członka',
+                        'adres_mail' => 'Adres e-mail'];
+            
+            include __DIR__ . '/../views/partial/report_table.php';
+            break;
+        case 'team_conn2':
+            $result = $model->get_team_connections_zad((int)$data['id']);
+            $rows = $result['ret_val'];
+            if($result['ok']==false){
+                echo 'Zapytanie do bazy danych się nie powiodło!';
+            }
+            
+            $headers = ['nazwa_zadania' => 'Nazwa zadania',
+                        'fakt_czas_startu' => 'Czas rozpoczęcia',
+                        'fakt_czas_zak' => 'Czas zakończenia',
+                    'nazwa_projektu' => 'Nazwa nadrzędnego projektu'];
+            
+            include __DIR__ . '/../views/partial/report_table.php';
+            break;
+            //-------------------------------------------
+        case 'pr':
+            $result = $model->get_detail_p((int)$data['id']);
+            $row = $result['ret_val'];
+            if($result['ok']==false){
+                echo 'Zapytanie do bazy danych się nie powiodło!';
+            }
+
+            include __DIR__ . '/../views/partial/raport_list.php';
+            break;
+            //--------------------------------------------------------------------
         default:
             echo json_encode(['ok'=>false,'error'=>"Niepoprawny parametr 'action'."]);
             exit;
     }
-    if(!($action == 'tasks_conn' || $action == 'tasks')) echo json_encode($result);
+    if(!($action == 'tasks_conn' || $action == 'tasks' || $action == 'team' || $action == 'team_conn' || $action == 'team_conn2'
+    || $action == 'pr')) echo json_encode($result);
 
 } catch (PDOException $e) {
     //$mapped = $model->mapError($e);

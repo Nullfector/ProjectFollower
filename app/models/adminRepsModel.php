@@ -109,6 +109,45 @@ class adminRepsModel{
         return ['ok'=>true,'ret_val'=>$data];
     }
 
+    public function get_team(int $id): array {
+        //uwaga tutaj
+         $stmt = $this->pdo->prepare("SELECT z.nazwa, u.login, u.imie || ' ' || u.nazwisko AS pelne_imie, u.adres_mail, z.archiwalne FROM Zespół z JOIN Użytkownik u ON z.lider=u.id_u WHERE z.id_ze=:id;");
+        $stmt->execute([':id' => $id]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['ok'=>true,'ret_val'=>$data];
+    }
+
+    public function get_team_connections_u(int $id): array{
+        $stmt = $this->pdo->prepare("SELECT u.login, u.imie || ' ' || u.nazwisko AS pelne_imie, u.adres_mail FROM Asocjacja_U_Ze aso JOIN Użytkownik u USING(id_u) WHERE aso.id_ze=:id 
+        AND aso.id_u!=(SELECT lider FROM Zespół WHERE id_ze=:id);");
+        $stmt->execute([':id' => $id]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['ok'=>true,'ret_val'=>$data];
+    }
+
+    public function get_team_connections_zad(int $id): array{
+        $stmt = $this->pdo->prepare("SELECT z.nazwa_zadania, z.fakt_czas_startu, z.fakt_czas_zak, p.nazwa_projektu FROM Asocjacja_Za_Ze aso JOIN Zadanie z ON z.id_za = aso.id_zadania 
+        JOIN Projekt p ON p.id_p=z.nadrzędny_projekt WHERE aso.id_zespolu=:id;");
+        $stmt->execute([':id' => $id]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['ok'=>true,'ret_val'=>$data];
+    }
+
+    public function get_zesps(): array{
+        $stmt = $this->pdo->query("SELECT id_ze, nazwa FROM Zespół;");
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['ok'=>true,'ret_val'=>$data];
+    }
+
+    public function get_detail_p(int $id): array{
+        $stmt = $this->pdo->prepare("SELECT p.id_p, p.archiwalne, p.czas_startu, z.czas_zakończenia, 
+        p.fakt_czas_startu, p.fakt_czas_zak FROM Projekt p JOIN Zadanie z ON 
+        p.id_zadania_końcowego = z.id_za WHERE p.id_p=:id;");
+        $stmt->execute([':id' => $id]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['ok'=>true,'ret_val'=>$data];
+    }
+
 }
 
 ?>

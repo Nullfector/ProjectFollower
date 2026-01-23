@@ -14,6 +14,8 @@ const sel3 = document.getElementById("sel3"); //projekt
 const sel4 = document.getElementById("sel4"); //zadanie
 
 const sel5 = document.getElementById("sel5"); //projekt
+const sel6 = document.getElementById("sel6"); //zespół
+const sel7 = document.getElementById("sel7"); //next projekt
 
 async function get_tasks_info(){
     const id = sel5.value;//id projektu
@@ -89,14 +91,6 @@ async function get_required2(){
         }
 }
 
-/*sel2.addEventListener('change', async (e) =>{
-    if(e.target.value == "0"){
-        sel1.innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
-    } else {
-        get_required();
-    }
-});*/
-
 sel3.addEventListener('change', async (e) =>{
     if(e.target.value == "0"){
         sel4.innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
@@ -109,12 +103,66 @@ sel3.addEventListener('change', async (e) =>{
 
 sel5.addEventListener('change', async (e) =>{
     if(e.target.value == "0"){
-        div.innerHTML='Nic jeszcze nie wybrano';
+        div.innerHTML='';
     } else {
         get_tasks_info();
+        sel6.value="0";
+        sel7.value="0";
+    }
+});
+//----------------------------------------------------------------------------------------------------------
+async function get_team_info(){
+    const id = sel6.value;//id zespołu
+    try{
+        const res1 = await fetch(`/../app/db_kontrolers/main_admin.php?id=${encodeURIComponent(id)}&action=team`,{method: 'GET'});
+        const html = await res1.text();
+
+        const res2 = await fetch(`/../app/db_kontrolers/main_admin.php?id=${encodeURIComponent(id)}&action=team_conn`,{method: 'GET'});
+        const html2 = await res2.text();
+
+        const res3 = await fetch(`/../app/db_kontrolers/main_admin.php?id=${encodeURIComponent(id)}&action=team_conn2`,{method: 'GET'});
+        const html3 = await res3.text();
+
+        div.innerHTML = html +'\n'+html2+'\n'+html3;
+        
+    } catch (e) {
+            //tu trzeba się pobawić
+            console.log(e);
+            div.innerHTML = `Coś jest nie tak po stronie serwera`;
+        }
+}
+
+sel6.addEventListener('change', async (e) =>{
+    if(e.target.value == "0"){
+        div.innerHTML='';
+    } else {
+        get_team_info();
+        sel5.value="0";
+        sel7.value="0";
     }
 });
 
+sel7.addEventListener('change', async (e) =>{
+    if(e.target.value == "0"){
+        div.innerHTML='';
+    } else {
+        const id = sel7.value;//id projektu
+        try{
+        const res1 = await fetch(`/../app/db_kontrolers/main_admin.php?id=${encodeURIComponent(id)}&action=pr`,{method: 'GET'});
+        const html = await res1.text();
+
+        div.innerHTML = html;
+        
+    } catch (e) {
+            //tu trzeba się pobawić
+            console.log(e);
+            div.innerHTML = `Coś jest nie tak po stronie serwera`;
+        }
+        sel6.value="0";
+        sel5.value="0";
+    }
+});
+//------------------------------------------------------------------------------------------------------------
 b.addEventListener('click', async () =>{
     if(sel2.value == "0"){
         document.getElementById('response').textContent="No nie";
@@ -240,10 +288,12 @@ async function setup(){
         const res2 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_1",{method: 'GET'});
         const res3 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_2",{method: 'GET'});
         const res4 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_fin",{method: 'GET'});
+        const res5 = await fetch("/../app/db_kontrolers/main_admin.php?action=zespoly",{method: 'GET'});
 
         const data2 = JSON.parse(await res2.text());
         const data3 = JSON.parse(await res3.text());
         const data4 = JSON.parse(await res4.text());
+        const data5 = JSON.parse(await res5.text());
 
         if (!data2.ok) {
             sel2.innerHTML = `<option value="0">${data2.error}</option>`;
@@ -253,10 +303,15 @@ async function setup(){
         }
         if (!data4.ok) {
             sel5.innerHTML = `<option value="0">${data4.error}</option>`;
+        }
+        if (!data5.ok) {
+            sel6.innerHTML = `<option value="0">${data5.error}</option>`;
         } else {
             sel2.innerHTML = `<option value="0">Wybierz projekt</option>`;
             sel3.innerHTML = `<option value="0">Wybierz projekt</option>`;
             sel5.innerHTML = `<option value="0">Wybierz projekt</option>`;
+            sel6.innerHTML = `<option value="0">Wybierz zespół</option>`;
+            sel7.innerHTML = `<option value="0">Wybierz projekt</option>`;
         }
 
         for (const v of data2.ret_val) {
@@ -278,6 +333,14 @@ async function setup(){
             opt.value = v.id_p;
             opt.textContent = v.nazwa_projektu;
             sel5.appendChild(opt);
+            sel7.appendChild(opt.cloneNode(true));
+        }
+
+        for (const v of data5.ret_val) {
+            const opt = document.createElement('option');
+            opt.value = v.id_ze;
+            opt.textContent = v.nazwa;
+            sel6.appendChild(opt);
         }
 
         sel1.innerHTML="<option value='0'>Chwilowo niedostępne</option>";

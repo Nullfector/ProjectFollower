@@ -20,7 +20,7 @@ class fillDataStart {
         $stmt = $this->pdo->query("SELECT id_t, nazwa_typu FROM Typ_projektu ORDER BY nazwa_typu;");
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if($data==[]){
-            return [];
+            return ['ok'=>true,'ret_val'=>[]];
         }
         return ['ok'=>true,'ret_val'=>$data];
     }
@@ -29,16 +29,16 @@ class fillDataStart {
         $stmt = $this->pdo->query("SELECT id_u, login FROM Użytkownik ORDER BY login;");
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if($data==[]){
-            return [];
+            return ['ok'=>true,'ret_val'=>[]];
         }
         return ['ok'=>true,'ret_val'=>$data];
     }
 
     public function fun_s_ze(){
-        $stmt = $this->pdo->query("SELECT id_Ze, nazwa FROM Zespół WHERE archiwalne=false ORDER BY nazwa;");
+        $stmt = $this->pdo->query("SELECT id_ze, nazwa FROM Zespół WHERE archiwalne=false ORDER BY nazwa;");
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if($data==[]){
-            return [];
+            return ['ok'=>true,'ret_val'=>[]];
         }
         return ['ok'=>true,'ret_val'=>$data];
     }

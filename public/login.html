@@ -2,10 +2,10 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
-  <title>Logowanie</title>
+  <title>Logowanie do serwisu</title>
 </head>
 <body>
-  <h1>Logowanie</h1>
+  <h1>Logowanie do ProjectFollower</h1>
 
   <form id="loginForm">
     <label>
@@ -25,13 +25,13 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      console.log('[login] JS loaded ✅');
+      console.log('[login] JS loaded');
 
       const form = document.getElementById('loginForm');
       const msg = document.getElementById('msg');
 
       if (!form) {
-        console.log('[login] Nie znaleziono #loginForm ❌');
+        console.log('[login] Nie znaleziono #loginForm');
         return;
       }
 

@@ -93,10 +93,12 @@ class fillDataEdit{
 
     public function fun_s_znew(int $id, int $idq): array
     {
+        //notka: dopisać sprawdzanie po zaończony i rozpoczęty
         //id zadania
         //idq projektu
         $stmt = $this->pdo->prepare("SELECT z.id_za, z.nazwa_zadania FROM Zadanie z WHERE NOT EXISTS(SELECT 1 FROM Asocjacja_Za_Self aso WHERE aso.id_zad_podległe=:id
-        AND aso.id_zad_blokujące=z.id_za) AND z.nadrzędny_projekt=:idq AND (SELECT czas_zakończenia FROM Zadanie WHERE id_za=:id)<z.czas_staru ORDER BY z.nazwa_zadania;");
+        AND aso.id_zad_blokujące=z.id_za) AND z.nadrzędny_projekt=:idq AND (SELECT czas_zakończenia FROM Zadanie WHERE id_za=:id)<z.czas_staru
+        AND z.rozpoczęty=false ORDER BY z.nazwa_zadania;");
         $stmt->execute([':id' => $id,'idq'=>$idq]);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -105,9 +107,10 @@ class fillDataEdit{
 
     public function fun_s_zdel(int $id): array
     {
+        //tutaj też - rozpoczęty zakończony, bo inaczej trochę kupka
         //id zadania
         $stmt = $this->pdo->prepare("SELECT z.id_za, z.nazwa_zadania FROM Asocjacja_Za_Self aso JOIN Zadanie z ON aso.id_zad_blokujące=z.id_za
-        WHERE aso.id_zad_podległe=:id ORDER BY z.nazwa_zadania;");
+        WHERE aso.id_zad_podległe=:id WHERE z.rozpoczęty=false ORDER BY z.nazwa_zadania;");
         $stmt->execute([':id' => $id]);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

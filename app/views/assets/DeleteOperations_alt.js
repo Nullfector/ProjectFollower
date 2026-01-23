@@ -273,12 +273,12 @@ async function setup()
         zesp.innerHTML = `<option value="0">Wybierz Zespół do usunięcia</option>`;
         for (const v of data4.ret_val) {
             const opt = document.createElement('option');
-            opt.value = v.id_Ze;
+            opt.value = v.id_ze;
             opt.textContent = v.nazwa;
             zesp.appendChild(opt);
         }
 
-        user.innerHTML = `<option value="0">Wybierz Użytkownika do zabicia</option>`;
+        user.innerHTML = `<option value="0">Wybierz Użytkownika do usunięcia</option>`;
         for (const v of data3.ret_val) {
             const opt = document.createElement('option');
             opt.value = v.id_u;

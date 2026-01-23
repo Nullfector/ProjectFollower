@@ -27,6 +27,14 @@
 <label for="sel5">Wybierz projekt</label>
 <select id="sel5"></select><br/>
 
+<p>Podgląd zespołów</p>
+<label for="sel6">Wybierz zespół</label> <!--użytkownicy i przypisane zadania-projekty (z info o statusie)-->
+<select id="sel6"></select><br/>
+
+<p>Informacje o projekcie</p>
+<label for="sel7">Wybierz projekt</label> <!--wsyzstko co związane z projektem-->
+<select id="sel7"></select><br/>
+
 <div id='divall'></div>
 
 <script src="/../app/views/assets/admin_homeOperations.js"></script>

@@ -35,6 +35,9 @@ class createModel {
             case 'P1007':
                 $msg = "Nieprawidłowe dane w polu 'lider' - taki użytkownik nie istnieje!";
                 break;
+            case 'P1020':
+                $msg = "Czas rozpoczęcia zadania jest za wczesny względem rozpoczęcia projektu!";
+                break;
             case '23503': //fk
                 $msg = "Wystąpił błąd foreign-key, wartość pola jest nieprawidłowa!";
                 break;
