@@ -21,9 +21,17 @@ class userModel{
         return ['ok'=> true, 'message' => 'Operacja zakończona pomyślnie!'];
     }
 
-    public function getTeams(int $id): array{
-        $stmt = $this->pdo->prepare('SELECT z.id_ze, z.nazwa FROM Asocjacja_U_Ze aso JOIN Zespół z USING(id_ze) WHERE 
-        aso.id_u = :id AND z.archiwalne=false ORDER BY nazwa;');
+    public function getTeams(int $id, int $opt): array{
+        if($opt==2){
+            $stmt = $this->pdo->prepare('SELECT z.id_ze, z.nazwa FROM Asocjacja_U_Ze aso JOIN Zespół z USING(id_ze) WHERE 
+            aso.id_u = :id ORDER BY nazwa;');
+        } else if($opt==0){
+            $stmt = $this->pdo->prepare('SELECT z.id_ze, z.nazwa FROM Asocjacja_U_Ze aso JOIN Zespół z USING(id_ze) WHERE 
+            aso.id_u = :id AND z.archiwalne=false ORDER BY nazwa;');
+        } else {
+            $stmt = $this->pdo->prepare('SELECT z.id_ze, z.nazwa FROM Asocjacja_U_Ze aso JOIN Zespół z USING(id_ze) WHERE 
+            aso.id_u = :id AND z.archiwalne=true ORDER BY nazwa;');
+        }
         $stmt->execute([':id' => $id]);
         $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return ['ok'=> true, 'ret_val' => $teams];

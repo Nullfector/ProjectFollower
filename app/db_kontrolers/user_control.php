@@ -31,7 +31,7 @@ try
 
     switch($action){
         case 'team':
-            $result = $model->getTeams((int)$_SESSION['uid']);
+            $result = $model->getTeams((int)$_SESSION['uid'], (int)$data['opt']);
             break;
         case 'zads':
             $result = $model->getProjs((int)$_SESSION['uid']);

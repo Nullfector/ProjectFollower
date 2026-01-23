@@ -9,15 +9,38 @@ const utxt = document.getElementById("utxt");
 const ub = document.getElementById("ub");
 const uresp = document.getElementById("uresp");
 
+const usel1_1 = document.getElementById("usel1_1");
+
 
 usel1.addEventListener('change', async (e)=>{
     if(e.target.value == "0"){
         udiv1.innerHTML = "";
     } else {
-        const resp = await fetch(`/../app/db_kontrolers/user_control.php?action=users&id=${encodeURIComponent(e.target.value)}`,{method: 'GET'});
+        const resp = await fetch(`/../app/db_kontrolers/user_control.php?action=users&id=${encodeURIComponent(e.target.value)}`,
+        {method: 'GET'});
         const html = await resp.text();
         udiv1.innerHTML = html;
     }
+});
+
+usel1_1.addEventListener('change', async (e) => {
+    const res1 = await fetch(`/../app/db_kontrolers/user_control.php?action=team&opt=${encodeURIComponent(e.target.value)}`,{method: 'GET'});
+    const data = await res1.json();
+
+    if(!data.ok){
+        usel1.innerHTML = `<option value="0">${data.error}</option>`;
+        return;
+    }
+    usel1.innerHTML = `<option value="0">Wybierz zespół</option>`;
+
+    for (const v of data.ret_val) {
+            const opt = document.createElement('option');
+            opt.value = v.id_ze;
+            opt.textContent = v.nazwa;
+            usel1.appendChild(opt);
+    }
+
+
 });
 
 usel3.addEventListener('change', async (e)=>{
@@ -71,7 +94,7 @@ async function setupUser(){
     usel3.innerHTML="<option value='0'>Ładowanie...</option>";
 
     try{
-        const res1 = await fetch(`/../app/db_kontrolers/user_control.php?action=team`,{method: 'GET'});
+        const res1 = await fetch(`/../app/db_kontrolers/user_control.php?action=team&opt=0`,{method: 'GET'});
         const res2 = await fetch(`/../app/db_kontrolers/user_control.php?action=table`,{method: 'GET'});
         const res3 = await fetch(`/../app/db_kontrolers/user_control.php?action=zads`,{method: 'GET'});
 
