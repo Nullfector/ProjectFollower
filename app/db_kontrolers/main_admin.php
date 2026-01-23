@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../db.php';
 require_once __DIR__ . '/../../auth.php';
-//require_role(2); // jeśli tylko admin ma mieć dostęp
 
 require_once __DIR__ . '/../../app/models/adminRepsModel.php';
 header('Content-Type: application/json; charset=utf-8');
@@ -28,19 +27,7 @@ $action = $data['action'];
 try
 {
     $model = new adminRepsModel($pdo);
-    //$pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,]);
-    /*$handlers = ['edit_user' => 'fun_u',
-                'edit_zesp' => 'fun_ze',
-                'edit_u_ze' => 'fun_u_ze',
-                'edit_za_ze'=>'fun_za_ze',
-                'edit_proj' => 'fun_p',
-                'del_za' => 'fun_d_za',
-                'edit_zad' => 'fun_za',
-                'aso_self' => 'fun_self'];*/
 
-    
-    //$fn = $handlers[$action];
-    //$result = $fn($pdo, $data);
     switch($action){
         case 'zadanie_1':
             $result = $model->get_zad((int)$data['id']);
@@ -61,10 +48,10 @@ try
             $result = $model->edit_state_zad((int)$data['id'], (int)$data['val']);
             break;
         case 'projekt_fin':
-            $result = $model->get_project();
+            $result = $model->get_project((int)$data['opt']);
             break;
         case 'zespoly':
-            $result = $model->get_zesps();
+            $result = $model->get_zesps((int)$data['opt']);
             break;
         case 'tasks':
             $result = $model->write_tasks((int)$data['id']);

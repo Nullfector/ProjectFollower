@@ -289,8 +289,8 @@ async function setupAdmin(){
     try{
         const res2 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_1",{method: 'GET'});
         const res3 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_2",{method: 'GET'});
-        const res4 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_fin",{method: 'GET'});
-        const res5 = await fetch("/../app/db_kontrolers/main_admin.php?action=zespoly",{method: 'GET'});
+        const res4 = await fetch("/../app/db_kontrolers/main_admin.php?action=projekt_fin&opt=0",{method: 'GET'});
+        const res5 = await fetch("/../app/db_kontrolers/main_admin.php?action=zespoly&opt=0",{method: 'GET'});
 
         const data2 = JSON.parse(await res2.text());
         const data3 = JSON.parse(await res3.text());
@@ -305,6 +305,7 @@ async function setupAdmin(){
         }
         if (!data4.ok) {
             sel5.innerHTML = `<option value="0">${data4.error}</option>`;
+            sel7.innerHTML = `<option value="0">${data4.error}</option>`;
         }
         if (!data5.ok) {
             sel6.innerHTML = `<option value="0">${data5.error}</option>`;
@@ -354,3 +355,58 @@ async function setupAdmin(){
         sel2.innerHTML="<option value='0'>Brak połączenia</option>";
     }
 }
+
+document.getElementById("sel5_1").addEventListener('change', async (e) => {
+    const res4 = await fetch(`/../app/db_kontrolers/main_admin.php?action=projekt_fin&opt=${encodeURIComponent(e.target.value)}`,{method: 'GET'});
+    const data = await res4.json();
+
+    if(!data.ok){
+        sel5.innerHTML = `<option value="0">${data.error}</option>`;
+        return;
+    }
+    sel5.innerHTML = `<option value="0">Wybierz projekt</option>`;
+
+    for (const v of data.ret_val) {
+            const opt = document.createElement('option');
+            opt.value = v.id_p;
+            opt.textContent = v.nazwa_projektu;
+            sel5.appendChild(opt);
+    }
+});
+
+document.getElementById("sel7_1").addEventListener('change', async (e) => {
+    const res4 = await fetch(`/../app/db_kontrolers/main_admin.php?action=projekt_fin&opt=${encodeURIComponent(e.target.value)}`,{method: 'GET'});
+    const data = await res4.json();
+
+    if(!data.ok){
+        sel7.innerHTML = `<option value="0">${data.error}</option>`;
+        return;
+    }
+    sel7.innerHTML = `<option value="0">Wybierz projekt</option>`;
+
+    for (const v of data.ret_val) {
+            const opt = document.createElement('option');
+            opt.value = v.id_p;
+            opt.textContent = v.nazwa_projektu;
+            sel7.appendChild(opt);
+    }
+});
+
+document.getElementById("sel6_1").addEventListener('change', async (e) => {
+    const res4 = await fetch(`/../app/db_kontrolers/main_admin.php?action=zespoly&opt=${encodeURIComponent(e.target.value)}`,{method: 'GET'});
+    //console.log(res4.text());
+    const data = await res4.json();
+
+    if(!data.ok){
+        sel6.innerHTML = `<option value="0">${data.error}</option>`;
+        return;
+    }
+    sel6.innerHTML = `<option value="0">Wybierz zespół</option>`;
+
+    for (const v of data.ret_val) {
+            const opt = document.createElement('option');
+            opt.value = v.id_ze;
+            opt.textContent = v.nazwa;
+            sel6.appendChild(opt);
+    }
+});

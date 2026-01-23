@@ -85,9 +85,15 @@ class adminRepsModel{
 
 //--------------------------------------------------------------------------------------------------------------------
 
-    public function get_project(): array
+    public function get_project(int $opt): array
     {
-        $stmt = $this->pdo->query('SELECT id_p, nazwa_projektu FROM Projekt ORDER BY nazwa_projektu;');
+        if($opt==0){
+            $stmt = $this->pdo->query('SELECT id_p, nazwa_projektu FROM Projekt ORDER BY nazwa_projektu;');
+        } else if($opt==1){
+            $stmt = $this->pdo->query('SELECT id_p, nazwa_projektu FROM Projekt WHERE rozpoczęty=zakończony OR archiwalne=true ORDER BY nazwa_projektu;');
+        }else {
+            $stmt = $this->pdo->query('SELECT id_p, nazwa_projektu FROM Projekt WHERE archiwalne=false AND rozpoczęty=true AND zakończony=false ORDER BY nazwa_projektu;');
+        }
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return ['ok'=>true,'ret_val'=>$data];
     }
@@ -133,8 +139,14 @@ class adminRepsModel{
         return ['ok'=>true,'ret_val'=>$data];
     }
 
-    public function get_zesps(): array{
-        $stmt = $this->pdo->query("SELECT id_ze, nazwa FROM Zespół;");
+    public function get_zesps(int $opt): array{
+        if($opt==2){
+            $stmt = $this->pdo->query("SELECT id_ze, nazwa FROM Zespół ORDER BY nazwa;");
+        } else if($opt==1){
+            $stmt = $this->pdo->query("SELECT id_ze, nazwa FROM Zespół WHERE archiwalne=true  ORDER BY nazwa;");
+        } else {
+            $stmt = $this->pdo->query("SELECT id_ze, nazwa FROM Zespół WHERE archiwalne=false ORDER BY nazwa;");
+        }
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return ['ok'=>true,'ret_val'=>$data];
     }
