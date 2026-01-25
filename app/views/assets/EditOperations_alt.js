@@ -7,11 +7,11 @@ function UserEditCheck(){
     var count = 0;
 
     if(form1.pole8_0.selectedIndex == 0){ //id
-        kom1.textContent = "No, nie zedytujesz obiektu jak nie wyspecyfikujesz o jaki ci chodzi";
+        kom1.textContent = "Nie zedytujesz obiektu jak nie wybierzesz o jaki ci chodzi";
         return false;
     }
     if(form1.pole8_4.value.trim() === "" && form1.pole8_3.value.trim() === "" && form1.pole8_2.value.trim() === "" && form1.pole8_1.value.trim() === "" && form1.pole8_5.value.trim() === "" && form1.pole8_6.selectedIndex === 0){
-        kom1.textContent = "bruh";
+        kom1.textContent = "Nie wstawisz pustych danych";
         return false;
     }
 
@@ -51,7 +51,7 @@ function TeamEditCheck(){
     var count = 0;
 
     if(ev1.selectedIndex == 0){ //id
-        kom2.textContent = "No, nie zedytujesz obiektu jak nie wyspecyfikujesz o jaki ci chodzi";
+        kom2.textContent = "Nie zedytujesz obiektu jak nie wybierzesz o jaki ci chodzi";
         return false;
     }
 
@@ -61,7 +61,7 @@ function TeamEditCheck(){
         form2.pole9_1.value = "";
     }
    if(form2.pole9_1.value == "" && form2.pole9_2.value=='0' && form2.pole9_8.value=='0'){
-        kom2.textContent = "I po co w ten przycisk klikasz, co?";
+        kom2.textContent = "Pustymi danymi nic nie zrobisz";
         return false;
    }
 
@@ -79,7 +79,7 @@ function ProjectEditCheck(){
     var count = 0;
 
     if(document.getElementById("pole10_0").selectedIndex == 0){ //id
-        kom3.textContent = "No, nie zedytujesz obiektu jak nie wyspecyfikujesz o jaki ci chodzi";
+        kom3.textContent = "Nie zedytujesz obiektu jak nie wybierzesz o jaki ci chodzi";
         return false;
     }
 
@@ -89,7 +89,7 @@ function ProjectEditCheck(){
         form3.pole10_1.value = "";
     }
     if(form3.pole10_1.value == "" && form3.pole10_2.value == "0" && form3.pole10_3.value == "0" && form3.pole10_6.value == "0" && form3.pole10_5.value == "0"){
-        kom3.textContent = "No, halo, co?";
+        kom3.textContent = "Puste dane nie przechodzą";
         return false;
     }
     if(count!=0) {kom3.textContent = res+="!"; return false;}
@@ -107,7 +107,7 @@ function TaskEditCheck(){
     var count = 0;
 
     if(document.getElementById("pole11_0").value == "0" || document.getElementById("pole11_8").value == "0"){ //id
-        kom4.textContent = "No, nie zedytujesz obiektu jak nie wyspecyfikujesz o jaki ci chodzi";
+        kom4.textContent = "Nie zedytujesz obiektu jak nie wybierzesz o jaki ci chodzi";
         return false;
     }
     if(form4.pole11_1.value != "" && !(/^[a-zA-Z0-9ąćńęłżźóĄĘĆŻŹÓŃŁ &/\-]+$/.test(form4.pole11_1.value))){ //nazwa
@@ -117,17 +117,13 @@ function TaskEditCheck(){
     }
 
     if((form4.pole11_4.value >= form4.pole11_5.value) && (form4.pole11_4.value != "" && form4.pole11_5.value != "")){ //daty
-        kom4.textContent = "Czas płynie w przeciwną stronę, ani jego pedkość nie wynosi \u221e!";
+        kom4.textContent = "Czas nie płynie w przeciwną stronę, ani jego pedkość nie wynosi \u221e!";
         return false;
     }
 
-    /*if(form4.pole11_2.value != "" && (form4.pole11_2.value < 1 || form4.pole11_2.value >5)){
-        if(count >= 1) res+=", ";
-        count++;
-        res += "priorytet(jak go wstawiasz to musi być między 1 a 5)";
-    }*/
+    
     if(form4.pole11_2.value === "" && form4.pole11_1.value === "" && form4.pole11_4.value === "" && form4.pole11_5.value === "" && form4.pole11_9.value === "0"){
-        kom4.textContent = "No i po co?";
+        kom4.textContent = "Puste dane nie działają";
         return false;
     }
 
@@ -135,13 +131,20 @@ function TaskEditCheck(){
     return true;
 }
 
-async function setupSimplify_get(action, field, tekst, php){
-    const res = await fetch(`${php}?action=${action}`,{method: 'GET'});
+async function setupSimplify_get(action, field, tekst, php, opt){
+    var res;
+    if(opt===true){
+        res = await fetch(`${php}?action=${action}&param=1`,{method: 'GET'});
+    } else {
+         res = await fetch(`${php}?action=${action}`,{method: 'GET'});
+    }
+    //const res = await fetch(`${php}?action=${action}`,{method: 'GET'});
     //console.log(`${php}?action=${action}`);
     const data = JSON.parse(await res.text());
     //console.log(data);
     if (!data.ok) {
             field.innerHTML = `<option value="0">${data.error}</option>`;
+            console.log(data.code);
             return {ok:false};
     } else {
         field.innerHTML = `<option value="0">${tekst}</option>`;
@@ -185,15 +188,15 @@ async function setup()
     try{
         
         var wynik;
-        wynik = await setupSimplify_get('user',user,"Wybierz Użytkownika do edycji","/../app/db_kontrolers/start_crate.php");
+        wynik = await setupSimplify_get('user',user,"Wybierz Użytkownika do edycji","/../app/db_kontrolers/start_crate.php",true);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",user,false);
 
-        wynik = await setupSimplify_get('zesp',zesp,"Wybierz Zespół do edycji","/../app/db_kontrolers/start_crate.php");
+        wynik = await setupSimplify_get('zesp',zesp,"Wybierz Zespół do edycji","/../app/db_kontrolers/start_crate.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_ze","nazwa",zesp,false);
 
         proj1.innerHTML = `<option value="0">Wybierz projekt</option>`;
         zad.innerHTML = `<option value="0">Wybierz projekt</option>`;
-        wynik = await setupSimplify_get('projekt',proj,"Wybierz Projekt do edycji","/../app/db_kontrolers/start_crate.php");
+        wynik = await setupSimplify_get('projekt',proj,"Wybierz Projekt do edycji","/../app/db_kontrolers/start_crate.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_p","nazwa_projektu",proj,true);
 
         const opt = document.createElement('option');
@@ -234,15 +237,15 @@ async function get_requiredZesp_NOaso()
         
         var wynik, str;
         str = `lider&id=${id}`;
-        wynik = await setupSimplify_get(str,lid,"Nie zmieniaj lidera","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(str,lid,"Nie zmieniaj lidera","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",lid,false);
 
         str = `aso_u_ze_create&id=${id}`;
-        wynik = await setupSimplify_get(str,new_u,"Nic nie dodawaj","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(str,new_u,"Nic nie dodawaj","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",new_u,false);
 
         str = `aso_u_ze_del&id=${id}`;
-        wynik = await setupSimplify_get(str,del_u,"Nic nie usuwaj","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(str,del_u,"Nic nie usuwaj","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",del_u,false);
 
     } catch (e) {
@@ -267,10 +270,10 @@ async function get_requiredZesp_ASO()
     try{
     
         var wynik;
-        wynik = await setupSimplify_get(`aso_za_ze_create&id=${id}`,new_aso,"Wybierz nowe zadanie","/../app/db_kontrolers/start_edit.php"); //&idq=${idq}
+        wynik = await setupSimplify_get(`aso_za_ze_create&id=${id}`,new_aso,"Wybierz nowe zadanie","/../app/db_kontrolers/start_edit.php",false); //&idq=${idq}
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",new_aso,false);
 
-        wynik = await setupSimplify_get(`aso_za_ze_del&id=${id}&idq=${idq}`,aso_del,"Wybierz zadanie do usunięcia","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(`aso_za_ze_del&id=${id}&idq=${idq}`,aso_del,"Wybierz zadanie do usunięcia","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",aso_del,false);
 
 
@@ -294,13 +297,13 @@ async function get_requiredProj()
     try{
     
         var wynik;
-        wynik = await setupSimplify_get(`admin&id=${encodeURIComponent(id)}`,admin,"Nie zmieniaj admina","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(`admin&id=${encodeURIComponent(id)}`,admin,"Nie zmieniaj admina","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",admin,false);
 
-        wynik = await setupSimplify_get(`typ&id=${encodeURIComponent(id)}`,typ,"Nie zmieniaj typu","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(`typ&id=${encodeURIComponent(id)}`,typ,"Nie zmieniaj typu","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_t","nazwa_typu",typ,false);
 
-        wynik = await setupSimplify_get(`zadanie&id=${encodeURIComponent(id)}`,zad,"Nie usuwaj zadania","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(`zadanie&id=${encodeURIComponent(id)}`,zad,"Nie usuwaj zadania","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",zad,false);
 
 
@@ -318,8 +321,10 @@ ev1.addEventListener('change', async (e) => {
         document.getElementById("pole9_2").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole9_3").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole9_4").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
+        document.getElementById("pole9_1").value= "";
     } else {
         get_requiredZesp_NOaso();
+        getDataToEdit('team',e.target.value);
     }
     if(document.getElementById("pole9_7").value!="0")
     {
@@ -344,8 +349,11 @@ ev3.addEventListener('change', async (e) => {
         document.getElementById("pole10_2").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole10_3").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole10_4").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
+        document.getElementById("pole10_1").value= "";
+        document.getElementById("pole10_10").value= "";
     } else {
         get_requiredProj();
+        getDataToEdit('proj',e.target.value);
     }
 }); 
 
@@ -355,12 +363,16 @@ ev4.addEventListener('change', async (e) => {
         document.getElementById("pole11_7").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole11_6").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole11_8").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
+        document.getElementById("pole11_1").value= "";
+        document.getElementById("pole11_2").value= "";
+        document.getElementById("pole11_4").value= "";
+        document.getElementById("pole11_5").value= "";
     } else {
         try{
         const id = ev4.value;
         
        var wynik;
-        wynik = await setupSimplify_get(`zadanie&id=${encodeURIComponent(id)}`,document.getElementById("pole11_8"),"Wybierz zadanie","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(`zadanie&id=${encodeURIComponent(id)}`,document.getElementById("pole11_8"),"Wybierz zadanie","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",document.getElementById("pole11_8"),false);
         
 
@@ -378,7 +390,12 @@ ev5.addEventListener('change', async (e) => {
     if(e.target.value == "0"){
         document.getElementById("pole11_7").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole11_6").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
+        document.getElementById("pole11_1").value= "";
+        document.getElementById("pole11_2").value= "";
+        document.getElementById("pole11_4").value= "";
+        document.getElementById("pole11_5").value= "";
     } else {
+        getDataToEdit('zad',e.target.value);
         //const creat = document.getElementById("pole11_6");
         //const del = document.getElementById("pole11_7");
         try{
@@ -386,10 +403,10 @@ ev5.addEventListener('change', async (e) => {
         const idq = document.getElementById("pole11_0").value;
         
         var wynik;
-        wynik = await setupSimplify_get(`zadanie_new&id=${encodeURIComponent(id)}&idq=${encodeURIComponent(idq)}`,document.getElementById("pole11_6"),"Nic nie dodawaj","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(`zadanie_new&id=${encodeURIComponent(id)}&idq=${encodeURIComponent(idq)}`,document.getElementById("pole11_6"),"Nic nie dodawaj","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",document.getElementById("pole11_6"),false);
 
-        wynik = await setupSimplify_get(`zadanie_del&id=${encodeURIComponent(id)}`,document.getElementById("pole11_7"),"Nic nie usuwaj","/../app/db_kontrolers/start_edit.php");
+        wynik = await setupSimplify_get(`zadanie_del&id=${encodeURIComponent(id)}`,document.getElementById("pole11_7"),"Nic nie usuwaj","/../app/db_kontrolers/start_edit.php",false);
         if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",document.getElementById("pole11_7"),false);
         
 
@@ -759,3 +776,67 @@ but8.addEventListener('click', async () => {
     //setTimeout(() => {kom4.textContent = "";}, 3000);
     form9.reset();
 });
+
+
+document.getElementById("pole8_0").addEventListener('change' ,async (e) => {
+    if(e.target.value==0){
+            document.getElementById("pole8_1").value= "";
+            document.getElementById("pole8_2").value= "";
+            document.getElementById("pole8_3").value= "";
+            document.getElementById("pole8_4").value= "";
+            document.getElementById("pole8_5").value= "";
+            document.getElementById("pole8_6").value= "1";
+    } else {
+        getDataToEdit('user',e.target.value);
+    }
+});
+
+
+async function getDataToEdit(action, id){
+    const res = await fetch(`/../app/db_kontrolers/anotheredit.php?action=${encodeURIComponent(action)}&id=${encodeURIComponent(id)}`,{method:'GET'});
+    const data = await res.json();
+
+    if(!data.ok){
+        console.log("błąd bazy danych");
+        return;
+    }
+    switch(action){
+        case 'user':
+            document.getElementById("pole8_1").value= data.ret_val[0].imie;
+            document.getElementById("pole8_2").value= data.ret_val[0].nazwisko;
+            document.getElementById("pole8_3").value= data.ret_val[0].adres_mail;
+            document.getElementById("pole8_4").value= data.ret_val[0].login;
+            document.getElementById("pole8_5").value= data.ret_val[0].haslo;
+            document.getElementById("pole8_6").value= data.ret_val[0].rola;
+            break;
+        case 'team':
+            document.getElementById("pole9_1").value= data.ret_val[0].nazwa;
+            break;
+        case 'proj':
+            document.getElementById("pole10_1").value= data.ret_val[0].nazwa_projektu;
+            document.getElementById("pole10_10").value= data.ret_val[0].czas_startu;
+            if(data.ret_val[0].rozpoczęty==true){
+                document.getElementById("pole10_10").readOnly = true;
+            } else {
+                document.getElementById("pole10_10").readOnly = false;
+            }
+            break;
+        case 'zad':
+            document.getElementById("pole11_1").value= data.ret_val[0].nazwa_zadania;
+            if(data.ret_val[0].priorytet==null){
+                document.getElementById("pole11_2").value = "0";
+            } else {
+                document.getElementById("pole11_2").value= data.ret_val[0].priorytet;
+            }
+            document.getElementById("pole11_4").value= data.ret_val[0].czas_staru;
+            document.getElementById("pole11_5").value= data.ret_val[0].czas_zakończenia;
+            if(data.ret_val[0].rozpoczęty==true){
+                document.getElementById("pole11_4").readOnly = true;
+            } else {
+                document.getElementById("pole11_4").readOnly = false;
+            }
+            break;
+        default:
+
+    }
+}

@@ -25,8 +25,13 @@ class fillDataStart {
         return ['ok'=>true,'ret_val'=>$data];
     }
 
-    public function fun_s_u(){
-        $stmt = $this->pdo->query("SELECT id_u, login FROM Użytkownik ORDER BY login;");
+    public function fun_s_u(int $id, int $param){
+        if($param==0){
+            $stmt = $this->pdo->prepare("SELECT id_u, login FROM Użytkownik WHERE id_u !=:id ORDER BY login;");
+            $stmt->execute([':id' => $id]);
+        } else {
+            $stmt = $this->pdo->query("SELECT id_u, login FROM Użytkownik ORDER BY login;");
+        }
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if($data==[]){
             return ['ok'=>true,'ret_val'=>[]];

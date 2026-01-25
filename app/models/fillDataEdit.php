@@ -110,7 +110,7 @@ class fillDataEdit{
         //tutaj też - rozpoczęty zakończony, bo inaczej trochę kupka
         //id zadania
         $stmt = $this->pdo->prepare("SELECT z.id_za, z.nazwa_zadania FROM Asocjacja_Za_Self aso JOIN Zadanie z ON aso.id_zad_blokujące=z.id_za
-        WHERE aso.id_zad_podległe=:id WHERE z.rozpoczęty=false ORDER BY z.nazwa_zadania;");
+        WHERE aso.id_zad_podległe=:id AND z.rozpoczęty=false ORDER BY z.nazwa_zadania;");
         $stmt->execute([':id' => $id]);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

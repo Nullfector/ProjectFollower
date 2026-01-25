@@ -177,7 +177,7 @@
             return ['ok'=>true, 'message'=> $q];
         }
 
-        public function fun_p(int $id, string $nazwa, int $admin, int $typ/*, int $end*/, int $arch): array
+        public function fun_p(int $id, string $nazwa, int $admin, int $typ/*, int $end*/, int $arch, string $date): array
         {
             $arr = [];
             $q = "UPDATE Projekt SET ";
@@ -192,6 +192,10 @@
             {
                 $q .= "nazwa_projektu=:nazwa, ";
                 $arr[':nazwa'] = $nazwa;
+            }
+            if($date!=""){
+                $q .= "czas_startu=:d, ";
+                $arr[':d'] = $date;
             }
             if($admin !="0")
             {
@@ -239,16 +243,16 @@
             $czas_s = $data['pole11_4'];
             $czas_e = $data['pole11_5'];
             $end = $data['pole11_9'];*/
-            $array = [':id'=>$id];
+            $array = [':id'=>$id, ':z'=>$nazwa, ':p'=>$prio, ':c'=>$czas_s, ':cz'=>$czas_e];
 
             //zapytanie o current dane - i tak zwróci 1 wiersz
-            $stmt = $this->pdo->prepare("SELECT * FROM Zadanie WHERE id_za=:id;");
-            $stmt->execute($array);
-            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            //$stmt = $this->pdo->prepare("SELECT * FROM Zadanie WHERE id_za=:id;");
+            //$stmt->execute($array);
+            //$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $stmt = $this->pdo->prepare("SELECT edycja_zadania(:id, :z, :p, :c, :cz, false);");
 
-            if($nazwa!=""){
+            /*if($nazwa!=""){
                 $array[':z'] = $nazwa;
             } else {
                 $array[':z'] = $data[0]['nazwa_zadania'];

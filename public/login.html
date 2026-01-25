@@ -5,8 +5,10 @@
   <title>Logowanie do serwisu</title>
 </head>
 <body>
-  <h1>Logowanie do ProjectFollower</h1>
+  <div class="login-wrap">
+  <h1>ProjectFollower</h1>
 
+  <div class="login-box">
   <form id="loginForm">
     <label>
       Login:
@@ -20,8 +22,10 @@
     <br>
     <button type="submit">Zaloguj</button>
   </form>
+  </div>
 
   <p id="msg" style="color:red;"></p>
+</div>
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
@@ -73,9 +77,80 @@
           window.location.href = data.redirect || 'me.php';
         } else {
           msg.textContent = data.error || 'Nieprawidłowe logowanie.';
+          form.reset();
         }
       });
     });
   </script>
+
+  <style>
+    body{
+    background-color: #f5eee6;   /* ten sam kolor co reszta */
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+}
+
+/* Wyśrodkowanie zawartości */
+.login-wrap{
+    max-width: 420px;
+    margin: 80px auto;
+}
+
+/* Nagłówek */
+.login-wrap h1{
+    text-align: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #cfcfcf;   /* separator */
+}
+
+/* Ramka formularza */
+.login-box{
+    background-color: #f2f2f2;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 18px 20px;
+}
+
+/* Label + input */
+.login-box label{
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.login-box input{
+    width: 100%;
+    padding: 8px 0px;
+    margin-top: 4px;
+    border: 3px solid #aaa;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Przycisk */
+.login-box button{
+    margin-top: 14px;
+    padding: 10px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 6px;
+    border: 1px solid #999;
+    background: #e0e0e0;
+    cursor: pointer;
+}
+
+.login-box button:hover{
+    filter: brightness(0.97);
+}
+
+/* Komunikat błędu */
+#msg{
+    margin-top: 12px;
+    text-align: center;
+    font-weight: 600;
+}
+  </style>
 </body>
 </html>

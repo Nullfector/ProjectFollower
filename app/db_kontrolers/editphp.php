@@ -60,7 +60,7 @@ try
             $result = $model->fun_za_ze((int)$data['pole9_0'], (int)$data['pole9_5'], (int)$data['pole9_6'], $method);
             break;
         case 'edit_proj':
-            $result = $model->fun_p((int)$data['pole10_0'],$data['pole10_1'],(int)$data['pole10_2'], (int)$data['pole10_3']/*, (int)$data['pole10_6']*/, (int)$data['pole10_5']);
+            $result = $model->fun_p((int)$data['pole10_0'],$data['pole10_1'],(int)$data['pole10_2'], (int)$data['pole10_3']/*, (int)$data['pole10_6']*/, (int)$data['pole10_5'],$data['pole10_10']);
             break;
         case 'del_za':
             $result = $model->fun_d_za((int)$data['pole10_4']);

@@ -115,11 +115,11 @@ async function get_requiredZesp_NOaso()
 
         str = `aso_u_ze_create&id=${id}`;
         wynik = await setupSimplify_get(str,new_u,"Nic nie dodawaj","/../app/db_kontrolers/start_edit.php");
-        if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",new_u,false);
+        if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",new_u);
 
         str = `aso_u_ze_del&id=${id}`;
         wynik = await setupSimplify_get(str,del_u,"Nic nie usuwaj","/../app/db_kontrolers/start_edit.php");
-        if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",del_u,false);
+        if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",del_u);
 
     } catch (e) {
             //tu trzeba się pobawić
@@ -144,10 +144,10 @@ async function get_requiredZesp_ASO()
     
         var wynik;
         wynik = await setupSimplify_get(`aso_za_ze_create&id=${id}`,new_aso,"Wybierz nowe zadanie","/../app/db_kontrolers/start_edit.php"); //&idq=${idq}
-        if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",new_aso,false);
+        if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",new_aso);
 
         wynik = await setupSimplify_get(`aso_za_ze_del&id=${id}&idq=${idq}`,aso_del,"Wybierz zadanie do usunięcia","/../app/db_kontrolers/start_edit.php");
-        if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",aso_del,false);
+        if(wynik.ok) setupSimplify_put(wynik.val,"id_za","nazwa_zadania",aso_del);
 
 
     } catch (e) {
@@ -162,10 +162,11 @@ async function get_requiredZesp_ASO()
 const ev1 = document.getElementById("pole9_0");
 ev1.addEventListener('change', async (e) => {
     if(e.target.value == "0"){
-        document.getElementById("pole9_2").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole9_3").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
         document.getElementById("pole9_4").innerHTML=`<option value="0">Chwilowo niedostępne</option>`;
+        document.getElementById("pole9_1").value = "";
     } else {
+        document.getElementById("pole9_1").value = e.target[e.target.selectedIndex].textContent;
         get_requiredZesp_NOaso();
     }
     if(document.getElementById("pole9_7").value!="0")
@@ -199,16 +200,12 @@ async function setupSimplify_get(action, field, tekst, php){
     }
 }
 
-function setupSimplify_put(data, id_name, other_name, field, isproj){
+function setupSimplify_put(data, id_name, other_name, field){
     for (const v of data.ret_val) {
             const opt = document.createElement('option');
             opt.value = v[id_name];
             opt.textContent = v[other_name];
             field.appendChild(opt);
-            if(isproj){
-                document.getElementById("pole9_7").appendChild(opt.cloneNode(true));
-                document.getElementById("pole11_0").appendChild(opt.cloneNode(true));
-            }
         }
 }
 
@@ -217,10 +214,14 @@ const b1 = document.getElementById("but2");
 const b2 = document.getElementById("but3");
 const res = document.getElementById("response");
 
+const form8 = document.getElementById("form_edit_aso_za");
+const form7 = document.getElementById("form_edit_aso_u");
+
 //te eventlistenery do podmianki zmiennych
 b1.addEventListener('click', async () =>{
     if(sel2.value == "0"){
-        document.getElementById('response').textContent="No błagam";
+        document.getElementById('response').textContent="Nie zadziała bez wybrania faktycznej opcji";
+        document.getElementById('response').style.color="red";
         return;
     }
 
@@ -249,7 +250,8 @@ b1.addEventListener('click', async () =>{
 
 b2.addEventListener('click', async () =>{
     if(sel3.value == "0"){
-        document.getElementById('response').textContent="No błagam";
+        document.getElementById('response').textContent="Nie zadziała bez wybrania odpowiedniej opcji";
+        document.getElementById('response').style.color="red";
         return;
     }
     
@@ -344,3 +346,182 @@ async function get_required2(){
             sel3.innerHTML = `<option value="0">Błąd połączenia</option>`;
         }
 }
+
+const but11 = document.getElementById("b17");
+const but12 = document.getElementById("b18");
+const but13 = document.getElementById("b14");
+
+async function sendOver(send_method, formdata, uri, isformdata){
+    var res;
+    //console.log(JSON.stringify(Object.fromEntries(formdata.entries())));
+    if(isformdata){
+        res = await fetch(uri, {
+            method: send_method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(Object.fromEntries(formdata.entries()))
+        });
+    }else if(send_method==='POST'){
+        res = await fetch(uri, {
+            method: 'POST',
+            body: formdata
+        });
+    } else {
+        res = await fetch(uri, {
+            method: send_method,
+            headers: { "Content-Type": "application/json" },
+            body: formdata
+        });
+    }
+    //console.log(res.text());
+    const data = await res.json();
+    return data;
+
+}
+
+function resultAction(data, kom, form, doreset){
+     if (data.ok) {
+      kom.textContent = data.message;
+      kom.style.color = 'green';
+      setTimeout(() => {kom.textContent = "";}, 3000);
+      if(doreset) form.reset();
+    } else {
+      kom.textContent = data.error;
+      kom.style.color = 'red';
+    }
+}
+
+but11.addEventListener('click', async () => {
+    if(!TeamEditCheck())return;
+
+    const formData = new FormData(form2);
+    formData.append('action', 'edit_zesp');
+    formData.append('pole9_2', '0');
+    formData.append('pole9_0', `${encodeURIComponent(ev1.value)}`);
+
+    const opt = document.getElementById("pole9_0").selectedIndex;
+    const new_name = document.getElementById("pole9_1").value.trim();
+
+    try {
+        const data = await sendOver('PUT',formData,'/../app/db_kontrolers/editphp.php',true);
+        resultAction(data,kom2,form2,true);
+
+        if(new_name!==""){
+            document.getElementById("pole9_0").options[opt].textContent = new_name;
+        }
+
+        document.getElementById("pole9_0").value = "0";
+        } catch (err) {
+            console.log(err);
+            kom2.textContent = 'Błąd połączenia z serwerem.';
+            kom2.style.color = 'red';
+        }
+});
+
+but12.addEventListener('click', async () =>{
+    if(document.getElementById("pole9_3").value==="0" && document.getElementById("pole9_4").value==="0"){
+        kom2.textContent = 'No i po co?';
+        kom2.style.color = 'red';
+        return;}
+
+    const formData = new FormData(form7);
+    formData.append('action', 'edit_u_ze');
+    formData.append('pole9_0', `${encodeURIComponent(ev1.value)}`);
+
+    const to_add1 = document.getElementById("pole9_4").selectedIndex; //jak dodamy kogoś to dodajemy jego rekord do możliwych do usuwanięcia
+    const to_add2 = document.getElementById("pole9_3").selectedIndex; //jak kogoś usuniemy to daodajemy rekord do możliwych do dodania
+    //console.log(to_add1);
+    //console.log(to_add2);
+    
+    if(document.getElementById("pole9_3").value!=="0"){
+        try {
+            const data = await sendOver('POST',formData,'/../app/db_kontrolers/editphp.php',false);
+            resultAction(data,kom2,form7,false);
+
+                const opt = document.createElement('option');
+                opt.value = document.getElementById("pole9_3")[to_add2].value;
+                opt.textContent = document.getElementById("pole9_3")[to_add2].textContent;
+                document.getElementById("pole9_4").appendChild(opt);
+
+                document.getElementById("pole9_3").remove(to_add2);
+
+        } catch (err) {
+            console.log(err);
+            kom2.textContent = 'Błąd połączenia z serwerem.';
+            kom2.style.color = 'red';
+        }
+    }
+    if(document.getElementById("pole9_4").value!=="0"){
+        try {
+            const data = await sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',true);
+            resultAction(data,kom2,form7,false);
+
+                const opt = document.createElement('option');
+                opt.value = document.getElementById("pole9_4")[to_add1].value;
+                opt.textContent = document.getElementById("pole9_4")[to_add1].textContent;
+                document.getElementById("pole9_3").appendChild(opt);
+
+                document.getElementById("pole9_4").remove(to_add1);
+        } catch (err) {
+            console.log(err);
+            kom2.textContent = 'Błąd połączenia z serwerem.';
+            kom2.style.color = 'red';
+        }
+    }
+
+    //setTimeout(() => {kom2.textContent = "";}, 3000);
+    form7.reset();
+});
+
+but13.addEventListener('click', async () => {
+    if(document.getElementById("pole9_5").value ==="0" && document.getElementById("pole9_6").value ==="0"){
+        kom2.textContent = 'No i po co?';
+        kom2.style.color = 'red';
+        return;}
+
+    const formData = new FormData(form8);
+    formData.append('action', 'edit_za_ze');
+    formData.append('pole9_0', `${encodeURIComponent(ev1.value)}`);
+
+    const to_add1 = document.getElementById("pole9_5").selectedIndex;
+    const to_add2 = document.getElementById("pole9_6").selectedIndex;
+
+    if(document.getElementById("pole9_5").value!=="0"){
+        try {
+            const data = sendOver('POST',formData,'/../app/db_kontrolers/editphp.php',false);
+            resultAction(data,kom2,form8,false);
+
+                const opt = document.createElement('option');
+                opt.value = document.getElementById("pole9_5")[to_add1].value;
+                opt.textContent = document.getElementById("pole9_5")[to_add1].textContent;
+                document.getElementById("pole9_6").appendChild(opt);
+
+                document.getElementById("pole9_5").remove(to_add1);
+
+
+        } catch (err) {
+            console.log(err);
+            kom2.textContent = 'Błąd połączenia z serwerem.';
+            kom2.style.color = 'red';
+        }
+    }
+    if(document.getElementById("pole9_6").value!=="0"){
+        try {
+            const data = sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',true);
+            resultAction(data,kom2,form8,false);
+
+                const opt = document.createElement('option');
+                opt.value = document.getElementById("pole9_6")[to_add2].value;
+                opt.textContent = document.getElementById("pole9_6")[to_add2].textContent;
+                document.getElementById("pole9_5").appendChild(opt);
+
+                document.getElementById("pole9_6").remove(to_add2);
+        } catch (err) {
+            console.log(err);
+            kom2.textContent = 'Błąd połączenia z serwerem.';
+            kom2.style.color = 'red';
+        }
+    }
+
+    //setTimeout(() => {kom2.textContent = "";}, 3000);
+    form8.reset();
+});

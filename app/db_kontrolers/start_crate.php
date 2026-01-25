@@ -20,7 +20,7 @@ try {
             $result = $model->fun_s_t();
             break;
         case 'user':
-            $result = $model->fun_s_u();
+            $result = $model->fun_s_u((int)$_SESSION['uid'],(int)$_GET['param']);
             break;
         case 'zesp':
             $result = $model->fun_s_ze();

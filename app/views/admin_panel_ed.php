@@ -32,7 +32,7 @@
                 <li>
                     <label for="pole8_6">Nowa rola</label>
                     <select name="pole8_6" id="pole8_6"> <!--ROLE SĄ TYLKO 2 WIĘC TU NIE TRZEBA SIĘ BAWIĆ-->
-                    <option value="0">Pozostaw obecną rolę</option>
+                    
                     <option value="1">Zwykły użytkownik</option>
                     <option value="2">Administrator systemowy</option></select>
                 </li>
@@ -117,6 +117,10 @@
                     <input type="text" size="20" name="pole10_1" id="pole10_1"><br/>
                 </li>
                 <li>
+                    <label for="pole10_10">Nowa data startu</label>
+                    <input type="date" size="20" name="pole10_10" id="pole10_10"><br/>
+                </li>
+                <li>
                     <!--to wszystko po indeksach idzie-->
                     <label for="pole10_2">Nowy administrator</label>
                     <select name="pole10_2" id="pole10_2"></select><br/>
@@ -173,13 +177,13 @@
                     <label for="pole11_2">Nowy priorytet</label>
                     <!--<input type="number" size="20" name="pole11_2" id="pole11_2">-->
                     <select name="pole11_2" id="pole11_2">
-                        <option value="0">Nie zmieniaj</option>
+                        <option value="0">Brak</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
-                        <option value="6">Usuń</option>
+                        <!--<option value="6">Usuń</option>-->
                     </select><br/>
                 </li>
                 <li>
