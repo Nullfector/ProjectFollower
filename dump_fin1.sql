@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict AsyBzOBYWkAIBeUTHzAe6rvIklcSQINiKzMns2NPPFNvAeZflsETgmW0NH6bwuk
+\restrict s1kBPpzM99WEPlnoPSQd46iWSowiRvjIdW19Sq0SzthDvQSo0bLUizDxLPnOIo9
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -378,6 +378,14 @@ CREATE FUNCTION public.tworzenie_zadania() RETURNS trigger
             --RETURN NULL;
         end if;
 
+        IF (SELECT czas_startu FROM Projekt WHERE id_p = NEW.nadrzędny_projekt AND rozpoczęty=false)>NEW.czas_staru OR
+           (SELECT fakt_czas_startu FROM Projekt WHERE id_p = NEW.nadrzędny_projekt AND rozpoczęty=true)>NEW.czas_staru
+            THEN
+            RAISE EXCEPTION 'Nie dodasz zdania które zaczyna się wcześniej niż projekt!' USING ERRCODE='P1020';
+            --RAISE NOTICE 'Nie dodasz zdania do projektu który się zakończył lub został zarchiwizowany!';
+            --RETURN NULL;
+        end if;
+
         RETURN NEW;
     end;
     $$;
@@ -599,6 +607,7 @@ CREATE FUNCTION public."usuwanie_zespołu_funkcja"(id_usuwanego integer) RETURNS
 
         DELETE FROm Asocjacja_Za_Ze WHERE id_zespolu=id_usuwanego;
         DELETE FROM Asocjacja_U_Ze WHERE id_ze = id_usuwanego;
+        DELETE FROM Zespół WHERE id_ze = id_usuwanego;
         RETURN 'ok';
     end;
     $$;
@@ -770,7 +779,8 @@ CREATE TABLE public."użytkownik" (
     adres_mail character varying(255) NOT NULL,
     login character varying(50) NOT NULL,
     haslo character varying(50) NOT NULL,
-    rola integer
+    rola integer,
+    CONSTRAINT con_u CHECK (((rola >= 1) AND (rola <= 2)))
 );
 
 
@@ -951,40 +961,6 @@ CREATE VIEW public."raport_spóźnień" AS
 ALTER VIEW public."raport_spóźnień" OWNER TO postgres;
 
 --
--- Name: role; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.role (
-    id_r integer NOT NULL,
-    opis character varying(40) NOT NULL
-);
-
-
-ALTER TABLE public.role OWNER TO postgres;
-
---
--- Name: role_id_r_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.role_id_r_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.role_id_r_seq OWNER TO postgres;
-
---
--- Name: role_id_r_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.role_id_r_seq OWNED BY public.role.id_r;
-
-
---
 -- Name: typ_projektu; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1113,13 +1089,6 @@ ALTER TABLE ONLY public.projekt ALTER COLUMN id_p SET DEFAULT nextval('public.pr
 
 
 --
--- Name: role id_r; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.role ALTER COLUMN id_r SET DEFAULT nextval('public.role_id_r_seq'::regclass);
-
-
---
 -- Name: typ_projektu id_t; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1162,6 +1131,7 @@ COPY public.asocjacja_u_ze (id_asoc_u_ze, id_u, id_ze) FROM stdin;
 25	17	12
 26	4	12
 28	2	13
+29	2	7
 \.
 
 
@@ -1221,18 +1191,8 @@ COPY public.asocjacja_za_ze (id_aso_za_ze, id_zespolu, id_zadania) FROM stdin;
 --
 
 COPY public.projekt (id_p, nazwa_projektu, typ_projektu, admin, czas_startu, "id_zadania_końcowego", "zakończony", archiwalne, fakt_czas_startu, fakt_czas_zak, "rozpoczęty") FROM stdin;
-7	projNow	25	4	2026-04-01	43	f	f	2026-04-01	\N	t
 13	Zycie	25	3	2026-03-02	52	t	f	2026-03-02	2026-03-15	t
-\.
-
-
---
--- Data for Name: role; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.role (id_r, opis) FROM stdin;
-1	user
-2	admin
+7	projektN	25	4	2026-04-01	43	f	f	2026-04-01	\N	t
 \.
 
 
@@ -1254,14 +1214,14 @@ COPY public."użytkownik" (id_u, imie, nazwisko, adres_mail, login, haslo, rola)
 3	Celina	Saska	adres3	saksonia8	masło	1
 4	Dariusz	Damian	adres4	darosław	masło	1
 7	Adam	Adamski	adres1	adam01	masło	1
-8	Piotr	Nowak	mail@gmail.com	null	maslo	1
-9	Adam	Kopernik	mail65@poczta.com	akom	maslo	1
 12	Karol	Nawrot	mail@mail.com	kwan	maslo	1
-13	Gabriela	Hiundaj	ghiu@mail.pl	ghami	maslo	1
-15	Bartłomiej	Barski	barbar2004@firma.pl	bert56	maslo	1
 16	Cyprian	Norwid	CNwid@firma.pl	Norcy	maslo	2
 17	Dariusz	Damiański	dd@firma.pl	ddamian	maslo	1
-14	Adrian	Adamuski	adamski@firma.pl	aaaa	maslo21	2
+15	Bartłomiej	Barski	barbar2004@firma.pl	bert56	maselko	1
+14	Adrian	Adamski	adamski@firma.pl	aaaa	maslo21	2
+13	Gabriela	Hajdowizna	ghiu@mail.pl	ghami	maslo	1
+9	Adamus	Kopernik	mail65@poczta.com	akom	maslo	1
+8	Piotr	Nowak	mail@gmail.com	null	maslo	2
 \.
 
 
@@ -1278,13 +1238,13 @@ COPY public.zadanie (id_za, nazwa_zadania, "nadrzędny_projekt", priorytet, czas
 39	Zadanie 8	7	\N	2026-04-16	2026-04-18	t	2026-04-08	2026-04-10	t
 40	Zadanie 9	7	\N	2026-04-23	2026-04-25	t	2026-04-26	2026-04-28	t
 43	Zadanie 12	7	1	2026-04-29	2026-05-03	f	\N	\N	f
-41	Zadanie 10	7	4	2026-04-26	2026-04-28	f	2026-04-29	\N	t
 42	Zadanie 11	7	3	2026-04-26	2026-04-28	f	2026-04-29	\N	t
 47	Zadanie 1	13	1	2026-03-03	2026-03-05	t	2026-03-03	2026-03-05	t
 49	Zadanie 2	13	1	2026-03-04	2026-03-07	t	2026-03-04	2026-03-07	t
 50	Zadanie 3	13	\N	2026-03-08	2026-03-11	t	2026-03-08	2026-03-11	t
 51	Zadanie 4	13	3	2026-03-07	2026-03-10	t	2026-03-07	2026-03-10	t
 52	Zadanie 5	13	\N	2026-03-12	2026-03-15	t	2026-03-12	2026-03-15	t
+41	Zadanie 10e	7	4	2026-04-26	2026-04-28	f	2026-04-29	\N	t
 46	Zadanie 2	7	\N	2026-04-04	2026-04-07	t	2026-04-03	2026-04-06	t
 32	Zadanie 1	7	1	2026-04-01	2026-04-03	t	2026-04-01	2026-04-02	t
 \.
@@ -1297,10 +1257,9 @@ COPY public.zadanie (id_za, nazwa_zadania, "nadrzędny_projekt", priorytet, czas
 COPY public."zespół" (id_ze, nazwa, lider, archiwalne) FROM stdin;
 5	grupka druga	2	f
 7	testowa grupka	2	t
-8	Kolejna grupka	4	f
 12	Zespol beta	16	f
-13	Zespol gamma	15	f
 11	Zespol Alfa	14	f
+13	Zespol gamma	15	f
 \.
 
 
@@ -1308,7 +1267,7 @@ COPY public."zespół" (id_ze, nazwa, lider, archiwalne) FROM stdin;
 -- Name: asocjacja_u_ze_id_asoc_u_ze_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.asocjacja_u_ze_id_asoc_u_ze_seq', 28, true);
+SELECT pg_catalog.setval('public.asocjacja_u_ze_id_asoc_u_ze_seq', 29, true);
 
 
 --
@@ -1333,13 +1292,6 @@ SELECT pg_catalog.setval('public.projekt_id_p_seq', 14, true);
 
 
 --
--- Name: role_id_r_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.role_id_r_seq', 2, true);
-
-
---
 -- Name: typ_projektu_id_t_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1357,7 +1309,7 @@ SELECT pg_catalog.setval('public."użytkownik_id_u_seq"', 17, true);
 -- Name: zadanie_id_za_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.zadanie_id_za_seq', 52, true);
+SELECT pg_catalog.setval('public.zadanie_id_za_seq', 53, true);
 
 
 --
@@ -1397,14 +1349,6 @@ ALTER TABLE ONLY public.asocjacja_za_ze
 
 ALTER TABLE ONLY public.projekt
     ADD CONSTRAINT projekt_pkey PRIMARY KEY (id_p);
-
-
---
--- Name: role role_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.role
-    ADD CONSTRAINT role_pkey PRIMARY KEY (id_r);
 
 
 --
@@ -1652,14 +1596,6 @@ ALTER TABLE ONLY public.projekt
 
 
 --
--- Name: użytkownik con_u; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."użytkownik"
-    ADD CONSTRAINT con_u FOREIGN KEY (rola) REFERENCES public.role(id_r);
-
-
---
 -- Name: zadanie con_za3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1679,5 +1615,5 @@ ALTER TABLE ONLY public."zespół"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict AsyBzOBYWkAIBeUTHzAe6rvIklcSQINiKzMns2NPPFNvAeZflsETgmW0NH6bwuk
+\unrestrict s1kBPpzM99WEPlnoPSQd46iWSowiRvjIdW19Sq0SzthDvQSo0bLUizDxLPnOIo9
 
