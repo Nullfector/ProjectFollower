@@ -1,7 +1,8 @@
 
-        <h1>Tworzenie obiektu do bazy danych:</h1>
-        <p><a href="admin_panel.php">Spowrotem</a></p>
-        <p>Typ projektu</p>
+        <h1>Tworzenie obiektu do bazy danych:</h1><br/>
+        <p><a href="admin_panel.php" class="app-link">Powrót</a></p>
+        <div class="sep-big"></div>
+        <h3>Typ projektu</h3><br/>
         <ul>
             <li>
                 <form id="form_type" name="form_type">
@@ -12,8 +13,8 @@
             </li>
         </ul>
         <p name="form_type_kom" id="form_type_kom"></p>
-        <br/>
-        <p>Użytkownik</p>
+        <br/><div class="sep-mid"></div>
+        <h3>Użytkownik</h3><br/>
         <ul>
             <form id="form_user" name="form_user">
             <li>
@@ -48,8 +49,8 @@
             </form>
         </ul>
         <p name="form_user_kom" id="form_user_kom"></p>
-        <br/>
-        <p>Zespół</p>
+        <br/><div class="sep-mid"></div>
+        <h3>Zespół</h3><br/>
         <ul>
             <form id="form_team" name="form_team">
             <li>
@@ -66,8 +67,8 @@
             </form>
         </ul>
         <p name="form_team_kom" id="form_team_kom"></p>
-        <br/>
-        <p>Projekt</p>
+        <br/><div class="sep-mid"></div>
+        <h3>Projekt</h3><br/>
         <ul>
             <form id="form_project" name="form_project">
             <li>
@@ -93,8 +94,8 @@
             </form>
         </ul>
         <p name="form_project_kom" id="form_project_kom"></p>
-        <br/>
-        <p>Zadanie</p>
+        <br/><div class="sep-mid"></div>
+        <h3>Zadanie</h3><br/>
         <ul>
             <form id="form_zadanie" name="form_zadanie">
             <li>

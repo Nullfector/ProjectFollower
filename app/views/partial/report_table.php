@@ -22,11 +22,12 @@
 </table>
 
 <style>
-    .report-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 10px;
-  font-size: 14px;
+  .report-table{
+    background-color: #f2f2f2;  /* ten sam odcień co raport-box */
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-top: 10px;
 }
 
 .report-table thead th {

@@ -17,7 +17,13 @@ try{
             $result = $model->percent();
             $rows = $result['ret_val'];
             if($result['ok']==false){
-                echo 'Zapytanie do bazy danych się nie powiodło!';
+                //echo 'Zapytanie do bazy danych się nie powiodło!';
+                if ($_GET['format'] === 'json') {
+                    echo json_encode(['ok'=>false, 'error'=>'Zapytanie do bazy danych się nie powiodło!']);
+                } else {
+                    echo 'Zapytanie do bazy danych się nie powiodło!';
+                }
+                exit;
             }
             
             $headers = ['nazwa_projektu' => 'Nazwa projektu',
@@ -39,7 +45,18 @@ try{
                         'liczba_ukończonych_projektów' => 'W ilu ukończonych projektach brał udział',
                         'prcnt_projektów' => 'Procent wszystkich projektów'];
 
-            include __DIR__ . '/../views/partial/report_table.php';
+
+            if ($_GET['format'] === 'json') {
+                echo json_encode([
+                    'ok' => true,
+                    'ret_val' => $rows
+                ], JSON_UNESCAPED_UNICODE);
+            } else {
+                include __DIR__ . '/../views/partial/report_table.php';
+            }
+            //include __DIR__ . '/../views/partial/report_table.php';
+            //dopisek (oby dobry)
+            //echo json_encode($result);
             break;
         case 'workload':
             $result = $model->team();

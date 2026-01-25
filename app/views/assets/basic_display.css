@@ -1,0 +1,304 @@
+/* RESET – delikatny */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== BODY ===== */
+body {
+    background-color: #f5eee6; /* jasno-cielisty, nie męczy oczu */
+    color: #333;
+}
+
+/* ===== NAV / HEADER ===== */
+nav {
+    background-color: #e0e0e0;      /* szary pasek */
+    padding: 12px 20px;
+    border-bottom: 1px solid #bbb;
+    font-size: 14px;
+}
+
+nav a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* ===== MAIN CONTENT ===== */
+main {
+    padding: 20px;
+}
+
+/* ===== RAMKA RAPORTU ===== */
+.raport-box {
+    background-color: #f2f2f2;     /* lekko szarawe tło */
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    padding: 16px 20px;
+    max-width: 600px;
+}
+
+/* ===== TYTUŁ RAMKI ===== */
+.raport-box h2{
+    margin-bottom: 12px;
+    font-size: 18px;
+    border-bottom: 3px solid #9e9e9e;  /* bardziej widoczne */
+    padding-bottom: 8px;
+}
+
+/* ===== LISTA ===== */
+.raport-box ul {
+    list-style: none;
+}
+
+.raport-box li {
+    padding: 6px 0;
+    border-bottom: 1px dotted #aaa;
+    font-size: 14px;
+}
+
+.raport-box li:last-child {
+    border-bottom: none;
+}
+
+
+.raport-box .label{
+    font-weight: 600;          /* wyraźnie grubsze */
+    min-width: 240px;          /* równe kolumny */
+    color: #222;
+}
+
+.raport-box .value{
+    font-weight: 400;
+    color: #444;
+}
+
+.main-sep{
+    height: 10px;
+    background: #c9c9c9;
+    border: 1px solid #b3b3b3;
+    border-left: none;
+    border-right: none;
+    margin: 18px 0;
+    border-radius: 4px;
+}
+
+/* Delikatny separator sekcji (cieńszy, mniej widoczny) */
+.soft-sep{
+    height: 1px;
+    background: #d6d6d6;
+    margin: 12px 0;
+}
+
+/* Separator “twardszy” (np. między blokami w adminie) */
+.mid-sep{
+    height: 4px;
+    background: #d0d0d0;
+    border-radius: 3px;
+    margin: 14px 0;
+}
+
+/* ===== AUTOMATYCZNE separatory dla sekcji strony ===== */
+
+/* Mniejszy separator pod h1 na stronie user_home */
+#user_home h1{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #cfcfcf;
+}
+
+/* Delikatne oddzielanie bloków po nagłówkach h3 (i w user, i admin) */
+#user_home h3,
+#admin_home h3{
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #d6d6d6;
+}
+
+/* Żeby pierwszy h3 nie miał kreski u góry (bo wygląda dziwnie) */
+#user_home h3:first-of-type,
+#admin_home h3:first-of-type{
+    border-top: none;
+    padding-top: 0;
+}
+
+/* ===== RAPORTY: lista + powrót ===== */
+#reps h1{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #cfcfcf;
+}
+
+.back-link{
+    display: inline-block;
+    margin: 8px 0 18px 0;
+    padding: 8px 12px;
+    background: #e0e0e0;
+    border: 1px solid #bdbdbd;
+    border-radius: 6px;
+    color: #222;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.back-link:hover{
+    filter: brightness(0.97);
+    text-decoration: underline;
+}
+
+/* ===== KARTY RAPORTÓW ===== */
+.rep-card{
+    background: #f2f2f2;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 12px 14px;
+    max-width: 700px;
+    margin: 12px 0;
+}
+
+.rep-card .rep-title{
+    font-weight: 700;   /* grubsza czcionka */
+    margin-bottom: 10px;
+}
+
+.rep-card button{
+    padding: 8px 12px;
+    border: 1px solid #999;
+    background: #e8e8e8;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.rep-card button:hover{
+    filter: brightness(0.97);
+}
+
+/* ===== WYKRES SŁUPKOWY ===== */
+.chart-wrap{
+    margin-top: 12px;
+    background: #f2f2f2;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 12px 14px;
+    max-width: 900px;
+}
+
+.chart-title{
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #b5b5b5;
+}
+
+.bar-chart{
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    height: 240px;              /* wysokość wykresu */
+    padding: 10px 6px 6px 6px;
+    border-left: 2px solid #888;
+    border-bottom: 2px solid #888;
+    background: #fafafa;
+    overflow-x: auto;
+}
+
+.bar{
+    width: 44px;
+    min-width: 44px;
+    border: 1px solid #777;
+    background: #dcdcdc;        /* bez kolorów „na sztywno” */
+    border-radius: 6px 6px 2px 2px;
+    position: relative;
+}
+
+.bar .pct{
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 700;
+    color: #222;
+    white-space: nowrap;
+}
+
+.bar .lbl{
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #333;
+    white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+.app-link{
+    display: inline-block;
+    padding: 8px 12px;
+    background: #e0e0e0;
+    border: 1px solid #bdbdbd;
+    border-radius: 6px;
+    color: #222;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.app-link:hover{
+    filter: brightness(0.97);
+    text-decoration: underline;
+}
+
+/* ===== SEPARATORY ===== */
+
+/* Gruby separator – duże bloki funkcjonalne */
+.sep-big{
+    height: 10px;
+    background: #c9c9c9;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+/* Średni separator – sekcje administracyjne */
+.sep-mid{
+    height: 4px;
+    background: #d0d0d0;
+    border-radius: 3px;
+    margin: 16px 0;
+}
+
+/* Lekki separator – formularze / akapity */
+.sep-soft{
+    height: 1px;
+    background: #d6d6d6;
+    margin: 12px 0;
+}
+
+/* ===== BLOKI FORMULARZY ===== 
+.form-block{
+    background: #f2f2f2;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}*/
+
+/* Nagłówki w panelach 
+.panel-title{
+    font-weight: 700;
+    margin-bottom: 10px;
+}*/

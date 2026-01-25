@@ -7,6 +7,7 @@
 <head>
   <meta charset="utf-8">
   <title><?= htmlspecialchars($title ?? 'App') ?></title>
+  <link rel="stylesheet" href="/../app/views/assets/basic_display.css">
 </head>
 <body>
   <nav>

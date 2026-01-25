@@ -1,7 +1,9 @@
-<h1>Panel sterujący</h1>
-<p><a href="admin.php">Spowrotem</a></p>
-        <h1>Wywołania do bazy danych:</h1>
-        <p><a href="admin_panel_cr.php">Strona tworzenia</a></p>
+<h1>Panel sterujący</h1><br/>
+<p><a href="admin.php" class="app-link">Powrót</a></p>
+
+<div class="sep-big"></div>
+
+        <p><a href="admin_panel_cr.php" class="app-link">Strona tworzenia</a></p>
         <ul>
             <li>Typ projektu</li>
             <li>Użytkownik</li>
@@ -10,7 +12,8 @@
             <li>Zadanie</li>
         </ul>
         <br/><br/>
-        <p>Usuwanie</p>
+        <div class="sep-big"></div>
+        <h2>Usuwanie</h2><br/>
         <ul>
             <form name="form_del_type" id="form_del_type">
             <li>
@@ -19,7 +22,7 @@
                 <button type="button" name="b8" id="b8" onclick="DelType();">BUM!</button>
                 <p name="form_del_type_kom" id="form_del_type_kom"></p>
             </li>
-            </form>
+            </form><br/>
             <form name="form_del_user" id="form_del_user">
             <li>
                 <label for="pole7_3">Użytkownik</label>
@@ -27,7 +30,7 @@
                 <button type="button" name="b9" id="b9" onclick="DelUser();">BUM!</button>
                 <p name="form_del_user_kom" id="form_del_user_kom"></p>
             </li>
-            </form>
+            </form><br/>
             <form name="form_del_team" id="form_del_team">
             <li>
                 <label for="pole7_4">Zespół</label>
@@ -35,7 +38,7 @@
                 <button type="button" name="b10" id="b10" onclick="DelTeam();">BUM!</button>
                 <p name="form_del_team_kom" id="form_del_team_kom"></p>
             </li>
-            </form>
+            </form><br/>
             <form name="form_del_project" id="form_del_project">
             <li>
                 <label for="pole7_5">Projekt</label>
@@ -59,7 +62,8 @@
             <!--USUWANIE ZADŃ BĘDZIE W EDYCJI PROJEKTU-->
         </ul>
         <br/><br/>
-        <p><a href="admin_panel_ed.php">Strona edycji</a></p>
+        <div class="sep-big"></div>
+        <p><a href="admin_panel_ed.php" class="app-link">Strona edycji</a></p>
         <ul>
             <li>Użytkownik</li>
             <li>Zespół</li>

@@ -165,7 +165,8 @@ sel7.addEventListener('change', async (e) =>{
 //------------------------------------------------------------------------------------------------------------
 b.addEventListener('click', async () =>{
     if(sel2.value == "0"){
-        document.getElementById('response').textContent="No nie";
+        document.getElementById('response').textContent="Nie wybrano projektu";
+        document.getElementById('response').style.color="red";
         return;
     }
 
@@ -192,7 +193,8 @@ b.addEventListener('click', async () =>{
 
 b2.addEventListener('click', async () =>{
     if(sel1.value == "0"){
-        document.getElementById('response').textContent="No błagam";
+        document.getElementById('response').textContent="Nie wybrano projektu lub zadania (lub obu)";
+        document.getElementById('response').style.color="red";
         return;
     }
 
@@ -221,7 +223,8 @@ b2.addEventListener('click', async () =>{
 
 b3.addEventListener('click', async () =>{
     if(sel3.value == "0"){
-        document.getElementById('response').textContent="No nie";
+        document.getElementById('response').textContent="Nie wybrano projektu";
+        document.getElementById('response').style.color="red";
         return;
     }
 
@@ -249,7 +252,8 @@ b3.addEventListener('click', async () =>{
 
 b4.addEventListener('click', async () =>{
     if(sel4.value == "0"){
-        document.getElementById('response').textContent="No błagam";
+        document.getElementById('response').textContent="Nie wybrano projektu lub zadania (lub obu)";
+        document.getElementById('response').style.color="red";
         return;
     }
     

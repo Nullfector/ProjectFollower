@@ -1,6 +1,7 @@
-    <h1>Edytowanie obiektu w bazie danych:</h1>
-        <p><a href="admin_panel.php">Spowrotem</a></p>
-        <p>Użytkownik</p>
+    <h1>Edytowanie obiektu w bazie danych:</h1><br/>
+        <p><a href="admin_panel.php" class="app-link">Powrót</a></p>
+        <div class="sep-big"></div>
+        <h3>Użytkownik</h3><br/>
         <ul>
             <form name="form_edit_user" id="form_edit_user">
                 <li>
@@ -40,8 +41,9 @@
         </ul>
         <p name="form_edit_user_kom" id="form_edit_user_kom"></p>
         <br/>
+        <div class="sep-mid"></div>
         <!--NIE WAŻNE, NIE DASZ RADY KLIKNĄĆ W DWA EDITY NA RAZ!-->
-        <p>Zespół</p>
+        <h3>Zespół</h3><br/>
         <ul>
             <li>
                 <label for="pole9_0">Wybierz zespół do edytowania</label>
@@ -68,6 +70,7 @@
                 <br/>
             </form>
             <br/>
+            <div class="sep-soft"></div>
             <form name="form_edit_aso_u" id="form_edit_aso_u">
                 <li>
                     <label for="pole9_3">Dodaj nowego członka</label>
@@ -81,6 +84,7 @@
                 <br/>
             </form>
             <br/>
+            <div class="sep-soft"></div>
             <form name="form_edit_aso_za" id="form_edit_aso_za">
                 <li>
                     <label for="pole9_7">Z jakiego projektu</label>
@@ -99,7 +103,8 @@
         </ul>
         <p name="form_edit_team_kom" id="form_edit_team_kom"></p>
         <br/>
-        <p>Projekt</p>
+        <div class="sep-mid"></div>
+        <h3>Projekt</h3><br/>
         <ul>
             <li>
                 <label for="pole10_0">Wybierz projekt do edytowania</label>
@@ -136,7 +141,7 @@
                 </li>
                 <button type="button" name="b19" id="b19" >Edytuj!</button>
             </form>
-            <br/>
+            <br/><div class="sep-soft"></div>
             <li>
                 <label for="pole10_4">Zadanie do usunięcia</label>
                 <select name="pole10_4" id="pole10_4"></select>
@@ -145,7 +150,8 @@
         </ul>
         <p name="form_edit_project_kom" id="form_edit_project_kom"></p>
         <br/>
-        <p>Zadanie</p>
+        <div class="sep-mid"></div>
+        <h3>Zadanie</h3><br/>
         <ul>
             <!--<form name="form_edit_task" id="form_edit_task">-->
                 <li>
@@ -194,7 +200,8 @@
                 <button type="button" name="b20" id="b20">Edytuj!</button>
                 <br/>
                 </form>
-                <p>zadnie przez nas wybrane jest zadaniem podległym (podległe->blokujące)</p><br/>
+                <div class="sep-soft"></div>
+                <p>Zadnie przez nas wybrane jest zadaniem podległym (relacja: podległe->blokujące)</p><br/>
                 <form name="form_edit_zself" id="form_edit_zself">
                 <li>
                     <label for="pole11_6">Stwórz nowe powiązanie między zadaniami</label>

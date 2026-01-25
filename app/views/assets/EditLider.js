@@ -40,7 +40,7 @@ async function setup()
     sel.innerHTMl = "<option value='0'>Ładowanie...</option>";
 
     try{
-        const res2 = await fetch(`/../app/db_kontrolers/user_control.php?action=team`,{method: 'GET'});
+        const res2 = await fetch(`/../app/db_kontrolers/user_control.php?action=team&opt=0`,{method: 'GET'});
     const data2 = JSON.parse(await res2.text());
 
     const res1 = await fetch(`/../app/db_kontrolers/user_control.php?action=zads`,{method: 'GET'});

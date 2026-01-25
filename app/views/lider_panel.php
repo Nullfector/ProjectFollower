@@ -1,6 +1,7 @@
 
-<p><a href="me.php">Spowrotem</a></p>
-<p>Zespół</p>
+<p><a href="me.php" class="app-link">Powrót</a></p><br?>
+<div class="sep-big"></div>
+<h3>Zespół</h3><br/>
         <ul>
             <li>
                 <label for="pole9_0">Wybierz zespół do edytowania</label>
@@ -22,7 +23,7 @@
                 <button type="button" name="b17" id="b17">Edytuj!</button>
                 <br/>
             </form>
-            <br/>
+            <br/><div class="sep-soft"></div>
             <form name="form_edit_aso_u" id="form_edit_aso_u">
                 <li>
                     <label for="pole9_3">Dodaj nowego członka</label>
@@ -35,7 +36,7 @@
                     <button type="button" name="b18" id="b18">Edytuj!</button>
                 <br/>
             </form>
-            <br/>
+            <br/><div class="sep-soft"></div>
             <form name="form_edit_aso_za" id="form_edit_aso_za">
                 <li>
                     <label for="pole9_7">Z jakiego projektu</label>
@@ -53,10 +54,10 @@
             </form>
         </ul>
         <p name="form_edit_team_kom" id="form_edit_team_kom"></p>
-        <br/>
+        <br/><div class="sep-mid"></div>
 
-<p>Aktywacja zadania</p>
-<p id="response"></p>
+<h3>Aktywacja zadania</h3>
+<p id="response"></p><br/>
 
 <label for="sel1">Wybierz projekt</label>
 <select id="sel1"></select><br/><br/>

@@ -24,7 +24,7 @@
 <h3>Zmień swoje hasło:</h3>
 <label for="utxt">Nowe hasło</label>
 <input type="text" size="20" id="utxt">
-<button type="button" id="ub">Edytuj!</button>
+<button type="button" id="ub">Edytuj!</button><br/>
 <p id="uresp"></p><br/>
 
 </secton>

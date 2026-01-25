@@ -1,11 +1,13 @@
-
+<div class="main-sep"></div>
 <section id="admin_home">
 <h2>Część admina</h2>
 
 <a href="admin_panel.php"><button>Do panelu</button></a>
-<a href="admin_reports.php"><button>Do raportów</button></a><br/><br/>
+<a href="admin_reports.php"><button>Do raportów</button></a><br/>
 
-<h2>Podstawowe zarządzanie zadaniami i projektami:</h2><br/>
+<div class="mid-sep"></div>
+
+<h3>Podstawowe zarządzanie zadaniami i projektami:</h3><br/>
 <label for="sel2">Aktywuj projekt</label>
 <select id="sel2"></select><br/>
 <button id="but1">Wyślij</button><br/><br/>
@@ -23,6 +25,7 @@
 <button id="but4">Wyślij</button><br/><br/>
 
 <p id="response"></p>
+<div class="mid-sep"></div>
 
 <h3>Podgląd zadań</h3>
 <label for="sel5">Wybierz projekt</label>
@@ -32,7 +35,7 @@
     <option value="0">Aktywne i nieaktywne</option>
     <option value="1">Nieaktywne</option>
     <option value="2">Aktywne</option>
-</select><br/>
+</select><br/><br/>
 
 <h3>Podgląd zespołów</h3>
 <label for="sel6">Wybierz zespół</label> <!--użytkownicy i przypisane zadania-projekty (z info o statusie)-->
@@ -43,7 +46,7 @@
     <option value="0">Aktywne</option>
     <option value="1">Nieaktywne</option>
     <option value="2">Aktywne i nieaktywne</option>
-</select><br/>
+</select><br/><br/>
 
 <h3>Informacje o projekcie</h3>
 <label for="sel7">Wybierz projekt</label> <!--wsyzstko co związane z projektem-->
@@ -53,7 +56,7 @@
     <option value="0">Aktywne i nieaktywne</option>
     <option value="1">Nieaktywne</option>
     <option value="2">Aktywne</option>
-</select><br/><br/>
+</select><br/><br/><br/>
 
 <div id='divall'></div>
 </section>
