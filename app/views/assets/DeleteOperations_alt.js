@@ -215,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function setup()
 {
-    //ała
     const typ = document.getElementById("pole7_2");
     const user = document.getElementById("pole7_3");
     const zesp = document.getElementById("pole7_4");
@@ -287,7 +286,6 @@ async function setup()
         }
 
         }catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             proj.innerHTML = `<option value="0">Błąd połączenia</option>`;
             typ.innerHTML = `<option value="0">Błąd połączenia</option>`;

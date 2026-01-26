@@ -23,7 +23,7 @@
 
 <style>
   .report-table{
-    background-color: #f2f2f2;  /* ten sam odcień co raport-box */
+    background-color: #f2f2f2;
     border: 1px solid #bbb;
     border-radius: 6px;
     padding: 12px 14px;

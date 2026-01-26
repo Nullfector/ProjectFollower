@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../db.php';
 require_once __DIR__ . '/../../auth.php';
-//require_role(2); // jeśli tylko admin ma mieć dostęp
 
 require_once __DIR__ . '/../../app/models/editModel.php';
 header('Content-Type: application/json; charset=utf-8');
@@ -24,7 +23,6 @@ if ($method === 'PUT') {
             throw new Exception('Nieprawidłowy JSON w body (UPDATE).');
         }
     } else if($method === 'POST'){
-        // zostawiamy kompatybilność z POST (jeśli kiedyś użyjesz)
         $data = $_POST;
     }
 
@@ -33,19 +31,7 @@ $action = $data['action'];
 try
 {
     $model = new editModel($pdo);
-    //$pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,]);
-    /*$handlers = ['edit_user' => 'fun_u',
-                'edit_zesp' => 'fun_ze',
-                'edit_u_ze' => 'fun_u_ze',
-                'edit_za_ze'=>'fun_za_ze',
-                'edit_proj' => 'fun_p',
-                'del_za' => 'fun_d_za',
-                'edit_zad' => 'fun_za',
-                'aso_self' => 'fun_self'];*/
 
-    
-    //$fn = $handlers[$action];
-    //$result = $fn($pdo, $data);
     switch($action){
         case 'edit_user':
             $result = $model->fun_u($data['pole8_1'],$data['pole8_2'],$data['pole8_3'],$data['pole8_4'],$data['pole8_5'], (int)$data['pole8_6'], (int)$data['pole8_0']);
@@ -60,13 +46,13 @@ try
             $result = $model->fun_za_ze((int)$data['pole9_0'], (int)$data['pole9_5'], (int)$data['pole9_6'], $method);
             break;
         case 'edit_proj':
-            $result = $model->fun_p((int)$data['pole10_0'],$data['pole10_1'],(int)$data['pole10_2'], (int)$data['pole10_3']/*, (int)$data['pole10_6']*/, (int)$data['pole10_5'],$data['pole10_10']);
+            $result = $model->fun_p((int)$data['pole10_0'],$data['pole10_1'],(int)$data['pole10_2'], (int)$data['pole10_3'], (int)$data['pole10_5'],$data['pole10_10']);
             break;
         case 'del_za':
             $result = $model->fun_d_za((int)$data['pole10_4']);
             break;
         case 'edit_zad':
-            $result = $model->fun_za((int)$data['pole11_8'], (int)$data['pole11_2'], $data['pole11_1'], $data['pole11_4'], $data['pole11_5']/*, (int)$data['pole11_9']*/);
+            $result = $model->fun_za((int)$data['pole11_8'], (int)$data['pole11_2'], $data['pole11_1'], $data['pole11_4'], $data['pole11_5']);
             break;
         case 'aso_self':
             $result = $model->fun_self((int)$data['pole11_8'], (int)$data['pole11_6'], (int)$data['pole11_7'], $method);

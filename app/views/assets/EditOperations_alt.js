@@ -55,11 +55,11 @@ function TeamEditCheck(){
         return false;
     }
 
-    if(form2.pole9_1.value != "" && !(/^[a-zA-Z0-9_& \-]+\s*$/.test(form2.pole9_1.value))){ //nazwa teamu
+    /*if(form2.pole9_1.value != "" && !(/^[a-zA-Z0-9_& \-]+\s*$/.test(form2.pole9_1.value))){ //nazwa teamu
         res+="nazwa";
         count++;
         form2.pole9_1.value = "";
-    }
+    }*/
    if(form2.pole9_1.value == "" && form2.pole9_2.value=='0' && form2.pole9_8.value=='0'){
         kom2.textContent = "Pustymi danymi nic nie zrobisz";
         return false;
@@ -83,11 +83,11 @@ function ProjectEditCheck(){
         return false;
     }
 
-    if(form3.pole10_1.value != "" && !(/^[a-zA-Z0-9ąćńęłżźóĄĘĆŻŹÓŃŁ &/\-]+$/.test(form3.pole10_1.value))){ //nazwa
+    /*if(form3.pole10_1.value != "" && !(/^[a-zA-Z0-9ąćńęłżźóĄĘĆŻŹÓŃŁ &/\-]+$/.test(form3.pole10_1.value))){ //nazwa
         count++;
         res += "nazwa";
         form3.pole10_1.value = "";
-    }
+    }*/
     if(form3.pole10_1.value == "" && form3.pole10_2.value == "0" && form3.pole10_3.value == "0" && form3.pole10_6.value == "0" && form3.pole10_5.value == "0"){
         kom3.textContent = "Puste dane nie przechodzą";
         return false;
@@ -110,11 +110,11 @@ function TaskEditCheck(){
         kom4.textContent = "Nie zedytujesz obiektu jak nie wybierzesz o jaki ci chodzi";
         return false;
     }
-    if(form4.pole11_1.value != "" && !(/^[a-zA-Z0-9ąćńęłżźóĄĘĆŻŹÓŃŁ &/\-]+$/.test(form4.pole11_1.value))){ //nazwa
+    /*if(form4.pole11_1.value != "" && !(/^[a-zA-Z0-9ąćńęłżźóĄĘĆŻŹÓŃŁ &/\-]+$/.test(form4.pole11_1.value))){ //nazwa
         count++;
         res += "nazwa";
         form4.pole5_1.value = "";
-    }
+    }*/
 
     if((form4.pole11_4.value >= form4.pole11_5.value) && (form4.pole11_4.value != "" && form4.pole11_5.value != "")){ //daty
         kom4.textContent = "Czas nie płynie w przeciwną stronę, ani jego pedkość nie wynosi \u221e!";
@@ -215,7 +215,6 @@ async function setup()
         document.getElementById("pole10_4").appendChild(opt.cloneNode(true));
 
         }catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             proj1.innerHTML = `<option value="0">Błąd połączenia</option>`;
             proj.innerHTML = `<option value="0">Błąd połączenia</option>`;
@@ -249,12 +248,10 @@ async function get_requiredZesp_NOaso()
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",del_u,false);
 
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             lid.innerHTML = `<option value="0">Błąd połączenia</option>`;
             new_u.innerHTML = `<option value="0">Błąd połączenia</option>`;
             del_u.innerHTML = `<option value="0">Błąd połączenia</option>`;
-            //zad.innerHTML=`<option value="0">Błąd połączenia</option>`;
         }
     
 }
@@ -278,11 +275,9 @@ async function get_requiredZesp_ASO()
 
 
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             new_aso.innerHTML = `<option value="0">Błąd połączenia</option>`;
             aso_del.innerHTML = `<option value="0">Błąd połączenia</option>`;
-            //zad.innerHTML=`<option value="0">Błąd połączenia</option>`;
         }
 }
 
@@ -308,7 +303,6 @@ async function get_requiredProj()
 
 
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             typ.innerHTML = `<option value="0">Błąd połączenia</option>`;
             admin.innerHTML = `<option value="0">Błąd połączenia</option>`;
@@ -396,8 +390,6 @@ ev5.addEventListener('change', async (e) => {
         document.getElementById("pole11_5").value= "";
     } else {
         getDataToEdit('zad',e.target.value);
-        //const creat = document.getElementById("pole11_6");
-        //const del = document.getElementById("pole11_7");
         try{
         const id = ev5.value;
         const idq = document.getElementById("pole11_0").value;
@@ -436,7 +428,6 @@ but1.addEventListener('click', async () => {
 
     const opt = document.getElementById("pole8_0").selectedIndex;
     const new_login = document.getElementById("pole8_4").value.trim();
-    //console.log(new_login);
 
     try {
         const data = await sendOver('PUT',formData,'/../app/db_kontrolers/editphp.php',true);
@@ -481,7 +472,6 @@ but2.addEventListener('click', async () => {
 
 async function sendOver(send_method, formdata, uri, isformdata){
     var res;
-    //console.log(JSON.stringify(Object.fromEntries(formdata.entries())));
     if(isformdata){
         res = await fetch(uri, {
             method: send_method,
@@ -502,11 +492,13 @@ async function sendOver(send_method, formdata, uri, isformdata){
     }
     //console.log(res.text());
     const data = await res.json();
+    console.log(data);
     return data;
 
 }
 
 function resultAction(data, kom, form, doreset){
+    console.log(data.ok);
      if (data.ok) {
       kom.textContent = data.message;
       kom.style.color = 'green';
@@ -531,8 +523,7 @@ but3.addEventListener('click', async () => {
 
     const to_add1 = document.getElementById("pole9_4").selectedIndex; //jak dodamy kogoś to dodajemy jego rekord do możliwych do usuwanięcia
     const to_add2 = document.getElementById("pole9_3").selectedIndex; //jak kogoś usuniemy to daodajemy rekord do możliwych do dodania
-    //console.log(to_add1);
-    //console.log(to_add2);
+
     
     if(document.getElementById("pole9_3").value!=="0"){
         try {
@@ -569,15 +560,13 @@ but3.addEventListener('click', async () => {
             kom2.style.color = 'red';
         }
     }
-
-    //setTimeout(() => {kom2.textContent = "";}, 3000);
     form7.reset();
 });
 
 const form8 = document.getElementById("form_edit_aso_za");
 but4.addEventListener('click', async () => {
     if(document.getElementById("pole9_5").value ==="0" && document.getElementById("pole9_6").value ==="0"){
-        kom2.textContent = 'No i po co?';
+        kom2.textContent = 'Puste dane nie działają';
         kom2.style.color = 'red';
         return;}
 
@@ -590,8 +579,8 @@ but4.addEventListener('click', async () => {
 
     if(document.getElementById("pole9_5").value!=="0"){
         try {
-            const data = sendOver('POST',formData,'/../app/db_kontrolers/editphp.php',false);
-            resultAction(data,kom2,form8,false);
+                const data = await sendOver('POST',formData,'/../app/db_kontrolers/editphp.php',false);
+                resultAction(data,kom2,form8,false);
 
                 const opt = document.createElement('option');
                 opt.value = document.getElementById("pole9_5")[to_add1].value;
@@ -609,7 +598,7 @@ but4.addEventListener('click', async () => {
     }
     if(document.getElementById("pole9_6").value!=="0"){
         try {
-            const data = sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',true);
+            const data = await sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',true);
             resultAction(data,kom2,form8,false);
 
                 const opt = document.createElement('option');
@@ -625,7 +614,6 @@ but4.addEventListener('click', async () => {
         }
     }
 
-    //setTimeout(() => {kom2.textContent = "";}, 3000);
     form8.reset();
 });
 
@@ -647,7 +635,7 @@ but5.addEventListener('click', async () => {
             if(new_nazwa!==""){
                 document.getElementById("pole10_0").options[opt].textContent = new_nazwa;
             }
-            if(/*document.getElementById("pole10_6").selectedIndex.value==="1" ||*/ document.getElementById("pole10_5").selectedIndex.value ==="1"){
+            if(document.getElementById("pole10_5").selectedIndex.value ==="1"){
                 document.getElementById("pole10_0").remove(document.getElementById("pole10_0").options[opt]);
             }
             document.getElementById("pole10_0").value = "0";
@@ -657,8 +645,6 @@ but5.addEventListener('click', async () => {
             kom3.textContent = 'Błąd połączenia z serwerem.';
             kom3.style.color = 'red';
         }
-    //setTimeout(() => {kom3.textContent = "";}, 3000);
-    //form3.reset();
 });
 
 but6.addEventListener('click', async () => {
@@ -686,7 +672,6 @@ but6.addEventListener('click', async () => {
             kom3.style.color = 'red';
         }
 
-    //setTimeout(() => {kom3.textContent = "";}, 3000);
     document.getElementById("pole10_4").value = "0";
 });
 
@@ -717,8 +702,6 @@ but7.addEventListener('click', async () => {
             kom4.style.color = 'red';
         }
 
-    //setTimeout(() => {kom4.textContent = "";}, 3000);
-    //form4.reset();
 });
 
 
@@ -755,7 +738,6 @@ but8.addEventListener('click', async () => {
         }
     }
     if(document.getElementById("pole11_7").value!=="0"){
-        //console.log("co kuraw");
         try {
             const data = await sendOver('DELETE',formData,'/../app/db_kontrolers/editphp.php',true);
             resultAction(data,kom4,form9,false);
@@ -773,7 +755,6 @@ but8.addEventListener('click', async () => {
         }
     }
 
-    //setTimeout(() => {kom4.textContent = "";}, 3000);
     form9.reset();
 });
 

@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../db.php';
 require_once __DIR__ . '/../../auth.php';
-//require_role(2); // jeśli tylko admin ma mieć dostęp
 
 require_once __DIR__ . '/../../app/models/fillDataStart.php';
 

@@ -47,19 +47,6 @@
                 <p name="form_del_project_kom" id="form_del_project_kom"></p>
             </li>
             </form>
-            <!--
-            <form name="form_del_task" id="form_del_task">
-            <li>
-                <label for="pole7_6">Zadanie</label>
-                <select name="pole7_6" id="pole7_6">
-                <option value="0">Wybierz zadanie do usunięcia</option>
-                <option value="1">Numer tetowy</option></select>
-                <button type="button" name="b12" id="b12" onclick="DelTask();">BUM!</button>
-                <p name="form_del_task_kom" id="form_del_task_kom"></p>
-            </li>
-            </form>
-            -->
-            <!--USUWANIE ZADŃ BĘDZIE W EDYCJI PROJEKTU-->
         </ul>
         <br/><br/>
         <div class="sep-big"></div>

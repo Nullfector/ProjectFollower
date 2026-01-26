@@ -38,10 +38,10 @@
 </select><br/><br/>
 
 <h3>Podgląd zespołów</h3>
-<label for="sel6">Wybierz zespół</label> <!--użytkownicy i przypisane zadania-projekty (z info o statusie)-->
+<label for="sel6">Wybierz zespół</label>
 <select id="sel6"></select>
 <label for="sel6_1">Wybierz zakres</label>
-<!--tutaj-->
+
 <select id="sel6_1">
     <option value="0">Aktywne</option>
     <option value="1">Nieaktywne</option>
@@ -49,7 +49,7 @@
 </select><br/><br/>
 
 <h3>Informacje o projekcie</h3>
-<label for="sel7">Wybierz projekt</label> <!--wsyzstko co związane z projektem-->
+<label for="sel7">Wybierz projekt</label>
 <select id="sel7"></select>
 <label for="sel7_1">Wybierz zakres</label>
 <select id="sel7_1">

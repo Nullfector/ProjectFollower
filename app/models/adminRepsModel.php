@@ -58,9 +58,26 @@ class adminRepsModel{
         return ['ok'=>true,'ret_val'=>$data];
     }
 
-    public function get_zad(int $id): array
+    //to poniżej wrócić do starej wersji jak coś się rozsypie
+    /*public function get_zad(int $id): array
     {
         $stmt = $this->pdo->prepare("SELECT id_za, nazwa_zadania FROM Zadanie WHERE nadrzędny_projekt=:id AND zakończony=false AND rozpoczęty = false ORDER BY nazwa_zadania;");
+        $stmt->execute([':id' => $id]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return ['ok'=>true,'ret_val'=>$data];
+    }*/
+    public function get_zad(int $id): array
+    {
+        $stmt = $this->pdo->prepare("WITH not_to_show AS (SELECT DISTINCT aso.id_zad_blokujące FROM Zadanie z JOIN Asocjacja_Za_Self aso 
+        ON aso.id_zad_podległe = z.id_za WHERE z.nadrzędny_projekt=:id AND z.zakończony=false)  
+        SELECT zad.id_za, zad.nazwa_zadania FROM Zadanie zad WHERE zad.nadrzędny_projekt = :id
+        AND NOT EXISTS (
+            SELECT 1
+            FROM not_to_show nts
+            WHERE nts.id_zad_blokujące = zad.id_za
+        ) AND zad.rozpoczęty = false 
+        ORDER BY zad.nazwa_zadania");
         $stmt->execute([':id' => $id]);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

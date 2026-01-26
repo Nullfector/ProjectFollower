@@ -37,7 +37,6 @@
                 case 'P1015':
                     $msg = "Nie usuniesz zakończonego zadania (to nie powinno się nawet pokazać)!";
                     break;
-                    //dorobić więcej caseów na wszelki (chyba niepotrzebne, ale lepiej mieć)
                 default:
                     $msg = "Coś poszło nie tak :c";
             }
@@ -51,14 +50,10 @@
 
         public function fun_u(string $imie, string $nazwisko, string $mail, string $login, string $haslo, int $rola, int $id): array
         {
+            //To jest stary szablon funkcji - działa
+            //mógłby być lepszy, ale już trochę mam dosyć zabawy z tym, a funkcja ta działa
             $q = "UPDATE Użytkownik SET ";
             $arr = [];
-            /*$imie = $data['pole8_1'];
-            $nazwisko = $data['pole8_2'];
-            $mail = $data['pole8_3'];
-            $login = $data['pole8_4'];
-            $haslo = $data['pole8_5'];
-            $rola = $data['pole8_6'];*/
             if($imie!=""){
                 $q .= "imie=:i, ";
                 $arr[':i'] = $imie;
@@ -84,7 +79,6 @@
                 $arr[':r'] = $rola;
             }
             $q = substr($q, 0, -2);
-            //$id = $data['pole8_0'];
             $q .= " WHERE id_u=:id;";
             $arr[':id'] = $id;
 
@@ -95,11 +89,10 @@
 
         public function fun_ze(string $nazwa, int $lider, int $arch, int $id): array
         {
+            //To jest stary szablon funkcji - działa
+            //mógłby być lepszy, ale już trochę mam dosyć zabawy z tym, a funkcja ta działa
             $q = "UPDATE Zespół SET ";
             $arr = [];
-            /*$nazwa = $data['pole9_1'];
-            $lider = $data['pole9_2'];
-            $arch = $data['pole9_8'];*/
 
             if($nazwa!=""){
                 $q .= "nazwa=:i, ";
@@ -112,7 +105,6 @@
             if($arch!="0"){
                 $q .=  "archiwalne=true, ";
             }
-            //$id = $data['pole9_0'];
             $q = substr($q, 0, -2);
             $q .= " WHERE id_ze=:id;";
             $arr[':id'] = $id;
@@ -125,11 +117,9 @@
         {
             $arr = [];
             $q="";
-            //$id = $data['pole9_0'];
 
             if($req=='POST')
             {
-                //$n = $data['pole9_3'];
                 if($n!="0"){
                 $stmt = $this->pdo->prepare("INSERT INTO Asocjacja_U_Ze (id_u,id_ze) VALUES (:n,:id);");
                 $stmt->execute([':id'=>$id,':n'=>$n]);
@@ -138,7 +128,6 @@
             }
             else if($req=='DELETE')
             {
-                //$d = $data['pole9_4'];
                 if($d!="0"){
                 $stmt = $this->pdo->prepare("DELETE FROM Asocjacja_U_Ze WHERE id_u=:d AND id_ze=:id;");
                 $stmt->execute([':id'=>$id,':d'=>$d]);
@@ -153,11 +142,9 @@
         {
             $arr = [];
             $q="";
-            //$id = $data['pole9_0'];
 
             if($req=='POST')
             {
-                //$n = $data['pole9_5'];
                 if($n!="0"){
                 $stmt = $this->pdo->prepare("INSERT INTO Asocjacja_Za_Ze (id_zespolu,id_zadania) VALUES (:id,:n);");
                 $stmt->execute([':id'=>$id,':n'=>$n]);
@@ -166,7 +153,6 @@
             }
             else if($req=='DELETE')
             {
-                //$d = $data['pole9_6'];
                 if($d!="0"){
                 $stmt = $this->pdo->prepare("DELETE FROM Asocjacja_Za_Ze WHERE id_zadania=:d AND id_zespolu=:id;");
                 $stmt->execute([':id'=>$id,':d'=>$d]);
@@ -177,16 +163,12 @@
             return ['ok'=>true, 'message'=> $q];
         }
 
-        public function fun_p(int $id, string $nazwa, int $admin, int $typ/*, int $end*/, int $arch, string $date): array
+        public function fun_p(int $id, string $nazwa, int $admin, int $typ, int $arch, string $date): array
         {
+            //To jest stary szablon funkcji - działa
+            //mógłby być lepszy, ale już trochę mam dosyć zabawy z tym, a funkcja ta działa
             $arr = [];
             $q = "UPDATE Projekt SET ";
-            /*$id = $data['pole10_0'];
-            $nazwa = $data['pole10_1'];
-            $admin = $data['pole10_2']; 
-            $typ = $data['pole10_3'];
-            $end = $data['pole10_6'];
-            $arch = $data['pole10_5'];*/
 
             if($nazwa !="")
             {
@@ -207,11 +189,6 @@
                 $q .= "typ_projektu=:typ, ";
                 $arr[':typ'] = $typ;
             }
-            /*if($end !="0")
-            {
-                $q .= "zakończony=:end, ";
-                $arr[':end'] = $end;
-            }*/
             if($arch !="0")
             {
                 $q .= "archiwalne=:arch, ";
@@ -228,81 +205,37 @@
 
         public function fun_d_za(int $id): array
         {
-            //$id = $data['pole10_4'];
             $stmt = $this->pdo->prepare("DELETE FROM Zadanie WHERE id_za=:id;");
             $stmt->execute([':id'=>$id]);
 
             return ['ok'=>true, 'message'=> 'Pomyślnie usunięto zadanie'];
         }
 
-        public function fun_za(int $id, int $prio, string $nazwa, string $czas_s, string $czas_e/*, int $end*/): array
+        public function fun_za(int $id, int $prio, string $nazwa, string $czas_s, string $czas_e): array
         {
-            /*$id = $data['pole11_8'];
-            $prio = $data['pole11_2'];
-            $nazwa = $data['pole11_1'];
-            $czas_s = $data['pole11_4'];
-            $czas_e = $data['pole11_5'];
-            $end = $data['pole11_9'];*/
             $array = [':id'=>$id, ':z'=>$nazwa, ':p'=>$prio, ':c'=>$czas_s, ':cz'=>$czas_e];
-
-            //zapytanie o current dane - i tak zwróci 1 wiersz
-            //$stmt = $this->pdo->prepare("SELECT * FROM Zadanie WHERE id_za=:id;");
-            //$stmt->execute($array);
-            //$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $stmt = $this->pdo->prepare("SELECT edycja_zadania(:id, :z, :p, :c, :cz, false);");
 
-            /*if($nazwa!=""){
-                $array[':z'] = $nazwa;
-            } else {
-                $array[':z'] = $data[0]['nazwa_zadania'];
-            }
-            if($prio==0){
-                $array[':p'] = $data[0]['priorytet'];
-            }else if($prio==6){
-                $array[':p'] = null;
-            } else {
-                $array[':p'] = (int)$prio;
-            }
-            if($czas_s!=""){
-                $array[':c'] = $czas_s;
-            } else {
-                $array[':c'] = $data[0]['czas_staru'];
-            }
-            if($czas_e!=""){
-                $array[':cz'] = $czas_e;
-            } else {
-                $array[':cz'] = $data[0]['czas_zakończenia'];
-            }
-            /*if($end=="1"){
-                $array[':e'] = 'true';
-            } else {
-                $array[':e'] = 'false';
-            }*/
-
             $stmt->execute($array);
-            //$cur = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return ['ok'=>true, 'message'=> "Jakimś cudem się udało :3"];
         }
 
         public function fun_self(int $id, int $n, int $d, string $req): array
         {
-            //$id = $data['pole11_8']; //id naszego zadania (czyli podległego)
             $q = "";
 
-            if(/*$_SERVER['REQUEST_METHOD']*/$req=='POST')
+            if($req=='POST')
             {
-                //$n = $data['pole11_6'];
                 if($n!="0"){
                 $stmt = $this->pdo->prepare("INSERT INTO Asocjacja_Za_Self (id_zad_podległe, id_zad_blokujące) VALUES (:id,:n);");
                 $stmt->execute([':n'=>$n, ':id'=>$id]);
                 $q .= "Dodano nową asocjacje!";
             }
             }
-            else if(/*$_SERVER['REQUEST_METHOD']*/$req=='DELETE')
+            else if($req=='DELETE')
             {
-                //$d = $data['pole11_7'];
                 if($d!="0"){
                 $stmt = $this->pdo->prepare("DELETE FROM Asocjacja_Za_Self WHERE id_zad_podległe=:id AND id_zad_blokujące=:del;");
                 $stmt->execute([':del'=>$d,':id'=>$id]);   

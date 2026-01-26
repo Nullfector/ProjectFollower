@@ -26,10 +26,9 @@ async function get_tasks_info(){
         const res2 = await fetch(`/../app/db_kontrolers/main_admin.php?id=${encodeURIComponent(id)}&action=tasks_conn`,{method: 'GET'});
         const html2 = await res2.text();
 
-        div.innerHTML = html +'\n'+html2; //to jest ???????
+        div.innerHTML = html +'\n'+html2;
         
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             div.innerHTML = `Coś jest nie tak po stronie serwera`;
         }
@@ -57,7 +56,6 @@ async function get_required(){
             
         }
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             sel1.innerHTML = `<option value="0">Błąd połączenia</option>`;
         }
@@ -85,7 +83,6 @@ async function get_required2(){
             
         }
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             sel4.innerHTML = `<option value="0">Błąd połączenia</option>`;
         }
@@ -154,7 +151,6 @@ sel7.addEventListener('change', async (e) =>{
         div.innerHTML = html;
         
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             div.innerHTML = `Coś jest nie tak po stronie serwera`;
         }

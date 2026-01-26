@@ -21,12 +21,11 @@ if (!$user) {
   exit;
 }
 
-// jeśli w DB masz plaintext zamiast hashy, to tymczasowo użyj porównania ==
-// ale docelowo MUSI być password_hash + password_verify
+
 $hash = $user['haslo'];
 
 //$ok = password_verify($pass, $hash);
-// TYMCZASOWO (tylko jeśli masz plaintext): $ok = ($pass === $hash);
+// TYMCZASOWO \/ (bo w bazie haszy nie ma)
 $ok = ($pass === $hash);
 
 if (!$ok) {

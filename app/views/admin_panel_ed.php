@@ -31,7 +31,7 @@
                 </li>
                 <li>
                     <label for="pole8_6">Nowa rola</label>
-                    <select name="pole8_6" id="pole8_6"> <!--ROLE SĄ TYLKO 2 WIĘC TU NIE TRZEBA SIĘ BAWIĆ-->
+                    <select name="pole8_6" id="pole8_6">
                     
                     <option value="1">Zwykły użytkownik</option>
                     <option value="2">Administrator systemowy</option></select>
@@ -42,7 +42,6 @@
         <p name="form_edit_user_kom" id="form_edit_user_kom"></p>
         <br/>
         <div class="sep-mid"></div>
-        <!--NIE WAŻNE, NIE DASZ RADY KLIKNĄĆ W DWA EDITY NA RAZ!-->
         <h3>Zespół</h3><br/>
         <ul>
             <li>
@@ -121,7 +120,6 @@
                     <input type="date" size="20" name="pole10_10" id="pole10_10"><br/>
                 </li>
                 <li>
-                    <!--to wszystko po indeksach idzie-->
                     <label for="pole10_2">Nowy administrator</label>
                     <select name="pole10_2" id="pole10_2"></select><br/>
                 </li>
@@ -129,13 +127,6 @@
                     <label for="pole10_3">Nowy typ</label>
                     <select name="pole10_3" id="pole10_3"></select>
                 </li>
-                <!--<li>
-                    <label for="pole10_6">Zakończyć?</label>
-                    <select name="pole10_6" id="pole10_6">
-                        <option value="0">Nie</option>
-                        <option value="1">Tak</option>
-                    </select>
-                </li>-->
                 <li>
                     <label for="pole10_5">Zarchiwizować?</label>
                     <select name="pole10_5" id="pole10_5">
@@ -157,7 +148,6 @@
         <div class="sep-mid"></div>
         <h3>Zadanie</h3><br/>
         <ul>
-            <!--<form name="form_edit_task" id="form_edit_task">-->
                 <li>
                     <label for="pole11_0">Wybierz projekt do edytowania</label>
                     <select name="pole11_0" id="pole11_0"></select>
@@ -175,7 +165,6 @@
                 </li>
                 <li>
                     <label for="pole11_2">Nowy priorytet</label>
-                    <!--<input type="number" size="20" name="pole11_2" id="pole11_2">-->
                     <select name="pole11_2" id="pole11_2">
                         <option value="0">Brak</option>
                         <option value="1">1</option>
@@ -183,7 +172,6 @@
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
-                        <!--<option value="6">Usuń</option>-->
                     </select><br/>
                 </li>
                 <li>
@@ -194,13 +182,6 @@
                     <label for="pole11_5">Nowy czas końca</label>
                     <input type="date" size="20" name="pole11_5" id="pole11_5"><br/>
                 </li>
-                <!--<li>
-                    <label for="pole11_9">Zakończyć?</label>
-                    <select name="pole11_9" id="pole11_9">
-                        <option value="0">Nie</option>
-                        <option value="1">Tak</option>
-                    </select>
-                </li>-->
                 <button type="button" name="b20" id="b20">Edytuj!</button>
                 <br/>
                 </form>

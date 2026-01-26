@@ -11,11 +11,11 @@ function TeamEditCheck(){
         return false;
     }
 
-    if(form2.pole9_1.value != "" && !(/^[a-zA-Z0-9_& \-]+\s*$/.test(form2.pole9_1.value))){ //nazwa teamu
+    /*if(form2.pole9_1.value != "" && !(/^[a-zA-Z0-9_& \-]+\s*$/.test(form2.pole9_1.value))){ //nazwa teamu
         res+="nazwa";
         count++;
         form2.pole9_1.value = "";
-    }
+    }*/
    if(form2.pole9_1.value == "" && form2.pole9_8.value=='0'){
         kom2.textContent = "I po co w ten przycisk klikasz, co?";
         return false;
@@ -122,12 +122,10 @@ async function get_requiredZesp_NOaso()
         if(wynik.ok) setupSimplify_put(wynik.val,"id_u","login",del_u);
 
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             lid.innerHTML = `<option value="0">Błąd połączenia</option>`;
             new_u.innerHTML = `<option value="0">Błąd połączenia</option>`;
             del_u.innerHTML = `<option value="0">Błąd połączenia</option>`;
-            //zad.innerHTML=`<option value="0">Błąd połączenia</option>`;
         }
     
 }
@@ -151,11 +149,9 @@ async function get_requiredZesp_ASO()
 
 
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             new_aso.innerHTML = `<option value="0">Błąd połączenia</option>`;
             aso_del.innerHTML = `<option value="0">Błąd połączenia</option>`;
-            //zad.innerHTML=`<option value="0">Błąd połączenia</option>`;
         }
 }
 
@@ -188,9 +184,8 @@ ev2.addEventListener('change', async (e) => {
 
 async function setupSimplify_get(action, field, tekst, php){
     const res = await fetch(`${php}?action=${action}`,{method: 'GET'});
-    //console.log(`${php}?action=${action}`);
     const data = JSON.parse(await res.text());
-    //console.log(data);
+
     if (!data.ok) {
             field.innerHTML = `<option value="0">${data.error}</option>`;
             return {ok:false};
@@ -217,10 +212,10 @@ const res = document.getElementById("response");
 const form8 = document.getElementById("form_edit_aso_za");
 const form7 = document.getElementById("form_edit_aso_u");
 
-//te eventlistenery do podmianki zmiennych
+
 b1.addEventListener('click', async () =>{
     if(sel2.value == "0"){
-        document.getElementById('response').textContent="Nie zadziała bez wybrania faktycznej opcji";
+        document.getElementById('response').textContent="Nie zadziała bez wybrania odpowiedniej opcji";
         document.getElementById('response').style.color="red";
         return;
     }
@@ -276,7 +271,6 @@ b2.addEventListener('click', async () =>{
     }
     
 });
-//do tąd
 
 const sel2 = document.getElementById("sel2");
 
@@ -313,7 +307,6 @@ async function get_required(){
             
         }
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             sel2.innerHTML = `<option value="0">Błąd połączenia</option>`;
         }
@@ -341,7 +334,6 @@ async function get_required2(){
             
         }
     } catch (e) {
-            //tu trzeba się pobawić
             console.log(e);
             sel3.innerHTML = `<option value="0">Błąd połączenia</option>`;
         }
@@ -353,7 +345,6 @@ const but13 = document.getElementById("b14");
 
 async function sendOver(send_method, formdata, uri, isformdata){
     var res;
-    //console.log(JSON.stringify(Object.fromEntries(formdata.entries())));
     if(isformdata){
         res = await fetch(uri, {
             method: send_method,
@@ -419,7 +410,7 @@ but11.addEventListener('click', async () => {
 
 but12.addEventListener('click', async () =>{
     if(document.getElementById("pole9_3").value==="0" && document.getElementById("pole9_4").value==="0"){
-        kom2.textContent = 'No i po co?';
+        kom2.textContent = 'Bez danych nie zadziała';
         kom2.style.color = 'red';
         return;}
 
@@ -429,8 +420,7 @@ but12.addEventListener('click', async () =>{
 
     const to_add1 = document.getElementById("pole9_4").selectedIndex; //jak dodamy kogoś to dodajemy jego rekord do możliwych do usuwanięcia
     const to_add2 = document.getElementById("pole9_3").selectedIndex; //jak kogoś usuniemy to daodajemy rekord do możliwych do dodania
-    //console.log(to_add1);
-    //console.log(to_add2);
+
     
     if(document.getElementById("pole9_3").value!=="0"){
         try {
@@ -474,7 +464,7 @@ but12.addEventListener('click', async () =>{
 
 but13.addEventListener('click', async () => {
     if(document.getElementById("pole9_5").value ==="0" && document.getElementById("pole9_6").value ==="0"){
-        kom2.textContent = 'No i po co?';
+        kom2.textContent = 'Bez wybrania opcji nie zadziała';
         kom2.style.color = 'red';
         return;}
 
@@ -522,6 +512,5 @@ but13.addEventListener('click', async () => {
         }
     }
 
-    //setTimeout(() => {kom2.textContent = "";}, 3000);
     form8.reset();
 });

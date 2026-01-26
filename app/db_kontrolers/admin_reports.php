@@ -54,9 +54,6 @@ try{
             } else {
                 include __DIR__ . '/../views/partial/report_table.php';
             }
-            //include __DIR__ . '/../views/partial/report_table.php';
-            //dopisek (oby dobry)
-            //echo json_encode($result);
             break;
         case 'workload':
             $result = $model->team();

@@ -93,7 +93,6 @@ class fillDataEdit{
 
     public function fun_s_znew(int $id, int $idq): array
     {
-        //notka: dopisać sprawdzanie po zaończony i rozpoczęty
         //id zadania
         //idq projektu
         $stmt = $this->pdo->prepare("SELECT z.id_za, z.nazwa_zadania FROM Zadanie z WHERE NOT EXISTS(SELECT 1 FROM Asocjacja_Za_Self aso WHERE aso.id_zad_podległe=:id
@@ -107,7 +106,6 @@ class fillDataEdit{
 
     public function fun_s_zdel(int $id): array
     {
-        //tutaj też - rozpoczęty zakończony, bo inaczej trochę kupka
         //id zadania
         $stmt = $this->pdo->prepare("SELECT z.id_za, z.nazwa_zadania FROM Asocjacja_Za_Self aso JOIN Zadanie z ON aso.id_zad_blokujące=z.id_za
         WHERE aso.id_zad_podległe=:id AND z.rozpoczęty=false ORDER BY z.nazwa_zadania;");

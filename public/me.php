@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../auth.php';
-require_role(1); //require_role sam w sobie ma już require_login()
+require_role(1);
 
 $title = 'Użytkownik - strona domowa';
 

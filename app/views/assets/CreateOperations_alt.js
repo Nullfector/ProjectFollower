@@ -275,7 +275,7 @@ async function setup()
     try{
         const res_proj = await fetch('/../app/db_kontrolers/start_crate.php?action=projekt',{method: 'GET'});
         const typ_proj = await fetch('/../app/db_kontrolers/start_crate.php?action=typ',{method: 'GET'});
-        const lid_u = await fetch('/../app/db_kontrolers/start_crate.php?action=user',{method: 'GET'});
+        const lid_u = await fetch('/../app/db_kontrolers/start_crate.php?action=user&param=1',{method: 'GET'});
 
         const data2 = JSON.parse(await typ_proj.text());
 

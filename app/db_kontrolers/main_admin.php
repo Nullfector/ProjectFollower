@@ -16,7 +16,6 @@ if ($method === 'PUT') {
             throw new Exception('Nieprawidłowy JSON w body (UPDATE).');
         }
     } else if($method === 'POST'){
-        // zostawiamy kompatybilność z POST (jeśli kiedyś użyjesz)
         $data = $_POST;
     } else if($method === 'GET'){
         $data = $_GET;

@@ -8,7 +8,7 @@ async function rep_percent(){
         document.getElementById("userActivChart").style.display="none";
     } catch(e){
         console.log(e);
-        d.innerHTML = 'Coś po stronie backendu się wywaliło';
+        d.innerHTML = 'Coś po stronie backendu poszło nie tak';
     }
 }
 
@@ -26,7 +26,7 @@ async function rep_user_activ(){
         }
     } catch(e){
         console.log(e);
-        d.innerHTML = 'Coś po stronie backendu się wywaliło';
+        d.innerHTML = 'Coś po stronie backendu poszło nie tak';
     }
 }
 

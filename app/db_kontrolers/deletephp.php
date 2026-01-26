@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../../db.php';
 require_once __DIR__ . '/../../auth.php';
-//require_role(2); // jeśli tylko admin ma mieć dostęp
 
 require_once __DIR__ . '/../../app/models/deleteModel.php';
 header('Content-Type: application/json; charset=utf-8');
@@ -34,8 +33,7 @@ try
         if (!is_array($data)) {
             throw new Exception('Nieprawidłowy JSON w body (DELETE).');
         }
-    } else { //raczej to do wywalenia
-        // zostawiamy kompatybilność z POST (jeśli kiedyś użyjesz)
+    } else {
         $data = $_POST;
     }
 

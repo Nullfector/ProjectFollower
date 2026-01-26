@@ -49,8 +49,6 @@ class deleteModel{
         return ['ok'=>true, 'message'=> 'Usunięto rekord pomyślnie.'];
     }
 
-    //2 funkcje poniżej raczej nie potrzebują wyłapywania exception, bo i tak można wprowadzić tylko takie indeksy, które są w option
-    //Może w przyszłości dodam tam ELSE RAISE EXCEPTION, ale to może jak już wszytsko będzie działać co?
 
     public function fun_p(int $id): array
     {
