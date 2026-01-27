@@ -1,7 +1,7 @@
 const form2 = document.getElementById("form_type");
 const kom2 = document.getElementById("form_type_kom");
 
-function TypeCheck() {
+/*function TypeCheck() {
     if(!(/^[a-zA-Z0-9_& \-]+\s*$/.test(form2.pole2.value))){ //nazwa typu
         kom2.style.color = "red";
         kom2.textContent = "Niepoprawny format danych!";
@@ -9,7 +9,7 @@ function TypeCheck() {
         return false;
     }
     return true;
-}
+}*/
 
 const but2 = document.getElementById("b2");
 

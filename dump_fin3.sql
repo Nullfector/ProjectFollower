@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict s1kBPpzM99WEPlnoPSQd46iWSowiRvjIdW19Sq0SzthDvQSo0bLUizDxLPnOIo9
+\restrict 8cQoUqDFmInYY1zIdwTCcFkpOYl1KRjMYftkswQCdFh9UniceHHq3h8te7B8hHf
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -92,11 +92,16 @@ CREATE FUNCTION public.edycja_projektu() RETURNS trigger
             RAISE EXCEPTION 'Projekt jest archiwalny lub zakończony - nie można go edytować!' USING ERRCODE='P1012';
         end if;
 
-        IF NOT OLD.czas_startu > current_date OR NOT NEW.czas_startu > current_date THEN
+        --IF NOT OLD.czas_startu > current_date OR NOT NEW.czas_startu > current_date THEN
             --RAISE NOTICE 'Czas startowy projektu % nie może zostać zedytowany!', OLD.nazwa_projektu;
             --RETURN NULL;
-            RAISE EXCEPTION 'Czas startowy projektu nie może zostać zedytowany!' USING ERRCODE='P1013';
-        end if;
+          --RAISE EXCEPTION 'Czas startowy projektu nie może zostać zedytowany!' USING ERRCODE='P1013';
+        --end if;
+        IF EXISTS(SELECT 1 FROM Zadanie WHERE nadrzędny_projekt = OLD.id_p AND czas_staru < NEW.czas_startu) THEN
+            UPDATE Zadanie
+                SET czas_staru = czas_staru + (NEW.czas_startu-OLD.czas_startu), czas_zakończenia=czas_zakończenia + (NEW.czas_startu-OLD.czas_startu)
+                WHERE nadrzędny_projekt = NEW.id_p;
+end if;
 
         IF EXISTS(SELECT 1 FROM Zadanie WHERE nadrzędny_projekt = OLD.id_p AND zakończony = false)
             AND NEW.zakończony = true THEN
@@ -908,7 +913,7 @@ CREATE VIEW public."raport_nakładu_pracy" AS
     "nazwa_zespołu",
     sum(all_tasks_for_team_in_proj) FILTER (WHERE (id_proj IS NOT NULL)) AS all_tasks,
     count(DISTINCT id_proj) FILTER (WHERE (id_proj IS NOT NULL)) AS all_projs,
-    avg(prcnt) FILTER (WHERE (id_proj IS NOT NULL)) AS average
+    round(avg(prcnt) FILTER (WHERE (id_proj IS NOT NULL)), 2) AS average
    FROM percent_proj
   GROUP BY id_zesp, "nazwa_zespołu";
 
@@ -1132,6 +1137,8 @@ COPY public.asocjacja_u_ze (id_asoc_u_ze, id_u, id_ze) FROM stdin;
 26	4	12
 28	2	13
 29	2	7
+30	3	13
+32	4	13
 \.
 
 
@@ -1191,8 +1198,8 @@ COPY public.asocjacja_za_ze (id_aso_za_ze, id_zespolu, id_zadania) FROM stdin;
 --
 
 COPY public.projekt (id_p, nazwa_projektu, typ_projektu, admin, czas_startu, "id_zadania_końcowego", "zakończony", archiwalne, fakt_czas_startu, fakt_czas_zak, "rozpoczęty") FROM stdin;
-13	Zycie	25	3	2026-03-02	52	t	f	2026-03-02	2026-03-15	t
 7	projektN	25	4	2026-04-01	43	f	f	2026-04-01	\N	t
+13	Zycie	25	3	2026-03-02	52	t	f	2026-03-02	2026-03-15	t
 \.
 
 
@@ -1267,35 +1274,35 @@ COPY public."zespół" (id_ze, nazwa, lider, archiwalne) FROM stdin;
 -- Name: asocjacja_u_ze_id_asoc_u_ze_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.asocjacja_u_ze_id_asoc_u_ze_seq', 29, true);
+SELECT pg_catalog.setval('public.asocjacja_u_ze_id_asoc_u_ze_seq', 33, true);
 
 
 --
 -- Name: asocjacja_za_self_id_aso_za_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.asocjacja_za_self_id_aso_za_seq', 97, true);
+SELECT pg_catalog.setval('public.asocjacja_za_self_id_aso_za_seq', 107, true);
 
 
 --
 -- Name: asocjacja_za_ze_id_aso_za_ze_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.asocjacja_za_ze_id_aso_za_ze_seq', 33, true);
+SELECT pg_catalog.setval('public.asocjacja_za_ze_id_aso_za_ze_seq', 51, true);
 
 
 --
 -- Name: projekt_id_p_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.projekt_id_p_seq', 14, true);
+SELECT pg_catalog.setval('public.projekt_id_p_seq', 16, true);
 
 
 --
 -- Name: typ_projektu_id_t_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.typ_projektu_id_t_seq', 25, true);
+SELECT pg_catalog.setval('public.typ_projektu_id_t_seq', 26, true);
 
 
 --
@@ -1309,7 +1316,7 @@ SELECT pg_catalog.setval('public."użytkownik_id_u_seq"', 17, true);
 -- Name: zadanie_id_za_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.zadanie_id_za_seq', 53, true);
+SELECT pg_catalog.setval('public.zadanie_id_za_seq', 65, true);
 
 
 --
@@ -1615,5 +1622,5 @@ ALTER TABLE ONLY public."zespół"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict s1kBPpzM99WEPlnoPSQd46iWSowiRvjIdW19Sq0SzthDvQSo0bLUizDxLPnOIo9
+\unrestrict 8cQoUqDFmInYY1zIdwTCcFkpOYl1KRjMYftkswQCdFh9UniceHHq3h8te7B8hHf
 
