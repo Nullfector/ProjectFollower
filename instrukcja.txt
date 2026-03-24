@@ -1,0 +1,29 @@
+Są 2 sposoby na uruchomienie aplikacji:
+----------------------------------------------------------------------------
+1) Naturalny:
+
+Projekt potrzbuje serwera bazy danych Postgresql oraz serwera PHP (może być deweloperski) razem z PDO.
+Aby ustawić bazę danych należy najpierw stworzyć bazę danych o nazwie projectfollower i wypełnić ją za pomocą pliku 'dump_fin3.sql'.
+Użycie polecenia: psql -U [nazwa_użytkownika] -d [nazwa_bazy] -f dump_fin3.sql
+
+Następnie należy włączyć serwer php z włączoną obsługą PDO w folderze w którym znajdują się pliki projektu:
+cd [ścieżka]
+php -S localhost:[potr na którym jest uruchomiony serwer (zwykle 8000)]
+
+Po uruchomieniu serwera i stworzenia bazy danych należy wpisać w przeglądarkę (polecany Firefox): 'http://localhost:8000/public/login.html'
+
+---------------------------------------------------------------------------
+2) Docker:
+
+Projekt należy zbudować za pomocą komendy: docker compose --build, w folderze, w którym znajdują się rozpakowane dane projektu. Nastepnie, aby poprawnie
+zapełnić bazę danych poprawnymi danymi należy wykonać te 2 komendy:
+
+docker cp docker/initdb/dump_fin3.sql projectfollower-db:/dump.sql
+docker exec -it projectfollower-db psql -U postgres -d projectfollower -f /dump.sql
+
+Po wykonaniu tych czynności strona powinna byc dostępna pod adresem: http://localhost:8080/public/login.html
+
+Lista z hasłami znajduje się w pliku loginy.txt
+
+---------------------------------------------------------------------------
+Strona jest również dostepna na serwerze pascal: http://pascal.fis.agh.edu.pl/~3nowakp/projekt_fin/public/login.html

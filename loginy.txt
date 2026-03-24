@@ -1,0 +1,14 @@
+
+    LOGIN: 'bmaster' | HASŁO: 'masło' | ROLA: admin
+    LOGIN: 'Norcy' | HASŁO: 'maslo' | ROLA: admin
+    LOGIN: 'aaaa' | HASŁO: 'maslo21' | ROLA: admin
+    LOGIN: 'null' | HASŁO: 'maslo' | ROLA: admin
+
+    LOGIN: 'saksonia8' | HASŁO: 'masło' | ROLA: user
+    LOGIN: 'darosław' | HASŁO: 'masło' | ROLA: user
+    LOGIN: 'adam01' | HASŁO: 'masło' | ROLA: user
+    LOGIN: 'kwan' | HASŁO: 'maslo' | ROLA: user
+    LOGIN: 'ddamian' | HASŁO: 'maslo' | ROLA: user
+    LOGIN: 'bert56' | HASŁO: 'maselko' | ROLA: user
+    LOGIN: 'ghami' | HASŁO: 'maslo' | ROLA: user
+    LOGIN: 'akom' | HASŁO: 'maslo' | ROLA: user
