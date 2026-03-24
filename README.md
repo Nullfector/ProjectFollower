@@ -6,8 +6,8 @@
 
 ##  Requirements
 
-- **PHP Server** version **8.5.1
-- **PostgreSQL** version **8
+- **PHP Server** version **8.5.1**
+- **PostgreSQL** version **8**
 
 or
 
